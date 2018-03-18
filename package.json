@@ -1,0 +1,15 @@
+{
+  "name": "opendarkroom",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "author": "James Thurley",
+  "license": "MIT",
+  "dependencies": {
+    "desktop-screenshot": "^0.1.1",
+    "jimp": "^0.2.28"
+  }
+}
