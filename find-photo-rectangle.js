@@ -1,13 +1,11 @@
-var jimp = require('jimp');
-
 const DIMENSION_INDEX_X = 0;
 const DIMENSION_INDEX_Y = 1;
 
 module.exports = function findPhotoRectangle(image) {
-  var xBorders = findPhotoBorders(image, DIMENSION_INDEX_X);
-  var yBorders = findPhotoBorders(image, DIMENSION_INDEX_Y);
+  const xBorders = findPhotoBorders(image, DIMENSION_INDEX_X);
+  const yBorders = findPhotoBorders(image, DIMENSION_INDEX_Y);
 
-  if(!xBorders || !yBorders){
+  if (!xBorders || !yBorders) {
     return null;
   }
 
@@ -18,44 +16,43 @@ module.exports = function findPhotoRectangle(image) {
     height: yBorders.photoEndIndex - yBorders.photoStartIndex,
     borderLeft: xBorders.borderStartIndex,
   };
-}
+};
 
-function findPhotoBorders(image, dimensionIndex){
-  
+function findPhotoBorders(image, dimensionIndex) {
   const STATE_NO_BORDER_FOUND = 0;
   const STATE_FIRST_BORDER_FOUND = 1;
   const STATE_IN_PHOTO = 2;
 
   const requiredConsecutiveBorderColorCount = 10;
 
-  var state = STATE_NO_BORDER_FOUND;
-  var consecutiveBorderColorCount = 0;
-  
-  var borderStartIndex = null;
-  var photoStartIndex = null;
-  var photoEndIndex = null;
+  let state = STATE_NO_BORDER_FOUND;
+  let consecutiveBorderColorCount = 0;
 
-  var scanX = dimensionIndex === DIMENSION_INDEX_X ? 0 : image.bitmap.width / 2;
-  var scanY = dimensionIndex === DIMENSION_INDEX_X ? image.bitmap.height / 2 : 0;
-  var scanW = dimensionIndex === DIMENSION_INDEX_X ? image.bitmap.width : 1;
-  var scanH = dimensionIndex === DIMENSION_INDEX_X ? 1 : image.bitmap.height;
-  
-  image.scan(scanX, scanY, scanW, scanH, function (x, y, index) {
-    if(photoEndIndex){
+  let borderStartIndex = null;
+  let photoStartIndex = null;
+  let photoEndIndex = null;
+
+  const scanX = dimensionIndex === DIMENSION_INDEX_X ? 0 : image.bitmap.width / 2;
+  const scanY = dimensionIndex === DIMENSION_INDEX_X ? image.bitmap.height / 2 : 0;
+  const scanW = dimensionIndex === DIMENSION_INDEX_X ? image.bitmap.width : 1;
+  const scanH = dimensionIndex === DIMENSION_INDEX_X ? 1 : image.bitmap.height;
+
+  image.scan(scanX, scanY, scanW, scanH, function find(x, y, index) {
+    if (photoEndIndex) {
       return;
     }
 
-    var red   = this.bitmap.data[ index + 0 ];
-    var green = this.bitmap.data[ index + 1 ];
-    var blue  = this.bitmap.data[ index + 2 ];
-    
-    if(isPhotoBorderColor(red, green, blue)){
+    const red = this.bitmap.data[index + 0];
+    const green = this.bitmap.data[index + 1];
+    const blue = this.bitmap.data[index + 2];
+
+    if (isPhotoBorderColor(red, green, blue)) {
       consecutiveBorderColorCount++;
     }
-    else{
+    else {
       consecutiveBorderColorCount = 0;
-    
-      switch(state){
+
+      switch (state) {
         case STATE_NO_BORDER_FOUND:
           break;
 
@@ -63,37 +60,44 @@ function findPhotoBorders(image, dimensionIndex){
           state = STATE_IN_PHOTO;
           photoStartIndex = [x, y];
           break;
-  
-        case STATE_IN_PHOTO: 
+
+        case STATE_IN_PHOTO:
           break;
+
+        default:
+          throw new Error('Unexpected state.');
       }
     }
 
-    if(consecutiveBorderColorCount === requiredConsecutiveBorderColorCount){
-      switch(state){
+    if (consecutiveBorderColorCount === requiredConsecutiveBorderColorCount) {
+      switch (state) {
         case STATE_NO_BORDER_FOUND:
-          borderStartIndex = [x - requiredConsecutiveBorderColorCount + 1, y - requiredConsecutiveBorderColorCount + 1];
-          state = STATE_FIRST_BORDER_FOUND; 
+          borderStartIndex = [(x - requiredConsecutiveBorderColorCount) + 1, (y - requiredConsecutiveBorderColorCount) + 1];
+          state = STATE_FIRST_BORDER_FOUND;
           break;
 
         case STATE_FIRST_BORDER_FOUND:
           break;
-  
-        case STATE_IN_PHOTO: 
-          photoEndIndex = [x - requiredConsecutiveBorderColorCount + 1, y - requiredConsecutiveBorderColorCount + 1];
+
+        case STATE_IN_PHOTO:
+          photoEndIndex = [(x - requiredConsecutiveBorderColorCount) + 1, (y - requiredConsecutiveBorderColorCount) + 1];
+          break;
+
+        default:
+          throw new Error('Unexpected state.');
       }
     }
   });
 
-  if(!borderStartIndex){
+  if (!borderStartIndex) {
     console.log('Photo border not found.');
     return null;
   }
-  else if(!photoStartIndex){
+  else if (!photoStartIndex) {
     console.log('Photo start position not found.');
     return null;
   }
-  else if(!photoEndIndex){
+  else if (!photoEndIndex) {
     console.log('Photo end position not found.');
     return null;
   }
@@ -105,13 +109,22 @@ function findPhotoBorders(image, dimensionIndex){
   };
 }
 
-
 function isPhotoBorderColor(r, g, b) {
   return isBorderColor(r) && isBorderColor(g) && isBorderColor(b);
 }
 
 function isBorderColor(color) {
+  return isWindowsLightroomBorderColor(color) || isMacLightroomBorderColor(color);
+}
+
+function isWindowsLightroomBorderColor(color) {
   const min = 125;
   const max = 129;
+  return color >= min && color <= max;
+}
+
+function isMacLightroomBorderColor(color) {
+  const min = 135;
+  const max = 150;
   return color >= min && color <= max;
 }

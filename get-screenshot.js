@@ -1,33 +1,33 @@
-var screenshot = require('desktop-screenshot');
-var jimp = require('jimp');
-var fs = require('fs');
+const screenshot = require('desktop-screenshot');
+const jimp = require('jimp');
+const fs = require('fs');
 
 module.exports = async function getScreenshotAsync() {
-  var screenshotName = 'temp';
+  const screenshotName = 'temp';
   await takeScreenshotAsync(screenshotName);
-  var image = await readImageAsync(screenshotName);
+  const image = await readImageAsync(screenshotName);
   deleteScreenshot(screenshotName);
   return image;
-}
+};
 
 async function takeScreenshotAsync(name) {
   return new Promise((resolve, reject) => {
-    screenshot(name + '.png', function(error, complete) {
-      if(error) reject(error);
+    screenshot(`${name}.png`, (error) => {
+      if (error) reject(error);
       else resolve();
-    });   
+    });
   });
 }
 
 async function readImageAsync(name) {
   return new Promise((resolve, reject) => {
-    jimp.read(name + '.png', function (err, image) {
+    jimp.read(`${name}.png`, (err, image) => {
       if (err) reject(err);
       else resolve(image);
     });
   });
 }
 
-function deleteScreenshot(name){
-  fs.unlinkSync(name + '.png');
+function deleteScreenshot(name) {
+  fs.unlinkSync(`${name}.png`);
 }

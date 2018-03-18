@@ -1,0 +1,11 @@
+{
+    "extends": "airbnb-base",
+    "rules": {
+    "no-plusplus": "off",
+    "no-use-before-define": ["error", { "functions": false }],
+    "brace-style": ["error", "stroustrup", { "allowSingleLine": true }],
+    "max-len": ["error", 160],
+    "no-await-in-loop": "off",
+    "no-restricted-syntax": ["error", "ForInStatement", "LabeledStatement", "WithStatement"]
+  }
+}
