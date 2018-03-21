@@ -1,4 +1,3 @@
-import * as Jimp from 'jimp';
 import { findActiveHistoryItemRectangle } from './find-active-history-item-rectangle';
 import { getScreenshotAsync } from './get-screenshot';
 import { getSnapshot } from './get-snapshot';

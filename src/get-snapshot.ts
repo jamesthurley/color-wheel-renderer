@@ -1,8 +1,6 @@
-import * as Jimp from 'jimp';
 import { findActiveHistoryItemRectangle } from './find-active-history-item-rectangle';
-import { findPhotoRectangle, FindPhotoRectangleResult } from './find-photo-rectangle';
+import { findPhotoRectangle } from './find-photo-rectangle';
 import { getScreenshotAsync } from './get-screenshot';
-import { IRectangle } from './rectangle';
 import { Snapshot } from './snapshot';
 
 export async function getSnapshot(): Promise<Snapshot> {

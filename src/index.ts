@@ -1,4 +1,4 @@
-import * as program from 'commander';
+// import * as program from 'commander';
 import { Options, LogLevel } from './options';
 import { getSnapshot } from './get-snapshot';
 import { getNextSnapshot } from './get-next-snapshot';
