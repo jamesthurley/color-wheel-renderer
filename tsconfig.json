@@ -7,10 +7,6 @@
     "noImplicitAny": true,
     "noUnusedLocals": true
   },
-  "files": [
-    "./node_modules/@types/node/index.d.ts",
-    "./node_modules/jimp/jimp.d.ts"
-  ],
   "include": [
     "src/**/*.ts"
   ],
