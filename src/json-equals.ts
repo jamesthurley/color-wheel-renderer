@@ -1,3 +1,3 @@
-module.exports = function jsonEquals(a, b) {
+export function jsonEquals(a: any, b: any) {
   return JSON.stringify(a) === JSON.stringify(b);
-};
+}

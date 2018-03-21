@@ -1,13 +1,15 @@
-const getScreenshotAsync = require('./get-screenshot.js');
-const sleep = require('./sleep.js');
-const jsonEquals = require('./json-equals.js');
-const findActiveHistoryItemRectangle = require('./find-active-history-item-rectangle.js');
-const getSnapshot = require('./get-snapshot.js');
+import * as Jimp from 'jimp';
+import { findActiveHistoryItemRectangle } from './find-active-history-item-rectangle';
+import { getScreenshotAsync } from './get-screenshot';
+import { getSnapshot } from './get-snapshot';
+import { jsonEquals } from './json-equals';
+import { sleep } from './sleep';
+import { Snapshot } from './snapshot';
 
 const millisecondsBetweenChecks = 5000;
 const maximumMillisecondsBeforeContinue = 30000;
 
-module.exports = async function getNextSnapshot(snapshot) {
+export async function getNextSnapshot(snapshot: Snapshot) {
   console.log('Waiting for active history item to change...');
 
   let currentMilliseconds = 0;
@@ -22,9 +24,10 @@ module.exports = async function getNextSnapshot(snapshot) {
     const screenshot = await getScreenshotAsync();
     const activeHistoryItemRectangle = findActiveHistoryItemRectangle(screenshot, snapshot.photoRectangle.borderLeft);
 
-    foundNewHistoryItem = activeHistoryItemRectangle && !jsonEquals(activeHistoryItemRectangle, lastActiveHistoryItemRectangle);
+    foundNewHistoryItem = activeHistoryItemRectangle
+      && !jsonEquals(activeHistoryItemRectangle, lastActiveHistoryItemRectangle);
   }
   while (currentMilliseconds < maximumMillisecondsBeforeContinue && !foundNewHistoryItem);
 
   return foundNewHistoryItem ? getSnapshot() : null;
-};
+}

@@ -1,23 +1,33 @@
+import * as Jimp from 'jimp';
+import { IRectangle, Rectangle } from './rectangle';
+
 // We'll try and support retina/high density displays by trying larger
 // offsets in sequence.
-const pixelRatioMultipliers = [
+const pixelRatioMultipliers: number[] = [
   1,
   2,
   3,
 ];
 
-const borderLeftIndexOffsetBase = 15;
-let detectedPixelRatio = 0;
+const borderLeftIndexOffsetBase: number = 15;
+let detectedPixelRatio: number = 0;
 
-module.exports = function findActiveHistoryItemRectangle(image, borderLeftIndex) {
+export function findActiveHistoryItemRectangle(image: Jimp, borderLeftIndex: number): IRectangle {
   if (detectedPixelRatio) {
     // console.log(`Finding history item for ${detectedPixelRatio}x pixel ratio.`);
-    return findActiveHistoryItemRectangleForOffset(image, borderLeftIndex, detectedPixelRatio * borderLeftIndexOffsetBase);
+    return findActiveHistoryItemRectangleForOffset(
+      image,
+      borderLeftIndex,
+      detectedPixelRatio * borderLeftIndexOffsetBase);
   }
 
   for (const multiplier of pixelRatioMultipliers) {
     console.log(`Attempting to find history item for ${multiplier}x pixel ratio.`);
-    const result = findActiveHistoryItemRectangleForOffset(image, borderLeftIndex, multiplier * borderLeftIndexOffsetBase);
+    const result = findActiveHistoryItemRectangleForOffset(
+      image,
+      borderLeftIndex,
+      multiplier * borderLeftIndexOffsetBase);
+
     if (result) {
       detectedPixelRatio = multiplier;
       return result;
@@ -25,9 +35,13 @@ module.exports = function findActiveHistoryItemRectangle(image, borderLeftIndex)
   }
 
   return null;
-};
+}
 
-function findActiveHistoryItemRectangleForOffset(image, borderLeftIndex, borderLeftIndexOffset) {
+function findActiveHistoryItemRectangleForOffset(
+  image: Jimp,
+  borderLeftIndex: number,
+  borderLeftIndexOffset: number): IRectangle {
+
   const xSearchIndex = borderLeftIndex - borderLeftIndexOffset;
 
   const top = findActiveHistoryItemTop(image, xSearchIndex);
@@ -54,24 +68,23 @@ function findActiveHistoryItemRectangleForOffset(image, borderLeftIndex, borderL
     return null;
   }
 
-  return {
+  return new Rectangle(
     left,
     top,
-    width: right - left,
-    height: bottom - top,
-  };
+    right - left,
+    bottom - top);
 }
 
-function findActiveHistoryItemTop(image, xSearchIndex) {
+function findActiveHistoryItemTop(image: Jimp, xSearchIndex: number) {
   const requiredConsecutiveBorderColorCount = 10;
   let consecutiveBorderColorCount = 0;
-  let top;
-  image.scan(xSearchIndex, 0, 1, image.bitmap.height, function find(x, y, index) {
+  let top: number;
+  image.scan(xSearchIndex, 0, 1, image.bitmap.height, (x, y, index) => {
     if (top) {
       return;
     }
 
-    if (isActiveHistoryItemAtIndex(this, index)) {
+    if (isActiveHistoryItemAtIndex(image, index)) {
       consecutiveBorderColorCount++;
     }
     else {
@@ -86,14 +99,14 @@ function findActiveHistoryItemTop(image, xSearchIndex) {
   return top;
 }
 
-function findActiveHistoryItemRight(image, xSearchIndex, top, maximumScanLength) {
-  let right;
-  image.scan(xSearchIndex, top, maximumScanLength, 1, function find(x, y, index) {
+function findActiveHistoryItemRight(image: Jimp, xSearchIndex: number, top: number, maximumScanLength: number): number {
+  let right: number;
+  image.scan(xSearchIndex, top, maximumScanLength, 1, (x, y, index) => {
     if (right) {
       return;
     }
 
-    if (!isActiveHistoryItemAtIndex(this, index)) {
+    if (!isActiveHistoryItemAtIndex(image, index)) {
       right = x - 1;
     }
   });
@@ -101,14 +114,14 @@ function findActiveHistoryItemRight(image, xSearchIndex, top, maximumScanLength)
   return right;
 }
 
-function findActiveHistoryItemBottom(image, right, top) {
-  let bottom;
-  image.scan(right, top, 1, image.bitmap.height - top, function find(x, y, index) {
+function findActiveHistoryItemBottom(image: Jimp, right: number, top: number): number {
+  let bottom: number;
+  image.scan(right, top, 1, image.bitmap.height - top, (x, y, index) => {
     if (bottom) {
       return;
     }
 
-    if (!isActiveHistoryItemAtIndex(this, index)) {
+    if (!isActiveHistoryItemAtIndex(image, index)) {
       bottom = y - 1;
     }
   });
@@ -116,8 +129,8 @@ function findActiveHistoryItemBottom(image, right, top) {
   return bottom;
 }
 
-function findActiveHistoryItemLeft(image, right, top) {
-  let left;
+function findActiveHistoryItemLeft(image: Jimp, right: number, top: number): number {
+  let left: number;
   for (let x = right - 1; x >= 0; --x) {
     const index = image.getPixelIndex(x, top);
     if (!isActiveHistoryItemAtIndex(image, index)) {
@@ -129,7 +142,7 @@ function findActiveHistoryItemLeft(image, right, top) {
   return left;
 }
 
-function isActiveHistoryItemAtIndex(image, index) {
+function isActiveHistoryItemAtIndex(image: Jimp, index: number): boolean {
   const red = image.bitmap.data[index + 0];
   const green = image.bitmap.data[index + 1];
   const blue = image.bitmap.data[index + 2];
@@ -137,22 +150,22 @@ function isActiveHistoryItemAtIndex(image, index) {
   return isActiveHistoryItem(red, green, blue);
 }
 
-function isActiveHistoryItem(r, g, b) {
+function isActiveHistoryItem(r: number, g: number, b: number): boolean {
   return isActiveHistoryItemColor(r) && isActiveHistoryItemColor(g) && isActiveHistoryItemColor(b);
 }
 
-function isActiveHistoryItemColor(color) {
+function isActiveHistoryItemColor(color: number) {
   return isWindowsLightroomActiveHistoryItemColor(color) || isMacLightroomActiveHistoryItemColor(color);
 }
 
-function isWindowsLightroomActiveHistoryItemColor(color) {
-  const min = 177;
-  const max = 179;
+function isWindowsLightroomActiveHistoryItemColor(color: number): boolean {
+  const min: number = 177;
+  const max: number = 179;
   return color >= min && color <= max;
 }
 
-function isMacLightroomActiveHistoryItemColor(color) {
-  const min = 190;
-  const max = 220;
+function isMacLightroomActiveHistoryItemColor(color: number): boolean {
+  const min: number = 190;
+  const max: number = 220;
   return color >= min && color <= max;
 }

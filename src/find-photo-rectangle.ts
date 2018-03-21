@@ -1,7 +1,26 @@
+import * as Jimp from 'jimp';
+import { IRectangle } from './rectangle';
+
 const DIMENSION_INDEX_X = 0;
 const DIMENSION_INDEX_Y = 1;
 
-module.exports = function findPhotoRectangle(image) {
+export class FindPhotoRectangleResult implements IRectangle {
+  constructor(
+    public readonly left: number,
+    public readonly top: number,
+    public readonly width: number,
+    public readonly height: number,
+    public readonly borderLeft: number){
+    }
+}
+
+enum SearchState {
+  noBorderFound,
+  firstBorderFound,
+  withinPhoto,
+}
+
+export function findPhotoRectangle(image: Jimp): FindPhotoRectangleResult {
   const xBorders = findPhotoBorders(image, DIMENSION_INDEX_X);
   const yBorders = findPhotoBorders(image, DIMENSION_INDEX_Y);
 
@@ -9,23 +28,18 @@ module.exports = function findPhotoRectangle(image) {
     return null;
   }
 
-  return {
-    left: xBorders.photoStartIndex,
-    top: yBorders.photoStartIndex,
-    width: xBorders.photoEndIndex - xBorders.photoStartIndex,
-    height: yBorders.photoEndIndex - yBorders.photoStartIndex,
-    borderLeft: xBorders.borderStartIndex,
-  };
-};
+  return new FindPhotoRectangleResult(
+    xBorders.photoStartIndex,
+    yBorders.photoStartIndex,
+    xBorders.photoEndIndex - xBorders.photoStartIndex,
+    yBorders.photoEndIndex - yBorders.photoStartIndex,
+    xBorders.borderStartIndex);
+}
 
-function findPhotoBorders(image, dimensionIndex) {
-  const STATE_NO_BORDER_FOUND = 0;
-  const STATE_FIRST_BORDER_FOUND = 1;
-  const STATE_IN_PHOTO = 2;
-
+function findPhotoBorders(image: Jimp, dimensionIndex: number) {
   const requiredConsecutiveBorderColorCount = 10;
 
-  let state = STATE_NO_BORDER_FOUND;
+  let state = SearchState.noBorderFound;
   let consecutiveBorderColorCount = 0;
 
   let borderStartIndex = null;
@@ -37,14 +51,14 @@ function findPhotoBorders(image, dimensionIndex) {
   const scanW = dimensionIndex === DIMENSION_INDEX_X ? image.bitmap.width : 1;
   const scanH = dimensionIndex === DIMENSION_INDEX_X ? 1 : image.bitmap.height;
 
-  image.scan(scanX, scanY, scanW, scanH, function find(x, y, index) {
+  image.scan(scanX, scanY, scanW, scanH, (x, y, index) => {
     if (photoEndIndex) {
       return;
     }
 
-    const red = this.bitmap.data[index + 0];
-    const green = this.bitmap.data[index + 1];
-    const blue = this.bitmap.data[index + 2];
+    const red = image.bitmap.data[index + 0];
+    const green = image.bitmap.data[index + 1];
+    const blue = image.bitmap.data[index + 2];
 
     if (isPhotoBorderColor(red, green, blue)) {
       consecutiveBorderColorCount++;
@@ -53,15 +67,15 @@ function findPhotoBorders(image, dimensionIndex) {
       consecutiveBorderColorCount = 0;
 
       switch (state) {
-        case STATE_NO_BORDER_FOUND:
+        case SearchState.noBorderFound:
           break;
 
-        case STATE_FIRST_BORDER_FOUND:
-          state = STATE_IN_PHOTO;
+        case SearchState.firstBorderFound:
+          state = SearchState.withinPhoto;
           photoStartIndex = [x, y];
           break;
 
-        case STATE_IN_PHOTO:
+        case SearchState.withinPhoto:
           break;
 
         default:
@@ -71,16 +85,20 @@ function findPhotoBorders(image, dimensionIndex) {
 
     if (consecutiveBorderColorCount === requiredConsecutiveBorderColorCount) {
       switch (state) {
-        case STATE_NO_BORDER_FOUND:
-          borderStartIndex = [(x - requiredConsecutiveBorderColorCount) + 1, (y - requiredConsecutiveBorderColorCount) + 1];
-          state = STATE_FIRST_BORDER_FOUND;
+        case SearchState.noBorderFound:
+          borderStartIndex = [
+            (x - requiredConsecutiveBorderColorCount) + 1,
+            (y - requiredConsecutiveBorderColorCount) + 1];
+          state = SearchState.firstBorderFound;
           break;
 
-        case STATE_FIRST_BORDER_FOUND:
+        case SearchState.firstBorderFound:
           break;
 
-        case STATE_IN_PHOTO:
-          photoEndIndex = [(x - requiredConsecutiveBorderColorCount) + 1, (y - requiredConsecutiveBorderColorCount) + 1];
+        case SearchState.withinPhoto:
+          photoEndIndex = [
+            (x - requiredConsecutiveBorderColorCount) + 1,
+            (y - requiredConsecutiveBorderColorCount) + 1];
           break;
 
         default:
@@ -109,7 +127,7 @@ function findPhotoBorders(image, dimensionIndex) {
   };
 }
 
-function isPhotoBorderColor(r, g, b) {
+function isPhotoBorderColor(r: number, g: number, b: number) {
   return isBorderColor(r) && isBorderColor(g) && isBorderColor(b);
 }
 
@@ -117,13 +135,13 @@ function isBorderColor(color) {
   return isWindowsLightroomBorderColor(color) || isMacLightroomBorderColor(color);
 }
 
-function isWindowsLightroomBorderColor(color) {
+function isWindowsLightroomBorderColor(color: number) {
   const min = 125;
   const max = 129;
   return color >= min && color <= max;
 }
 
-function isMacLightroomBorderColor(color) {
+function isMacLightroomBorderColor(color: number) {
   const min = 135;
   const max = 150;
   return color >= min && color <= max;

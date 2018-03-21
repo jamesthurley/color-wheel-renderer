@@ -1,8 +1,11 @@
-const getScreenshotAsync = require('./get-screenshot.js');
-const findPhotoRectangle = require('./find-photo-rectangle.js');
-const findActiveHistoryItemRectangle = require('./find-active-history-item-rectangle.js');
+import * as Jimp from 'jimp';
+import { findActiveHistoryItemRectangle } from './find-active-history-item-rectangle';
+import { findPhotoRectangle, FindPhotoRectangleResult } from './find-photo-rectangle';
+import { getScreenshotAsync } from './get-screenshot';
+import { IRectangle } from './rectangle';
+import { Snapshot } from './snapshot';
 
-module.exports = async function getSnapshot() {
+export async function getSnapshot(): Promise<Snapshot> {
   console.log('Taking screenshot...');
   const screenshot = await getScreenshotAsync();
 
@@ -14,7 +17,9 @@ module.exports = async function getSnapshot() {
     return null;
   }
 
-  console.log(`Found photo at ${photoRectangle.left},${photoRectangle.top} with dimensions ${photoRectangle.width}x${photoRectangle.height}.`);
+  console.log(
+    `Found photo at ${photoRectangle.left},${photoRectangle.top}`
+    + ` with dimensions ${photoRectangle.width}x${photoRectangle.height}.`);
   console.log(`Photo border starts at index ${photoRectangle.borderLeft}.`);
 
   const photo = screenshot
@@ -45,10 +50,9 @@ module.exports = async function getSnapshot() {
       historyItemRectangle.height,
     );
 
-  return {
+  return new Snapshot(
     photoRectangle,
     photo,
     historyItemRectangle,
-    historyItem,
-  };
-};
+    historyItem);
+}
