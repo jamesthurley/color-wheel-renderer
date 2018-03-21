@@ -42,9 +42,9 @@ function findPhotoBorders(image: Jimp, dimensionIndex: number) {
   let state = SearchState.noBorderFound;
   let consecutiveBorderColorCount = 0;
 
-  let borderStartIndex = null;
-  let photoStartIndex = null;
-  let photoEndIndex = null;
+  let borderStartIndex: ReadonlyArray<number> = null;
+  let photoStartIndex: ReadonlyArray<number> = null;
+  let photoEndIndex: ReadonlyArray<number> = null;
 
   const scanX = dimensionIndex === DIMENSION_INDEX_X ? 0 : image.bitmap.width / 2;
   const scanY = dimensionIndex === DIMENSION_INDEX_X ? image.bitmap.height / 2 : 0;
@@ -131,7 +131,7 @@ function isPhotoBorderColor(r: number, g: number, b: number) {
   return isBorderColor(r) && isBorderColor(g) && isBorderColor(b);
 }
 
-function isBorderColor(color) {
+function isBorderColor(color: number) {
   return isWindowsLightroomBorderColor(color) || isMacLightroomBorderColor(color);
 }
 

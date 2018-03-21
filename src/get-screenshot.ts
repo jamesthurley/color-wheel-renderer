@@ -12,7 +12,7 @@ export async function getScreenshotAsync(): Promise<Jimp> {
 
 async function takeScreenshotAsync(name: string): Promise<void> {
   return new Promise<void>((resolve, reject) => {
-    screenshot(`${name}.png`, (error) => {
+    screenshot(`${name}.png`, (error: Error) => {
       if (error) { reject(error); }
       else { resolve(); }
     });
