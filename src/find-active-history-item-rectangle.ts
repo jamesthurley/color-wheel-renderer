@@ -1,5 +1,6 @@
 import * as Jimp from 'jimp';
 import { IRectangle, Rectangle } from './rectangle';
+import { Log } from './log';
 
 // We'll try and support retina/high density displays by trying larger
 // offsets in sequence.
@@ -14,7 +15,7 @@ let detectedPixelRatio: number = 0;
 
 export function findActiveHistoryItemRectangle(image: Jimp, borderLeftIndex: number): IRectangle {
   if (detectedPixelRatio) {
-    // console.log(`Finding history item for ${detectedPixelRatio}x pixel ratio.`);
+    // Log.info(`Finding history item for ${detectedPixelRatio}x pixel ratio.`);
     return findActiveHistoryItemRectangleForOffset(
       image,
       borderLeftIndex,
@@ -22,7 +23,7 @@ export function findActiveHistoryItemRectangle(image: Jimp, borderLeftIndex: num
   }
 
   for (const multiplier of pixelRatioMultipliers) {
-    console.log(`Attempting to find history item for ${multiplier}x pixel ratio.`);
+    Log.info(`Attempting to find history item for ${multiplier}x pixel ratio.`);
     const result = findActiveHistoryItemRectangleForOffset(
       image,
       borderLeftIndex,
@@ -46,25 +47,25 @@ function findActiveHistoryItemRectangleForOffset(
 
   const top = findActiveHistoryItemTop(image, xSearchIndex);
   if (!top) {
-    console.log('Active history item top border not found.');
+    Log.error('Active history item top border not found.');
     return null;
   }
 
   const right = findActiveHistoryItemRight(image, xSearchIndex, top, borderLeftIndexOffset);
   if (!right) {
-    console.log('Active history item right border not found.');
+    Log.error('Active history item right border not found.');
     return null;
   }
 
   const bottom = findActiveHistoryItemBottom(image, right, top);
   if (!bottom) {
-    console.log('Active history item bottom border not found.');
+    Log.error('Active history item bottom border not found.');
     return null;
   }
 
   const left = findActiveHistoryItemLeft(image, right, top);
   if (!left) {
-    console.log('Active history item left border not found.');
+    Log.error('Active history item left border not found.');
     return null;
   }
 

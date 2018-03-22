@@ -4,12 +4,13 @@ import { getSnapshot } from './get-snapshot';
 import { jsonEquals } from './json-equals';
 import { sleep } from './sleep';
 import { Snapshot } from './snapshot';
+import { Log } from './log';
 
 const millisecondsBetweenChecks = 5000;
 const maximumMillisecondsBeforeContinue = 30000;
 
 export async function getNextSnapshot(snapshot: Snapshot) {
-  console.log('Waiting for active history item to change...');
+  Log.info('Waiting for active history item to change...');
 
   let currentMilliseconds = 0;
 
@@ -19,7 +20,7 @@ export async function getNextSnapshot(snapshot: Snapshot) {
     await sleep(millisecondsBetweenChecks);
     currentMilliseconds += millisecondsBetweenChecks;
 
-    console.log('.');
+    Log.info('.');
     const screenshot = await getScreenshotAsync();
     const activeHistoryItemRectangle = findActiveHistoryItemRectangle(screenshot, snapshot.photoRectangle.borderLeft);
 

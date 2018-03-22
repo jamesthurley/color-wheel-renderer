@@ -1,5 +1,6 @@
 import * as Jimp from 'jimp';
 import { IRectangle } from './rectangle';
+import { Log } from './log';
 
 const DIMENSION_INDEX_X = 0;
 const DIMENSION_INDEX_Y = 1;
@@ -108,15 +109,15 @@ function findPhotoBorders(image: Jimp, dimensionIndex: number) {
   });
 
   if (!borderStartIndex) {
-    console.log('Photo border not found.');
+    Log.error('Photo border not found.');
     return null;
   }
   else if (!photoStartIndex) {
-    console.log('Photo start position not found.');
+    Log.error('Photo start position not found.');
     return null;
   }
   else if (!photoEndIndex) {
-    console.log('Photo end position not found.');
+    Log.error('Photo end position not found.');
     return null;
   }
 

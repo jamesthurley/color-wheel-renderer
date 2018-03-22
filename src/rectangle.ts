@@ -1,3 +1,11 @@
+
+export interface IRectangle {
+  readonly left: number;
+  readonly top: number;
+  readonly width: number;
+  readonly height: number;
+}
+
 export class Rectangle implements IRectangle {
   constructor(
     public readonly left: number,
@@ -5,11 +13,4 @@ export class Rectangle implements IRectangle {
     public readonly width: number,
     public readonly height: number) {
     }
-}
-
-export interface IRectangle {
-  readonly left: number;
-  readonly top: number;
-  readonly width: number;
-  readonly height: number;
 }

@@ -11,8 +11,10 @@ export class Log {
     console.warn(text);
   }
 
-  public static error(text: string, error: Error) {
+  public static error(text: string, error?: Error) {
     console.error(text);
-    console.error(error);
+    if (error) {
+      console.error(error);
+    }
   }
 }

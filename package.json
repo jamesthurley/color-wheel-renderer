@@ -4,10 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "ts-node src/index.ts",
+    "start": "ts-node src/index.ts -- run",
     "tsc": "tsc",
     "tslint": "tslint",
-    "inspect": "node --inspect dist/",
     "test": "test"
   },
   "author": "James Thurley",
