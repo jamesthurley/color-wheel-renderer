@@ -2,7 +2,7 @@ import { findActiveHistoryItemRectangle } from './find-active-history-item-recta
 import { findPhotoRectangle } from './find-photo-rectangle';
 import { getScreenshotAsync } from './get-screenshot';
 import { Snapshot } from './snapshot';
-import { Log } from './log';
+import { Log } from '../log';
 
 export async function getSnapshot(): Promise<Snapshot> {
   Log.info('Taking screenshot...');
@@ -50,6 +50,7 @@ export async function getSnapshot(): Promise<Snapshot> {
     );
 
   return new Snapshot(
+    screenshot,
     photoRectangle,
     photo,
     historyItemRectangle,

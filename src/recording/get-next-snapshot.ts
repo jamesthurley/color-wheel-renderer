@@ -1,10 +1,10 @@
 import { findActiveHistoryItemRectangle } from './find-active-history-item-rectangle';
 import { getScreenshotAsync } from './get-screenshot';
 import { getSnapshot } from './get-snapshot';
-import { jsonEquals } from './json-equals';
-import { sleep } from './sleep';
+import { jsonEquals } from '../json-equals';
+import { sleep } from '../sleep';
 import { Snapshot } from './snapshot';
-import { Log } from './log';
+import { Log } from '../log';
 
 const millisecondsBetweenChecks = 5000;
 const maximumMillisecondsBeforeContinue = 30000;

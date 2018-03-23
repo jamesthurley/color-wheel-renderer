@@ -1,6 +1,6 @@
 import * as Jimp from 'jimp';
-import { IRectangle } from './rectangle';
-import { Log } from './log';
+import { IRectangle } from '../rectangle';
+import { Log } from '../log';
 
 const DIMENSION_INDEX_X = 0;
 const DIMENSION_INDEX_Y = 1;

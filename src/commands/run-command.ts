@@ -1,5 +1,5 @@
-import { getSnapshot } from '../get-snapshot';
-import { getNextSnapshot } from '../get-next-snapshot';
+import { getSnapshot } from '../recording/get-snapshot';
+import { getNextSnapshot } from '../recording/get-next-snapshot';
 import { Log } from '../log';
 
 export async function runCommand() {

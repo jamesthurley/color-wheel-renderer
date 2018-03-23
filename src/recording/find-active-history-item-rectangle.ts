@@ -1,6 +1,6 @@
 import * as Jimp from 'jimp';
-import { IRectangle, Rectangle } from './rectangle';
-import { Log } from './log';
+import { IRectangle, Rectangle } from '../rectangle';
+import { Log } from '../log';
 
 // We'll try and support retina/high density displays by trying larger
 // offsets in sequence.
