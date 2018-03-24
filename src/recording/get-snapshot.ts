@@ -1,15 +1,14 @@
-import { findActiveHistoryItemRectangle } from './find-active-history-item-rectangle';
-import { findPhotoRectangle } from './find-photo-rectangle';
 import { getScreenshotAsync } from './get-screenshot';
 import { Snapshot } from './snapshot';
-import { Log } from '../log';
+import { Log } from '../common/log';
+import { Options } from '../options';
 
 export async function getSnapshot(): Promise<Snapshot> {
   Log.info('Taking screenshot...');
   const screenshot = await getScreenshotAsync();
 
   Log.info('Finding lightroom image...');
-  const photoRectangle = await findPhotoRectangle(screenshot);
+  const photoRectangle = await Options.snapshotSource.findPhotoRectangle(screenshot);
 
   if (!photoRectangle) {
     Log.error('Failed to find photo.');
@@ -19,7 +18,6 @@ export async function getSnapshot(): Promise<Snapshot> {
   Log.info(
     `Found photo at ${photoRectangle.left},${photoRectangle.top}`
     + ` with dimensions ${photoRectangle.width}x${photoRectangle.height}.`);
-  Log.info(`Photo border starts at index ${photoRectangle.borderLeft}.`);
 
   const photo = screenshot
     .clone()
@@ -30,7 +28,7 @@ export async function getSnapshot(): Promise<Snapshot> {
       photoRectangle.height,
     );
 
-  const historyItemRectangle = findActiveHistoryItemRectangle(screenshot, photoRectangle.borderLeft);
+  const historyItemRectangle = Options.snapshotSource.findActiveHistoryItemRectangle(screenshot);
 
   if (!historyItemRectangle) {
     Log.error('Failed to find active history item.');

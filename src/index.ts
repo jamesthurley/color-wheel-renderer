@@ -1,81 +1,89 @@
 import * as program from 'commander';
-import { Options, LogLevel } from './options';
-import { Log } from './log';
+import { Log } from './common/log';
 import { runCommand } from './commands/run-command';
 import { recordCommand } from './commands/record-command';
 import { testCommand } from './commands/test-command';
-import { playCommand } from './commands/play-command';
-import { createFolders } from './create-folders';
+import { renderCommand } from './commands/render-command';
+import { processOptions } from './process-options';
+import { SnapshotSourceFactoryMap } from './snapshot-sources/snapshot-source-factory-map';
+
+let editorsHelp = '';
+for(let editorKey in SnapshotSourceFactoryMap){
+  if(editorsHelp.length){
+    editorsHelp += ', ';
+  }
+  editorsHelp += editorKey;
+}
+editorsHelp = 'Editor can be one of [' + editorsHelp + '].';
 
 program
   .version('0.1.0', '-v, --version');
 
-program
-  .command('run [program]')
-  .description('Records a session and generates a video.')
-  .option('--verbose [path]', 'Enable verbose logging.')
-  .option('-o --output [path]', 'Output folder.')
-  .action((p, options) => {
-    executeAction(options, runCommand);
+const run = program
+  .command('run <editor>')
+  .description(`Records a session and generates a video. ${editorsHelp}`)
+  .action((editor: string, options: any) => {
+    executeAction(editor, options, runCommand);
   });
+outputOption(run);
+verboseOption(run);
 
-program
-  .command('record [program]')
-  .description('Record a session, and keep intermediate files.')
-  .option('--verbose [path]', 'Enable verbose logging.')
-  .option('-o --output [path]', 'Output folder.')
-  .action((p, options) => {
-    executeAction(options, recordCommand);
-  });
 
-program
-  .command('test [program]')
-  .description('Test a previously recorded session to see if the results have changed.')
-  .option('--verbose', 'Enable verbose logging.')
-  .option('-i --input [path]', 'Recording input folder where session should be read from.')
-  .option('-o --output [path]', 'Folder where test results written to.')
-  .action((p, options) => {
-    executeAction(options, testCommand);
+const record = program
+  .command('record <editor>')
+  .description(`Record a session, and keep intermediate files. ${editorsHelp}`)
+  .action((editor: string, options: any) => {
+    executeAction(editor, options, recordCommand);
   });
+outputOption(record);
+verboseOption(record);
 
-program
-  .command('play')
-  .description('Play a previously recorded session and generates a video.')
-  .option('--verbose', 'Enable verbose logging.')
-  .option('-i --input [path]', 'Recording input folder where session should be read from.')
-  .option('-o --output [path]', 'Folder where test results written to.')
-  .action((options) => {
-    executeAction(options, playCommand);
+const render = program
+  .command('render')
+  .description('Render a previously recorded session to a video.')
+  .action((options: any) => {
+    executeAction(null, options, renderCommand);
   });
+inputOption(render);
+outputOption(render);
+verboseOption(render);
+
+const test = program
+  .command('test <editor>')
+  .description(`Test a previously recorded session to see if the results have changed. ${editorsHelp}`)
+  .action((editor: string, options: any) => {
+    executeAction(editor, options, testCommand);
+  });
+inputOption(test);
+outputOption(test);
+verboseOption(test);
 
 program.parse(process.argv);
 
-function executeAction(options: any, action: () => Promise<void>){
-  handleOptions(options);
-  action().then(
-    () => Log.info('Done.'),
-    (error) => Log.error('There was an unexpected error.', error),
-  );
+function verboseOption(command: program.Command): program.Command {
+  return command.option('--verbose', 'Enable verbose logging.');
 }
 
-function handleOptions(options: any){
-  if (options.verbose) {
-    Options.logLevel = LogLevel.debug;
-  }
-  if (options.input) {
-    Options.inputFolder = normalizeFolder(options.input);
-    createFolders(Options.inputFolder);
-  }
-  if (options.output) {
-    Options.outputFolder = normalizeFolder(options.output);
-    createFolders(Options.outputFolder);
-  }
+function inputOption(command: program.Command): program.Command {
+  return command.option('-i --input <path>', 'Recording input folder where session should be read from.');
 }
 
-function normalizeFolder(path: string){
-  if (!path.endsWith('/') && !path.endsWith('\\')) {
-    return path + '/';
-  }
+function outputOption(command: program.Command): program.Command {
+  return command.option('-o --output <path>', 'Folder where test results written to.');
+}
 
-  return path;
+function executeAction(editor: string, options: any, action: () => Promise<void>) {
+  if (processOptions(editor, options)) {
+    action().then(
+      () => Log.info('Done.'),
+      (error: any) => {
+        if(error.isDisplayable) {
+          Log.error(error.message)
+        }
+        else{
+          Log.error('There was an unexpected error.', error);
+        }
+      },
+    );
+  }
 }

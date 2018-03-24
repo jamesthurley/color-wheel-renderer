@@ -1,11 +1,10 @@
 import * as Jimp from 'jimp';
-import { FindPhotoRectangleResult } from './find-photo-rectangle';
-import { IRectangle } from '../rectangle';
+import { IRectangle } from '../common/rectangle';
 
 export class Snapshot{
   constructor(
     public readonly screenshot: Jimp,
-    public readonly photoRectangle: FindPhotoRectangleResult,
+    public readonly photoRectangle: IRectangle,
     public readonly photo: Jimp,
     public readonly historyItemRectangle: IRectangle,
     public readonly historyItem: Jimp) {

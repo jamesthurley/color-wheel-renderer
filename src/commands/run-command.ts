@@ -1,15 +1,7 @@
-import { getSnapshot } from '../recording/get-snapshot';
-import { getNextSnapshot } from '../recording/get-next-snapshot';
-import { Log } from '../log';
+import { recordCommand } from './record-command';
+import { renderCommand } from './render-command';
 
 export async function runCommand() {
-  const snapshots = [];
-
-  let snapshot = await getSnapshot();
-  while (snapshot) {
-    snapshots.push(snapshot);
-    snapshot = await getNextSnapshot(snapshot);
-  }
-
-  Log.info(`Found ${snapshots.length} snapshots.`);
+  recordCommand();
+  renderCommand();
 }
