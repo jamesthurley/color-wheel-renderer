@@ -8,7 +8,7 @@ export async function getSnapshot(): Promise<Snapshot> {
   const screenshot = await getScreenshotAsync();
 
   Log.info('Finding lightroom image...');
-  const photoRectangle = await Options.snapshotSource.findPhotoRectangle(screenshot);
+  const photoRectangle = await Options.editor.findPhotoRectangle(screenshot);
 
   if (!photoRectangle) {
     Log.error('Failed to find photo.');
@@ -28,7 +28,7 @@ export async function getSnapshot(): Promise<Snapshot> {
       photoRectangle.height,
     );
 
-  const historyItemRectangle = Options.snapshotSource.findActiveHistoryItemRectangle(screenshot);
+  const historyItemRectangle = Options.editor.findActiveHistoryItemRectangle(screenshot);
 
   if (!historyItemRectangle) {
     Log.error('Failed to find active history item.');

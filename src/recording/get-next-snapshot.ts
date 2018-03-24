@@ -22,7 +22,7 @@ export async function getNextSnapshot(snapshot: Snapshot) {
 
     Log.info('.');
     const screenshot = await getScreenshotAsync();
-    const activeHistoryItemRectangle = Options.snapshotSource.findActiveHistoryItemRectangle(screenshot);
+    const activeHistoryItemRectangle = Options.editor.findActiveHistoryItemRectangle(screenshot);
 
     foundNewHistoryItem = activeHistoryItemRectangle
       && !jsonEquals(activeHistoryItemRectangle, lastActiveHistoryItemRectangle);

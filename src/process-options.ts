@@ -1,6 +1,6 @@
 import { Options, LogLevel } from "./options";
 import { normalizeFolder } from "./common/normalize-folder";
-import { SnapshotSourceFactoryMap } from "./snapshot-sources/snapshot-source-factory-map";
+import { EditorFactoryMap } from "./editors/editor-factory-map";
 import { Log } from "./common/log";
 
 export function processOptions(editor: string, input: any): boolean {
@@ -22,13 +22,13 @@ export function processOptions(editor: string, input: any): boolean {
   }
 
   if (editor) {
-    const factory = SnapshotSourceFactoryMap.get(editor);
+    const factory = EditorFactoryMap.get(editor);
     if(!factory){
       Log.error('Unknown editor: ' + editor);
       return false;
     }
 
-    Options.snapshotSource = factory();
+    Options.editor = factory();
   }
 
   Log.debug('Options: ' + JSON.stringify(Options, undefined, 2));

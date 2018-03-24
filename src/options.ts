@@ -1,4 +1,4 @@
-import { SnapshotSourceBase } from './snapshot-sources/snapshot-source-base';
+import { EditorBase } from './editors/editor-base';
 
 export enum LogLevel {
   debug = 0,
@@ -9,7 +9,7 @@ class OptionsImplementation {
   public logLevel: LogLevel = LogLevel.info;
   public inputFolder: string = '.';
   public outputFolder: string = '.';
-  public snapshotSource: SnapshotSourceBase;
+  public editor: EditorBase;
 }
 
 export const Options: OptionsImplementation = new OptionsImplementation();

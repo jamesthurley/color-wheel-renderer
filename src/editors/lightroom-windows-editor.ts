@@ -1,16 +1,16 @@
-import { LightroomSource } from './lightroom-source';
+import { LightroomEditor } from './lightroom-editor';
 
-export const LightroomMacSourceKey = 'lightroom-mac';
+export const LightroomWindowsEditorKey = 'lightroom-windows';
 
-export class LightroomMacSource extends LightroomSource {
+export class LightroomWindowsEditor extends LightroomEditor {
 
   protected isPhotoBorderColor(r: number, g: number, b: number): boolean {
     return this.isPhotoBorderGrayscale(r) && this.isPhotoBorderGrayscale(g) && this.isPhotoBorderGrayscale(b);
   }
 
   private isPhotoBorderGrayscale(color: number) {
-    const min = 135;
-    const max = 150;
+    const min = 125;
+    const max = 129;
     return color >= min && color <= max;
   }
 
@@ -20,8 +20,8 @@ export class LightroomMacSource extends LightroomSource {
   }
 
   private isActiveHistoryItemGrayscale(color: number) {
-    const min: number = 190;
-    const max: number = 220;
+    const min: number = 177;
+    const max: number = 179;
     return color >= min && color <= max;
   }
 }

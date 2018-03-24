@@ -1,4 +1,4 @@
-import { SnapshotSourceBase } from './snapshot-source-base';
+import { EditorBase } from './editor-base';
 import * as Jimp from 'jimp';
 import { IRectangle, Rectangle } from '../common/rectangle';
 import { Log } from '../common/log';
@@ -24,7 +24,7 @@ enum BorderSearchState {
   withinPhoto,
 }
 
-export abstract class LightroomSource extends SnapshotSourceBase {
+export abstract class LightroomEditor extends EditorBase {
 
   private photoBorderLeftIndex: number;
 

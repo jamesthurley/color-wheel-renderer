@@ -5,10 +5,10 @@ import { recordCommand } from './commands/record-command';
 import { testCommand } from './commands/test-command';
 import { renderCommand } from './commands/render-command';
 import { processOptions } from './process-options';
-import { SnapshotSourceFactoryMap } from './snapshot-sources/snapshot-source-factory-map';
+import { EditorFactoryMap } from './editors/editor-factory-map';
 
 let editorsHelp = '';
-for(let editorKey in SnapshotSourceFactoryMap){
+for(let editorKey in EditorFactoryMap){
   if(editorsHelp.length){
     editorsHelp += ', ';
   }
