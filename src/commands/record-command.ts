@@ -18,7 +18,7 @@ export class RecordCommandFactory implements ICommandFactory {
       new DelayedLiveScreenshotProducer(
         options.millisecondsBetweenScreenshots,
         new LiveScreenshotProducer()),
-      options.editor);
+      options.definedEditor);
 
     const snapshotPersister: ISnapshotPersister = new FilesystemSnapshotPersister(
       options.outputFolder);

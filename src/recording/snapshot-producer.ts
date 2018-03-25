@@ -1,6 +1,6 @@
 import { Snapshot } from './snapshot';
 
 export interface ISnapshotProducer {
-  getSnapshot(): Promise<Snapshot>;
-  getNextSnapshot(snapshot: Snapshot): Promise<Snapshot>;
+  getSnapshot(): Promise<Snapshot | undefined>;
+  getNextSnapshot(snapshot: Snapshot): Promise<Snapshot | undefined>;
 }

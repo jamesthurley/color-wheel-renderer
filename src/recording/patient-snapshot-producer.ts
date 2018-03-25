@@ -14,7 +14,7 @@ export class PatientSnapshotProducer implements ISnapshotProducer {
     private readonly editor: IEditor){
   }
 
-  public async getSnapshot(): Promise<Snapshot> {
+  public async getSnapshot(): Promise<Snapshot | undefined> {
     Log.info('Taking screenshot...');
     const screenshot = await this.screenshotProducer.getScreenshot();
 
@@ -23,7 +23,7 @@ export class PatientSnapshotProducer implements ISnapshotProducer {
 
     if (!photoRectangle) {
       Log.error('Failed to find photo.');
-      return null;
+      return undefined;
     }
 
     Log.info(
@@ -43,7 +43,7 @@ export class PatientSnapshotProducer implements ISnapshotProducer {
 
     if (!historyItemRectangle) {
       Log.error('Failed to find active history item.');
-      return null;
+      return undefined;
     }
 
     Log.info(`Found history at ${historyItemRectangle.left},${historyItemRectangle.top}`
@@ -67,7 +67,7 @@ export class PatientSnapshotProducer implements ISnapshotProducer {
   }
 
 
-  public async getNextSnapshot(snapshot: Snapshot) {
+  public async getNextSnapshot(snapshot: Snapshot): Promise<Snapshot | undefined> {
     Log.info('Waiting for active history item to change...');
 
     const start = getMilliseconds();
@@ -81,12 +81,12 @@ export class PatientSnapshotProducer implements ISnapshotProducer {
       const activeHistoryItemRectangle = this.editor.findActiveHistoryItemRectangle(screenshot);
 
       ellapsed = getMilliseconds() - start;
-      foundNewHistoryItem = activeHistoryItemRectangle
+      foundNewHistoryItem = !!activeHistoryItemRectangle
         && !jsonEquals(activeHistoryItemRectangle, lastActiveHistoryItemRectangle);
     }
     while (ellapsed < this.maximumMillisecondsBetweenSnapshots && !foundNewHistoryItem);
 
-    return foundNewHistoryItem ? this.getSnapshot() : null;
+    return foundNewHistoryItem ? this.getSnapshot() : undefined;
   }
 
 }

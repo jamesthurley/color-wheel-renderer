@@ -3,7 +3,7 @@ import { normalizeFolder } from "./common/normalize-folder";
 import { EditorFactoryMap } from "./editors/editor-factory-map";
 import { Log } from "./common/log";
 
-export function processOptions(editor: string, input: any): Options | null {
+export function processOptions(editor: string | undefined, input: any): Options | undefined {
   const options = {...Options.default()};
 
   if (input.verbose) {
@@ -27,7 +27,7 @@ export function processOptions(editor: string, input: any): Options | null {
     const factory = EditorFactoryMap.get(editor);
     if(!factory){
       Log.error('Unknown editor: ' + editor);
-      return null;
+      return undefined;
     }
 
     options.editor = factory();

@@ -3,6 +3,7 @@ import * as Jimp from 'jimp';
 import { IRectangle, Rectangle } from '../common/rectangle';
 import { Log } from '../common/log';
 import { DisplayableError } from '../common/displayable-error';
+import { isUndefined } from 'util';
 
 // We'll try and support retina/high density displays by trying larger
 // offsets in sequence.
@@ -28,12 +29,12 @@ export abstract class LightroomEditor extends EditorBase {
 
   private photoBorderLeftIndex: number;
 
-  public findPhotoRectangle(image: Jimp): IRectangle | null {
+  public findPhotoRectangle(image: Jimp): IRectangle | undefined {
     const xBorders = this.findPhotoBorders(image, DIMENSION_INDEX_X);
     const yBorders = this.findPhotoBorders(image, DIMENSION_INDEX_Y);
 
     if (!xBorders || !yBorders) {
-      return null;
+      return undefined;
     }
 
     this.photoBorderLeftIndex = xBorders.borderStartIndex;
@@ -45,7 +46,7 @@ export abstract class LightroomEditor extends EditorBase {
       yBorders.photoEndIndex - yBorders.photoStartIndex);
   }
 
-  public findActiveHistoryItemRectangle(image: Jimp): IRectangle | null {
+  public findActiveHistoryItemRectangle(image: Jimp): IRectangle | undefined {
 
     if(!this.photoBorderLeftIndex){
       throw new DisplayableError('Photo left border position not set. Ensure a photo has been located.');
@@ -72,7 +73,7 @@ export abstract class LightroomEditor extends EditorBase {
       }
     }
 
-    return null;
+    return undefined;
   }
 
   protected abstract isPhotoBorderColor(pixel: Pixel): boolean;
@@ -84,9 +85,9 @@ export abstract class LightroomEditor extends EditorBase {
     let state = BorderSearchState.noBorderFound;
     let consecutiveBorderColorCount = 0;
 
-    let borderStartIndex: ReadonlyArray<number> = null;
-    let photoStartIndex: ReadonlyArray<number> = null;
-    let photoEndIndex: ReadonlyArray<number> = null;
+    let borderStartIndex: ReadonlyArray<number> | undefined;
+    let photoStartIndex: ReadonlyArray<number> | undefined;
+    let photoEndIndex: ReadonlyArray<number> | undefined;
 
     const scanX = dimensionIndex === DIMENSION_INDEX_X ? 0 : image.bitmap.width / 2;
     const scanY = dimensionIndex === DIMENSION_INDEX_X ? image.bitmap.height / 2 : 0;
@@ -149,15 +150,15 @@ export abstract class LightroomEditor extends EditorBase {
 
     if (!borderStartIndex) {
       Log.error('Photo border not found.');
-      return null;
+      return undefined;
     }
     else if (!photoStartIndex) {
       Log.error('Photo start position not found.');
-      return null;
+      return undefined;
     }
     else if (!photoEndIndex) {
       Log.error('Photo end position not found.');
-      return null;
+      return undefined;
     }
 
     return {
@@ -170,32 +171,32 @@ export abstract class LightroomEditor extends EditorBase {
   private findActiveHistoryItemRectangleForOffset(
     image: Jimp,
     borderLeftIndex: number,
-    borderLeftIndexOffset: number): IRectangle {
+    borderLeftIndexOffset: number): IRectangle | undefined {
 
     const xSearchIndex = borderLeftIndex - borderLeftIndexOffset;
 
     const top = this.findActiveHistoryItemTop(image, xSearchIndex);
-    if (!top) {
+    if (isUndefined(top)) {
       Log.error('Active history item top border not found.');
-      return null;
+      return undefined;
     }
 
     const right = this.findActiveHistoryItemRight(image, xSearchIndex, top, borderLeftIndexOffset);
-    if (!right) {
+    if (isUndefined(right)) {
       Log.error('Active history item right border not found.');
-      return null;
+      return undefined;
     }
 
     const bottom = this.findActiveHistoryItemBottom(image, right, top);
-    if (!bottom) {
+    if (isUndefined(bottom)) {
       Log.error('Active history item bottom border not found.');
-      return null;
+      return undefined;
     }
 
     const left = this.findActiveHistoryItemLeft(image, right, top);
-    if (!left) {
+    if (isUndefined(left)) {
       Log.error('Active history item left border not found.');
-      return null;
+      return undefined;
     }
 
     return new Rectangle(
@@ -205,10 +206,10 @@ export abstract class LightroomEditor extends EditorBase {
       bottom - top);
   }
 
-  private findActiveHistoryItemTop(image: Jimp, xSearchIndex: number) {
+  private findActiveHistoryItemTop(image: Jimp, xSearchIndex: number): number | undefined {
     const requiredConsecutiveBorderColorCount = 10;
     let consecutiveBorderColorCount = 0;
-    let top: number;
+    let top: number | undefined;
     image.scan(xSearchIndex, 0, 1, image.bitmap.height, (x, y, index) => {
       if (top) {
         return;
@@ -229,8 +230,8 @@ export abstract class LightroomEditor extends EditorBase {
     return top;
   }
 
-  private findActiveHistoryItemRight(image: Jimp, xSearchIndex: number, top: number, maximumScanLength: number): number {
-    let right: number;
+  private findActiveHistoryItemRight(image: Jimp, xSearchIndex: number, top: number, maximumScanLength: number): number | undefined {
+    let right: number | undefined;
     image.scan(xSearchIndex, top, maximumScanLength, 1, (x, y, index) => {
       if (right) {
         return;
@@ -244,8 +245,8 @@ export abstract class LightroomEditor extends EditorBase {
     return right;
   }
 
-  private findActiveHistoryItemBottom(image: Jimp, right: number, top: number): number {
-    let bottom: number;
+  private findActiveHistoryItemBottom(image: Jimp, right: number, top: number): number | undefined {
+    let bottom: number | undefined;
     image.scan(right, top, 1, image.bitmap.height - top, (x, y, index) => {
       if (bottom) {
         return;
@@ -259,8 +260,8 @@ export abstract class LightroomEditor extends EditorBase {
     return bottom;
   }
 
-  private findActiveHistoryItemLeft(image: Jimp, right: number, top: number): number {
-    let left: number;
+  private findActiveHistoryItemLeft(image: Jimp, right: number, top: number): number | undefined {
+    let left: number | undefined;
     for (let x = right - 1; x >= 0; --x) {
       const index = image.getPixelIndex(x, top);
       if (!this.isActiveHistoryItemAtIndex(image, index)) {

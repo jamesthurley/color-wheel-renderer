@@ -8,7 +8,7 @@ import { RenderCommandFactory } from './commands/render-command';
 import { TestCommandFactory } from './commands/test-command';
 import { RecordCommandFactory } from './commands/record-command';
 
-let editorsHelp = '';
+let editorsHelp: string = '';
 for(let editorKey in EditorFactoryMap){
   if(editorsHelp.length){
     editorsHelp += ', ';
@@ -43,7 +43,7 @@ const render = program
   .command('render')
   .description('Render a previously recorded session to a video.')
   .action((options: any) => {
-    executeAction(null, options, new RenderCommandFactory());
+    executeAction(undefined, options, new RenderCommandFactory());
   });
 inputOption(render);
 outputOption(render);
@@ -73,7 +73,7 @@ function outputOption(command: program.Command): program.Command {
   return command.option('-o --output <path>', 'Folder where test results written to.');
 }
 
-function executeAction(editor: string, commandLineOptions: any, commandFactory: ICommandFactory) {
+function executeAction(editor: string | undefined, commandLineOptions: any, commandFactory: ICommandFactory) {
   const options = processOptions(editor, commandLineOptions);
   if (options) {
     const command = commandFactory.create(options);

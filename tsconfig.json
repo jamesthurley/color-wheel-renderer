@@ -5,7 +5,9 @@
     "outDir": "dist",
     "sourceMap": true,
     "noImplicitAny": true,
-    "noUnusedLocals": true
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "strictNullChecks": true
   },
   "include": [
     "src/**/*.ts"

@@ -1,5 +1,7 @@
 import { IEditor } from './editors/editor';
 import { normalizeFolder } from './common/normalize-folder';
+import { isUndefined } from 'util';
+import { DisplayableError } from './common/displayable-error';
 
 export enum LogLevel {
   debug = 0,
@@ -11,7 +13,7 @@ export class Options {
     public readonly logLevel: LogLevel = LogLevel.info,
     public readonly inputFolder: string = '.',
     public readonly outputFolder: string = '.',
-    public readonly editor: IEditor,
+    public readonly editor: IEditor | undefined,
     public readonly millisecondsBetweenScreenshots: number = 5000,
     public readonly maximumMillisecondsBetweenSnapshots: number = 30000){
 
@@ -19,12 +21,19 @@ export class Options {
     this.outputFolder = normalizeFolder(this.outputFolder);
   }
 
+  public get definedEditor(): IEditor{
+    if(isUndefined(this.editor)){
+      throw new DisplayableError('Editor was not defined.');
+    }
+    return this.editor;
+  }
+
   public static default(): Options {
     return new Options(
       LogLevel.info,
       '.',
       '.',
-      null,
+      undefined,
       5000,
       30000);
   }
