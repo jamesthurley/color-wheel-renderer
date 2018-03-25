@@ -8,5 +8,5 @@ export class Snapshot{
     public readonly photo: Jimp,
     public readonly historyItemRectangle: IRectangle,
     public readonly historyItem: Jimp) {
-    }
+  }
 }

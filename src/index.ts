@@ -1,11 +1,12 @@
 import * as program from 'commander';
 import { Log } from './common/log';
-import { runCommand } from './commands/run-command';
-import { recordCommand } from './commands/record-command';
-import { testCommand } from './commands/test-command';
-import { renderCommand } from './commands/render-command';
 import { processOptions } from './process-options';
 import { EditorFactoryMap } from './editors/editor-factory-map';
+import { ICommandFactory } from './commands/command-factory';
+import { RunCommandFactory } from './commands/run-command';
+import { RenderCommandFactory } from './commands/render-command';
+import { TestCommandFactory } from './commands/test-command';
+import { RecordCommandFactory } from './commands/record-command';
 
 let editorsHelp = '';
 for(let editorKey in EditorFactoryMap){
@@ -23,7 +24,7 @@ const run = program
   .command('run <editor>')
   .description(`Records a session and generates a video. ${editorsHelp}`)
   .action((editor: string, options: any) => {
-    executeAction(editor, options, runCommand);
+    executeAction(editor, options, new RunCommandFactory());
   });
 outputOption(run);
 verboseOption(run);
@@ -33,7 +34,7 @@ const record = program
   .command('record <editor>')
   .description(`Record a session, and keep intermediate files. ${editorsHelp}`)
   .action((editor: string, options: any) => {
-    executeAction(editor, options, recordCommand);
+    executeAction(editor, options, new RecordCommandFactory());
   });
 outputOption(record);
 verboseOption(record);
@@ -42,7 +43,7 @@ const render = program
   .command('render')
   .description('Render a previously recorded session to a video.')
   .action((options: any) => {
-    executeAction(null, options, renderCommand);
+    executeAction(null, options, new RenderCommandFactory());
   });
 inputOption(render);
 outputOption(render);
@@ -52,7 +53,7 @@ const test = program
   .command('test <editor>')
   .description(`Test a previously recorded session to see if the results have changed. ${editorsHelp}`)
   .action((editor: string, options: any) => {
-    executeAction(editor, options, testCommand);
+    executeAction(editor, options, new TestCommandFactory());
   });
 inputOption(test);
 outputOption(test);
@@ -72,9 +73,11 @@ function outputOption(command: program.Command): program.Command {
   return command.option('-o --output <path>', 'Folder where test results written to.');
 }
 
-function executeAction(editor: string, options: any, action: () => Promise<void>) {
-  if (processOptions(editor, options)) {
-    action().then(
+function executeAction(editor: string, commandLineOptions: any, commandFactory: ICommandFactory) {
+  const options = processOptions(editor, commandLineOptions);
+  if (options) {
+    const command = commandFactory.create(options);
+    command.execute().then(
       () => Log.info('Done.'),
       (error: any) => {
         if(error.isDisplayable) {

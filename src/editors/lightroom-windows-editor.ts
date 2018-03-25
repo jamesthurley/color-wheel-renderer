@@ -1,11 +1,14 @@
 import { LightroomEditor } from './lightroom-editor';
+import { Pixel } from './editor-base';
 
 export const LightroomWindowsEditorKey = 'lightroom-windows';
 
 export class LightroomWindowsEditor extends LightroomEditor {
 
-  protected isPhotoBorderColor(r: number, g: number, b: number): boolean {
-    return this.isPhotoBorderGrayscale(r) && this.isPhotoBorderGrayscale(g) && this.isPhotoBorderGrayscale(b);
+  protected isPhotoBorderColor(pixel: Pixel): boolean {
+    return this.isPhotoBorderGrayscale(pixel.red)
+      && this.isPhotoBorderGrayscale(pixel.green)
+      && this.isPhotoBorderGrayscale(pixel.blue);
   }
 
   private isPhotoBorderGrayscale(color: number) {
@@ -14,9 +17,10 @@ export class LightroomWindowsEditor extends LightroomEditor {
     return color >= min && color <= max;
   }
 
-
-  protected isActiveHistoryItemColor(r: number, g: number, b: number): boolean {
-    return this.isActiveHistoryItemGrayscale(r) && this.isActiveHistoryItemGrayscale(g) && this.isActiveHistoryItemGrayscale(b);
+  protected isActiveHistoryItemColor(pixel: Pixel): boolean {
+    return this.isActiveHistoryItemGrayscale(pixel.red)
+      && this.isActiveHistoryItemGrayscale(pixel.green)
+      && this.isActiveHistoryItemGrayscale(pixel.blue);
   }
 
   private isActiveHistoryItemGrayscale(color: number) {

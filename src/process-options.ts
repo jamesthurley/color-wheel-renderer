@@ -3,35 +3,37 @@ import { normalizeFolder } from "./common/normalize-folder";
 import { EditorFactoryMap } from "./editors/editor-factory-map";
 import { Log } from "./common/log";
 
-export function processOptions(editor: string, input: any): boolean {
+export function processOptions(editor: string, input: any): Options | null {
+  const options = {...Options.default()};
+
   if (input.verbose) {
-    Options.logLevel = LogLevel.debug;
+    options.logLevel = LogLevel.debug;
   }
   if (input.input) {
-    Options.inputFolder = normalizeFolder(input.input);
+    options.inputFolder = normalizeFolder(input.input);
   }
   if (input.output) {
-    Options.outputFolder = normalizeFolder(input.output);
+    options.outputFolder = normalizeFolder(input.output);
   }
 
-  if (Options.inputFolder && !input.outputFolder){
-    Options.outputFolder = Options.inputFolder;
+  if (options.inputFolder && !input.outputFolder){
+    options.outputFolder = options.inputFolder;
   }
-  else if (Options.outputFolder && !input.inputFolder){
-    Options.inputFolder = Options.outputFolder;
+  else if (options.outputFolder && !input.inputFolder){
+    options.inputFolder = options.outputFolder;
   }
 
   if (editor) {
     const factory = EditorFactoryMap.get(editor);
     if(!factory){
       Log.error('Unknown editor: ' + editor);
-      return false;
+      return null;
     }
 
-    Options.editor = factory();
+    options.editor = factory();
   }
 
   Log.debug('Options: ' + JSON.stringify(Options, undefined, 2));
 
-  return true;
+  return Options.create(options);
 }

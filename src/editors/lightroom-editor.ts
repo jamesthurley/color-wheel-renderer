@@ -1,4 +1,4 @@
-import { EditorBase } from './editor-base';
+import { EditorBase, Pixel } from './editor-base';
 import * as Jimp from 'jimp';
 import { IRectangle, Rectangle } from '../common/rectangle';
 import { Log } from '../common/log';
@@ -75,8 +75,8 @@ export abstract class LightroomEditor extends EditorBase {
     return null;
   }
 
-  protected abstract isPhotoBorderColor(r: number, g: number, b: number): boolean;
-  protected abstract isActiveHistoryItemColor(r: number, g: number, b: number): boolean;
+  protected abstract isPhotoBorderColor(pixel: Pixel): boolean;
+  protected abstract isActiveHistoryItemColor(pixel: Pixel): boolean;
 
   private findPhotoBorders(image: Jimp, dimensionIndex: number) {
     const requiredConsecutiveBorderColorCount = 10;
@@ -98,11 +98,9 @@ export abstract class LightroomEditor extends EditorBase {
         return;
       }
 
-      const red = image.bitmap.data[index + 0];
-      const green = image.bitmap.data[index + 1];
-      const blue = image.bitmap.data[index + 2];
+      const pixel = this.getPixelAtIndex(image, index);
 
-      if (this.isPhotoBorderColor(red, green, blue)) {
+      if (this.isPhotoBorderColor(pixel)) {
         consecutiveBorderColorCount++;
       }
       else {
@@ -275,11 +273,8 @@ export abstract class LightroomEditor extends EditorBase {
   }
 
   private isActiveHistoryItemAtIndex(image: Jimp, index: number): boolean {
-    const red = image.bitmap.data[index + 0];
-    const green = image.bitmap.data[index + 1];
-    const blue = image.bitmap.data[index + 2];
-
-    return this.isActiveHistoryItemColor(red, green, blue);
+    const pixel = this.getPixelAtIndex(image, index);
+    return this.isActiveHistoryItemColor(pixel);
   }
 }
 
