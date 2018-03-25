@@ -29,6 +29,9 @@ export abstract class LightroomEditor extends EditorBase {
 
   private photoBorderLeftIndex: number;
 
+  protected abstract isPhotoBorderColor(pixel: Pixel): boolean;
+  protected abstract isActiveHistoryItemColor(pixel: Pixel): boolean;
+
   public findPhotoRectangle(image: Jimp): IRectangle | undefined {
     const xBorders = this.findPhotoBorders(image, DIMENSION_INDEX_X);
     const yBorders = this.findPhotoBorders(image, DIMENSION_INDEX_Y);
@@ -53,7 +56,7 @@ export abstract class LightroomEditor extends EditorBase {
     }
 
     if (detectedPixelRatio) {
-      // Log.info(`Finding history item for ${detectedPixelRatio}x pixel ratio.`);
+      Log.verbose(`Finding history item for ${detectedPixelRatio}x pixel ratio.`);
       return this.findActiveHistoryItemRectangleForOffset(
         image,
         this.photoBorderLeftIndex,
@@ -76,9 +79,6 @@ export abstract class LightroomEditor extends EditorBase {
     return undefined;
   }
 
-  protected abstract isPhotoBorderColor(pixel: Pixel): boolean;
-  protected abstract isActiveHistoryItemColor(pixel: Pixel): boolean;
-
   private findPhotoBorders(image: Jimp, dimensionIndex: number) {
     const requiredConsecutiveBorderColorCount = 10;
 
@@ -94,6 +94,7 @@ export abstract class LightroomEditor extends EditorBase {
     const scanW = dimensionIndex === DIMENSION_INDEX_X ? image.bitmap.width : 1;
     const scanH = dimensionIndex === DIMENSION_INDEX_X ? 1 : image.bitmap.height;
 
+    Log.verbose(`Scanning for photo borders. x:${scanX}, y:${scanY}, width:${scanW}, height:${scanH}`);
     image.scan(scanX, scanY, scanW, scanH, (x, y, index) => {
       if (photoEndIndex) {
         return;

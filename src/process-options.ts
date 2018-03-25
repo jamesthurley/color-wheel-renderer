@@ -33,7 +33,7 @@ export function processOptions(editor: string | undefined, input: any): Options 
     options.editor = factory();
   }
 
-  Log.debug('Options: ' + JSON.stringify(Options, undefined, 2));
+  Log.verbose('Options: ' + JSON.stringify(options, undefined, 2));
 
   return Options.create(options);
 }

@@ -12,8 +12,8 @@ export class LightroomWindowsEditor extends LightroomEditor {
   }
 
   private isPhotoBorderGrayscale(color: number) {
-    const min = 125;
-    const max = 129;
+    const min = 127;
+    const max = 128;
     return color >= min && color <= max;
   }
 
@@ -24,8 +24,8 @@ export class LightroomWindowsEditor extends LightroomEditor {
   }
 
   private isActiveHistoryItemGrayscale(color: number) {
-    const min: number = 177;
-    const max: number = 179;
+    const min: number = 178;
+    const max: number = 178;
     return color >= min && color <= max;
   }
 }

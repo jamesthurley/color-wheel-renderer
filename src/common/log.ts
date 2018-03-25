@@ -1,5 +1,5 @@
 export class Log {
-  public static debug(text: string) {
+  public static verbose(text: string) {
     console.log(text);
   }
 
