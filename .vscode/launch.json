@@ -10,8 +10,6 @@
       "name": "Launch Program",
       "sourceMaps": true,
       "cwd": "${workspaceRoot}",
-      "protocol": "inspector",
-      "outFiles": ["${workspaceRoot}/dist"],
       "runtimeArgs": [
         "--nolazy",
         "-r",

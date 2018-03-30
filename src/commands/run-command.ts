@@ -5,7 +5,7 @@ import { ICommand } from './command';
 import { RenderCommandFactory } from './render-command';
 
 export class RunCommandFactory implements ICommandFactory {
-  create(options: Options): ICommand {
+  public create(options: Options): ICommand {
     const recordCommandFactory = new RecordCommandFactory();
     const renderCommandFactory = new RenderCommandFactory();
     return new RunCommand(

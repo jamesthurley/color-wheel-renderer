@@ -11,7 +11,7 @@ import { RecordCommand } from './record-command';
 import { ComparingSnapshotPersister } from '../recording/snapshot-persisters/comparing-snapshot-persister';
 
 export class TestCommandFactory implements ICommandFactory {
-  create(options: Options): ICommand {
+  public create(options: Options): ICommand {
 
     const snapshotProducer: ISnapshotProducer = new ImpatientSnapshotProducer(
       new FilesystemScreenshotProducer(

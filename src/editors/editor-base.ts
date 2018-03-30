@@ -3,8 +3,8 @@ import { IRectangle } from '../common/rectangle';
 import { IEditor } from './editor';
 
 export abstract class EditorBase implements IEditor {
-  abstract findPhotoRectangle(image: Jimp): IRectangle | undefined;
-  abstract findActiveHistoryItemRectangle(image: Jimp): IRectangle | undefined;
+  public abstract findPhotoRectangle(image: Jimp): IRectangle | undefined;
+  public abstract findActiveHistoryItemRectangle(image: Jimp): IRectangle | undefined;
 
   protected getPixelAtIndex(image: Jimp, index: number): Pixel {
     const red = image.bitmap.data[index + 0];

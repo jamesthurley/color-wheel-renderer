@@ -9,25 +9,6 @@ export enum LogLevel {
 }
 
 export class Options {
-  constructor(
-    public readonly logLevel: LogLevel = LogLevel.info,
-    public readonly inputFolder: string = '.',
-    public readonly outputFolder: string = '.',
-    public readonly editor: IEditor | undefined,
-    public readonly millisecondsBetweenScreenshots: number = 5000,
-    public readonly maximumMillisecondsBetweenSnapshots: number = 30000){
-
-    this.inputFolder = normalizeAndCreateFolder(this.inputFolder);
-    this.outputFolder = normalizeAndCreateFolder(this.outputFolder);
-  }
-
-  public get definedEditor(): IEditor{
-    if(isUndefined(this.editor)){
-      throw new DisplayableError('Editor was not defined.');
-    }
-    return this.editor;
-  }
-
   public static default(): Options {
     return new Options(
       LogLevel.info,
@@ -46,5 +27,24 @@ export class Options {
       source.editor,
       source.millisecondsBetweenScreenshots,
       source.maximumMillisecondsBetweenSnapshots);
+  }
+
+  constructor(
+    public readonly logLevel: LogLevel = LogLevel.info,
+    public readonly inputFolder: string = '.',
+    public readonly outputFolder: string = '.',
+    public readonly editor: IEditor | undefined,
+    public readonly millisecondsBetweenScreenshots: number = 5000,
+    public readonly maximumMillisecondsBetweenSnapshots: number = 30000){
+
+    this.inputFolder = normalizeAndCreateFolder(this.inputFolder);
+    this.outputFolder = normalizeAndCreateFolder(this.outputFolder);
+  }
+
+  public get definedEditor(): IEditor{
+    if (isUndefined(this.editor)){
+      throw new DisplayableError('Editor was not defined.');
+    }
+    return this.editor;
   }
 }

@@ -1,5 +1,5 @@
-import { padStart } from "../common/pad-start";
-import { normalizeAndCreateFolder } from "../common/normalize-and-create-folder";
+import { padStart } from '../common/pad-start';
+import { normalizeAndCreateFolder } from '../common/normalize-and-create-folder';
 import * as fs from 'fs';
 import { join } from 'path';
 

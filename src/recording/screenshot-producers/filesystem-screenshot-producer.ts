@@ -1,5 +1,5 @@
 import * as Jimp from 'jimp';
-import { IScreenshotProducer } from "./screenshot-producer";
+import { IScreenshotProducer } from './screenshot-producer';
 import { SnapshotFolderUtilities } from '../snapshot-folder-utilities';
 import { join } from 'path';
 import { Constants } from '../../common/constants';
@@ -15,11 +15,11 @@ export class FilesystemScreenshotProducer implements IScreenshotProducer {
   }
 
   public getScreenshot(): Promise<Jimp | undefined> {
-    if(!this.folders){
+    if (!this.folders){
       this.folders = this.snapshotFolderUtilities.getOrderedSnapshotFolders(this.sourceFolder);
     }
 
-    if(this.folderIndex >= this.folders.length){
+    if (this.folderIndex >= this.folders.length){
       return Promise.resolve(undefined);
     }
 

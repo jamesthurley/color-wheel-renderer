@@ -9,8 +9,12 @@ import { TestCommandFactory } from './commands/test-command';
 import { RecordCommandFactory } from './commands/record-command';
 
 let editorsHelp: string = '';
-for(let editorKey in EditorFactoryMap){
-  if(editorsHelp.length){
+for (const editorKey in EditorFactoryMap) {
+  if (!EditorFactoryMap.hasOwnProperty(editorKey)) {
+    continue;
+  }
+
+  if (editorsHelp.length) {
     editorsHelp += ', ';
   }
   editorsHelp += editorKey;
@@ -28,7 +32,6 @@ const run = program
   });
 outputOption(run);
 verboseOption(run);
-
 
 const record = program
   .command('record <editor>')
@@ -60,12 +63,7 @@ outputOption(test);
 verboseOption(test);
 
 // This removes extra arguments when debugging under e.g. VSCode.
-let argv: string[] = [...process.argv];
-const splitIndex = argv.indexOf('--');
-if(splitIndex !== -1)
-{
-  argv.splice(splitIndex, 1);
-}
+const argv: string[] = process.argv.filter(v => v !== '--');
 
 program.parse(argv);
 
@@ -88,10 +86,10 @@ function executeAction(editor: string | undefined, commandLineOptions: any, comm
     command.execute().then(
       () => Log.info('Done.'),
       (error: any) => {
-        if(error.isDisplayable) {
-          Log.error(error.message)
+        if (error.isDisplayable) {
+          Log.error(error.message);
         }
-        else{
+        else {
           Log.error('There was an unexpected error.', error);
         }
       },

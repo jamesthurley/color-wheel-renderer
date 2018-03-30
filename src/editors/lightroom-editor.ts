@@ -29,9 +29,6 @@ export abstract class LightroomEditor extends EditorBase {
 
   private photoBorderLeftIndex: number;
 
-  protected abstract isPhotoBorderColor(pixel: Pixel): boolean;
-  protected abstract isActiveHistoryItemColor(pixel: Pixel): boolean;
-
   public findPhotoRectangle(image: Jimp): IRectangle | undefined {
     const xBorders = this.findPhotoBorders(image, DIMENSION_INDEX_X);
     const yBorders = this.findPhotoBorders(image, DIMENSION_INDEX_Y);
@@ -51,7 +48,7 @@ export abstract class LightroomEditor extends EditorBase {
 
   public findActiveHistoryItemRectangle(image: Jimp): IRectangle | undefined {
 
-    if(!this.photoBorderLeftIndex){
+    if (!this.photoBorderLeftIndex){
       throw new DisplayableError('Photo left border position not set. Ensure a photo has been located.');
     }
 
@@ -78,6 +75,9 @@ export abstract class LightroomEditor extends EditorBase {
 
     return undefined;
   }
+
+  protected abstract isPhotoBorderColor(pixel: Pixel): boolean;
+  protected abstract isActiveHistoryItemColor(pixel: Pixel): boolean;
 
   private findPhotoBorders(image: Jimp, dimensionIndex: number) {
     const requiredConsecutiveBorderColorCount = 10;
@@ -279,6 +279,3 @@ export abstract class LightroomEditor extends EditorBase {
     return this.isActiveHistoryItemColor(pixel);
   }
 }
-
-
-

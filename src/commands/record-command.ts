@@ -11,7 +11,7 @@ import { ICommand } from './command';
 import { SnapshotFolderUtilities } from '../recording/snapshot-folder-utilities';
 
 export class RecordCommandFactory implements ICommandFactory {
-  create(options: Options): ICommand {
+  public create(options: Options): ICommand {
 
     const snapshotProducer: ISnapshotProducer = new PatientSnapshotProducer(
       options.millisecondsBetweenScreenshots,

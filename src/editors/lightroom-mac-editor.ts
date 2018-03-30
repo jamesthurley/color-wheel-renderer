@@ -11,16 +11,16 @@ export class LightroomMacEditor extends LightroomEditor {
       && this.isPhotoBorderGrayscale(pixel.blue);
   }
 
-  private isPhotoBorderGrayscale(color: number) {
-    const min = 135;
-    const max = 150;
-    return color >= min && color <= max;
-  }
-
   protected isActiveHistoryItemColor(pixel: Pixel): boolean {
     return this.isActiveHistoryItemGrayscale(pixel.red)
       && this.isActiveHistoryItemGrayscale(pixel.green)
       && this.isActiveHistoryItemGrayscale(pixel.blue);
+  }
+
+  private isPhotoBorderGrayscale(color: number) {
+    const min = 135;
+    const max = 150;
+    return color >= min && color <= max;
   }
 
   private isActiveHistoryItemGrayscale(color: number) {

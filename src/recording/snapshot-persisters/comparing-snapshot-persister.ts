@@ -29,7 +29,7 @@ export class ComparingSnapshotPersister {
   }
 
   private compare(expected: any, actual: any, type: string, snapshotNumber: number){
-    if(!jsonEquals(expected, actual)){
+    if (!jsonEquals(expected, actual)){
       Log.warn(`Snapshot ${snapshotNumber} ${type} differs.`);
       Log.warn('Expected:');
       Log.warn(jsonStringify(expected));

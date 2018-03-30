@@ -1,6 +1,6 @@
-import { PatientSnapshotProducer } from "./patient-snapshot-producer";
-import { IScreenshotProducer } from "../screenshot-producers/screenshot-producer";
-import { IEditor } from "../../editors/editor";
+import { PatientSnapshotProducer } from './patient-snapshot-producer';
+import { IScreenshotProducer } from '../screenshot-producers/screenshot-producer';
+import { IEditor } from '../../editors/editor';
 
 export class ImpatientSnapshotProducer extends PatientSnapshotProducer {
 
