@@ -3,11 +3,8 @@ import { ISnapshotProducer } from '../src/recording/snapshot-producers/snapshot-
 import { ImpatientSnapshotProducer } from '../src/recording/snapshot-producers/impatient-snapshot-producer';
 import { FilesystemScreenshotProducer } from '../src/recording/screenshot-producers/filesystem-screenshot-producer';
 import { SnapshotFolderUtilities } from '../src/recording/snapshot-folder-utilities';
-import { ISnapshotPersister } from '../src/recording/snapshot-persisters/snapshot-persister';
-import { ComparingSnapshotPersister } from '../src/recording/snapshot-persisters/comparing-snapshot-persister';
 import { RecordCommand } from '../src/commands/record-command';
 import { EditorFactoryMap } from '../src/editors/editor-factory-map';
-import { isDefined } from '../src/common/is-defined';
 import { IntegrationTestComparingSnapshotPersister } from '../src/recording/snapshot-persisters/integration-test-comparing-snapshot-persister';
 
 const macro: Macro = async (t, inputFolder: string, editorType: string) => {
@@ -19,7 +16,7 @@ const macro: Macro = async (t, inputFolder: string, editorType: string) => {
 
   const editor = editorFactory!();
 
-  inputFolder = '../opendarkroomtests/' + inputFolder;
+  inputFolder = './integration-tests/input-data/recorded-sessions/' + inputFolder;
 
   const snapshotProducer: ISnapshotProducer = new ImpatientSnapshotProducer(
     new FilesystemScreenshotProducer(
@@ -42,4 +39,4 @@ const macro: Macro = async (t, inputFolder: string, editorType: string) => {
 
 macro.title = (providedTitle: string, inputFolder: string, editorType: string) => `Test Recording: ${inputFolder} / ${editorType}`.trim();
 
-test(macro, 'lightroom-windows-smart-collection-icon-in-center-y', 'lightroom-windows');
+test(macro, 'lightroom-classic-windows-10-smart-collection-icon-in-center-y', 'lightroom-windows');

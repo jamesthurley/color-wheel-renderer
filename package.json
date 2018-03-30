@@ -7,7 +7,7 @@
   "start": "ts-node src/index.ts",
   "tsc": "tsc",
   "tslint": "tslint --project tsconfig.json",
-  "test": "ava",
+  "test": "ava --verbose",
   "ci": "npm run tslint && npm run tsc && npm run test"
  },
  "author": "James Thurley",
