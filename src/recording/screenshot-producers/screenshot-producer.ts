@@ -1,5 +1,5 @@
 import * as Jimp from 'jimp';
 
 export interface IScreenshotProducer {
-  getScreenshot(): Promise<Jimp>
+  getScreenshot(): Promise<Jimp | undefined>
 }

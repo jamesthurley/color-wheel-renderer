@@ -4,7 +4,7 @@ import * as fs from 'fs';
 import { IScreenshotProducer } from './screenshot-producer';
 
 export class LiveScreenshotProducer implements IScreenshotProducer {
-  public async getScreenshot(): Promise<Jimp> {
+  public async getScreenshot(): Promise<Jimp | undefined> {
     const screenshotName = 'temp';
     await this.takeScreenshot(screenshotName);
     const image = await this.readImage(screenshotName);

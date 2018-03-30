@@ -1,5 +1,5 @@
 import { IEditor } from './editors/editor';
-import { normalizeFolder } from './common/normalize-folder';
+import { normalizeAndCreateFolder } from './common/normalize-and-create-folder';
 import { isUndefined } from 'util';
 import { DisplayableError } from './common/displayable-error';
 
@@ -17,8 +17,8 @@ export class Options {
     public readonly millisecondsBetweenScreenshots: number = 5000,
     public readonly maximumMillisecondsBetweenSnapshots: number = 30000){
 
-    this.inputFolder = normalizeFolder(this.inputFolder);
-    this.outputFolder = normalizeFolder(this.outputFolder);
+    this.inputFolder = normalizeAndCreateFolder(this.inputFolder);
+    this.outputFolder = normalizeAndCreateFolder(this.outputFolder);
   }
 
   public get definedEditor(): IEditor{

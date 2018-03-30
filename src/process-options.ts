@@ -1,5 +1,5 @@
 import { Options, LogLevel } from "./options";
-import { normalizeFolder } from "./common/normalize-folder";
+import { normalizeAndCreateFolder } from "./common/normalize-and-create-folder";
 import { EditorFactoryMap } from "./editors/editor-factory-map";
 import { Log } from "./common/log";
 
@@ -10,10 +10,10 @@ export function processOptions(editor: string | undefined, input: any): Options 
     options.logLevel = LogLevel.debug;
   }
   if (input.input) {
-    options.inputFolder = normalizeFolder(input.input);
+    options.inputFolder = normalizeAndCreateFolder(input.input);
   }
   if (input.output) {
-    options.outputFolder = normalizeFolder(input.output);
+    options.outputFolder = normalizeAndCreateFolder(input.output);
   }
 
   if (options.inputFolder && !input.outputFolder){

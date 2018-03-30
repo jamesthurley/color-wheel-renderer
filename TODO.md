@@ -1,0 +1,2 @@
+ - Sample multiple X and Y positions when finding photo border, to avoid icons with similar colours.
+ - History items are 1 pixel too short in Y direction (and possibly X, and possibly photos too.

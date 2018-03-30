@@ -59,7 +59,15 @@ inputOption(test);
 outputOption(test);
 verboseOption(test);
 
-program.parse(process.argv);
+// This removes extra arguments when debugging under e.g. VSCode.
+let argv: string[] = [...process.argv];
+const splitIndex = argv.indexOf('--');
+if(splitIndex !== -1)
+{
+  argv.splice(splitIndex, 1);
+}
+
+program.parse(argv);
 
 function verboseOption(command: program.Command): program.Command {
   return command.option('--verbose', 'Enable verbose logging.');
