@@ -1,4 +1,3 @@
-import { Log } from '../common/log';
 import { Options } from '../options';
 import { ICommandFactory } from './command-factory';
 import { ICommand } from './command';
@@ -8,7 +7,7 @@ import { ImpatientSnapshotProducer } from '../recording/snapshot-producers/impat
 import { SnapshotFolderUtilities } from '../recording/snapshot-folder-utilities';
 import { ISnapshotPersister } from '../recording/snapshot-persisters/snapshot-persister';
 import { RecordCommand } from './record-command';
-import { ComparingSnapshotPersister } from '../recording/snapshot-persisters/comparing-snapshot-persister';
+import { LoggingComparingSnapshotPersister } from '../recording/snapshot-persisters/logging-comparing-snapshot-persister';
 
 export class TestCommandFactory implements ICommandFactory {
   public create(options: Options): ICommand {
@@ -19,7 +18,7 @@ export class TestCommandFactory implements ICommandFactory {
         new SnapshotFolderUtilities()),
       options.definedEditor);
 
-    const snapshotPersister: ISnapshotPersister = new ComparingSnapshotPersister(
+    const snapshotPersister: ISnapshotPersister = new LoggingComparingSnapshotPersister(
       options.inputFolder,
       new SnapshotFolderUtilities());
 

@@ -1,6 +1,12 @@
+import { LogLevel } from '../options';
+
 export class Log {
+  public static logLevel: LogLevel;
+
   public static verbose(text: string) {
-    console.log(text);
+    if (Log.logLevel === LogLevel.verbose){
+      console.log(text);
+    }
   }
 
   public static info(text: string) {
@@ -8,11 +14,11 @@ export class Log {
   }
 
   public static warn(text: string) {
-    console.warn(text);
+    console.warn('WARNING: ' + text);
   }
 
   public static error(text: string, error?: Error) {
-    console.error(text);
+    console.error('ERROR: ' + text);
     if (error) {
       console.error(error);
     }

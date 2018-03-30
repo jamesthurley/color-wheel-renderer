@@ -7,7 +7,7 @@ export function processOptions(editor: string | undefined, input: any): Options 
   const options = {...Options.default()};
 
   if (input.verbose) {
-    options.logLevel = LogLevel.debug;
+    options.logLevel = LogLevel.verbose;
   }
   if (input.input) {
     options.inputFolder = normalizeAndCreateFolder(input.input);
@@ -33,6 +33,7 @@ export function processOptions(editor: string | undefined, input: any): Options 
     options.editor = factory();
   }
 
+  Log.logLevel = options.logLevel;
   Log.verbose('Options: ' + JSON.stringify(options, undefined, 2));
 
   return Options.create(options);

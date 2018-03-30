@@ -4,7 +4,7 @@ import { isUndefined } from 'util';
 import { DisplayableError } from './common/displayable-error';
 
 export enum LogLevel {
-  debug = 0,
+  verbose = 0,
   info = 1,
 }
 

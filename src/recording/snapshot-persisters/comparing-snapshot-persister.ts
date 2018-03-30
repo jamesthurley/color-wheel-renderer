@@ -3,11 +3,9 @@ import { Snapshot } from '../snapshot';
 import { SnapshotFolderUtilities } from '../snapshot-folder-utilities';
 import { join } from 'path';
 import { Constants } from '../../common/constants';
-import { jsonEquals } from '../../common/json-equals';
-import { Log } from '../../common/log';
-import { jsonStringify } from '../../common/json-stringify';
+import { Rectangle } from '../../common/rectangle';
 
-export class ComparingSnapshotPersister {
+export abstract class ComparingSnapshotPersister {
   constructor(
     private readonly sessionFolder: string,
     private readonly snapshotFolderUtilities: SnapshotFolderUtilities) {
@@ -18,8 +16,8 @@ export class ComparingSnapshotPersister {
     for (const snapshot of snapshots) {
       const inputFolder = this.snapshotFolderUtilities.getSnapshotFolderPath(this.sessionFolder, snapshotNumber);
 
-      const existingHistoryItemRectangle = fse.readJsonSync(join(inputFolder, Constants.HistoryItemMetadataFileName));
-      const existingPhotoRectangle = fse.readJsonSync(join(inputFolder, Constants.PhotoMetadataFileName));
+      const existingHistoryItemRectangle = this.loadRectangle(join(inputFolder, Constants.HistoryItemMetadataFileName));
+      const existingPhotoRectangle = this.loadRectangle(join(inputFolder, Constants.PhotoMetadataFileName));
 
       this.compare(existingHistoryItemRectangle, snapshot.historyItemRectangle, 'history item', snapshotNumber);
       this.compare(existingPhotoRectangle, snapshot.photoRectangle, 'photo', snapshotNumber);
@@ -28,13 +26,14 @@ export class ComparingSnapshotPersister {
     }
   }
 
-  private compare(expected: any, actual: any, type: string, snapshotNumber: number){
-    if (!jsonEquals(expected, actual)){
-      Log.warn(`Snapshot ${snapshotNumber} ${type} differs.`);
-      Log.warn('Expected:');
-      Log.warn(jsonStringify(expected));
-      Log.warn('Actual:');
-      Log.warn(jsonStringify(actual));
-    }
+  protected abstract compare(expected: any, actual: any, type: string, snapshotNumber: number): void;
+
+  private loadRectangle(path: string): Rectangle {
+    const value = fse.readJsonSync(path);
+    return new Rectangle(
+      value.left,
+      value.top,
+      value.width,
+      value.height);
   }
 }

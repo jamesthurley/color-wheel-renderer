@@ -10,7 +10,8 @@
     "strictNullChecks": true
   },
   "include": [
-    "src/**/*.ts"
+    "src/**/*.ts",
+    "integration-tests/**/*.ts"
   ],
   "exclude": [
     "node_modules"
