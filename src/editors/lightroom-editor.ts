@@ -1,9 +1,10 @@
 import { EditorBase, Pixel } from './editor-base';
 import * as Jimp from 'jimp';
-import { IRectangle, Rectangle } from '../common/rectangle';
+import { IRectangle } from '../common/rectangle';
 import { Log } from '../common/log';
 import { DisplayableError } from '../common/displayable-error';
 import { isUndefined } from 'util';
+import { Border } from '../common/border';
 
 // We'll try and support retina/high density displays by trying larger
 // offsets in sequence.
@@ -39,11 +40,13 @@ export abstract class LightroomEditor extends EditorBase {
 
     this.photoBorderLeftIndex = xBorders.borderStartIndex;
 
-    return new Rectangle(
+    const border = new Border(
       xBorders.photoStartIndex,
       yBorders.photoStartIndex,
-      xBorders.photoEndIndex - xBorders.photoStartIndex,
-      yBorders.photoEndIndex - yBorders.photoStartIndex);
+      xBorders.photoEndIndex,
+      yBorders.photoEndIndex);
+
+    return border.toRectangle();
   }
 
   public findActiveHistoryItemRectangle(image: Jimp): IRectangle | undefined {
@@ -139,8 +142,8 @@ export abstract class LightroomEditor extends EditorBase {
 
           case BorderSearchState.withinPhoto:
             photoEndIndex = [
-              (x - requiredConsecutiveBorderColorCount) + 1,
-              (y - requiredConsecutiveBorderColorCount) + 1];
+              (x - requiredConsecutiveBorderColorCount),
+              (y - requiredConsecutiveBorderColorCount)];
             break;
 
           default:
@@ -200,11 +203,9 @@ export abstract class LightroomEditor extends EditorBase {
       return undefined;
     }
 
-    return new Rectangle(
-      left,
-      top,
-      right - left,
-      bottom - top);
+    const border = new Border(left, top, right, bottom);
+
+    return border.toRectangle();
   }
 
   private findActiveHistoryItemTop(image: Jimp, xSearchIndex: number): number | undefined {

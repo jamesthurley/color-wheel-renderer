@@ -15,9 +15,14 @@ export function processOptions(editor: string | undefined, input: any): Options 
   if (input.output) {
     options.outputFolder = normalizeAndCreateFolder(input.output);
   }
+  else if (input.noDefaultOutput) {
+    options.outputFolder = undefined;
+  }
 
   if (options.inputFolder && !input.outputFolder){
-    options.outputFolder = options.inputFolder;
+    if (!input.noDefaultOutput) {
+      options.outputFolder = options.inputFolder;
+    }
   }
   else if (options.outputFolder && !input.inputFolder){
     options.inputFolder = options.outputFolder;

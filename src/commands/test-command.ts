@@ -8,6 +8,8 @@ import { SnapshotFolderUtilities } from '../recording/snapshot-folder-utilities'
 import { ISnapshotPersister } from '../recording/snapshot-persisters/snapshot-persister';
 import { RecordCommand } from './record-command';
 import { LoggingComparingSnapshotPersister } from '../recording/snapshot-persisters/logging-comparing-snapshot-persister';
+import { FilesystemSnapshotPersister } from '../recording/snapshot-persisters/filesystem-snapshot-persister';
+import { Log } from '../common/log';
 
 export class TestCommandFactory implements ICommandFactory {
   public create(options: Options): ICommand {
@@ -18,9 +20,17 @@ export class TestCommandFactory implements ICommandFactory {
         new SnapshotFolderUtilities()),
       options.definedEditor);
 
-    const snapshotPersister: ISnapshotPersister = new LoggingComparingSnapshotPersister(
-      options.inputFolder,
-      new SnapshotFolderUtilities());
+    const outputResults = !!options.outputFolder;
+
+    Log.verbose(outputResults ? 'Writing new results to: ' + options.outputFolder : 'Comparing to results in: ' + options.inputFolder);
+
+    const snapshotPersister: ISnapshotPersister = options.outputFolder
+      ? new FilesystemSnapshotPersister(
+        options.outputFolder,
+        new SnapshotFolderUtilities())
+      : new LoggingComparingSnapshotPersister(
+        options.inputFolder,
+        new SnapshotFolderUtilities());
 
     return new RecordCommand(snapshotProducer, snapshotPersister);  }
 }

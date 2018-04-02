@@ -9,6 +9,7 @@ import { FilesystemSnapshotPersister } from '../recording/snapshot-persisters/fi
 import { ICommandFactory } from './command-factory';
 import { ICommand } from './command';
 import { SnapshotFolderUtilities } from '../recording/snapshot-folder-utilities';
+import { DisplayableError } from '../common/displayable-error';
 
 export class RecordCommandFactory implements ICommandFactory {
   public create(options: Options): ICommand {
@@ -18,6 +19,10 @@ export class RecordCommandFactory implements ICommandFactory {
       options.maximumMillisecondsBetweenSnapshots,
       new LiveScreenshotProducer(),
       options.definedEditor);
+
+    if (!options.outputFolder) {
+      throw new DisplayableError('Output folder must be provided.');
+    }
 
     const snapshotPersister: ISnapshotPersister = new FilesystemSnapshotPersister(
       options.outputFolder,

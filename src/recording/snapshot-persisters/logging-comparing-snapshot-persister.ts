@@ -22,5 +22,8 @@ ${jsonStringify(actual)}`;
 
       Log.error(failureMessage);
     }
+    else {
+      Log.info(`Snapshot ${snapshotNumber} ${type} matches.`);
+    }
   }
 }

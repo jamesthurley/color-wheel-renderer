@@ -12,5 +12,5 @@ export class Rectangle implements IRectangle {
     public readonly top: number,
     public readonly width: number,
     public readonly height: number) {
-    }
+  }
 }

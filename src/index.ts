@@ -56,6 +56,7 @@ const test = program
   .command('test <editor>')
   .description(`Test a previously recorded session to see if the results have changed. ${editorsHelp}`)
   .action((editor: string, options: any) => {
+    options.noDefaultOutput = true;
     executeAction(editor, options, new TestCommandFactory());
   });
 inputOption(test);

@@ -13,7 +13,7 @@ export class Options {
     return new Options(
       LogLevel.info,
       '.',
-      '.',
+      undefined,
       undefined,
       5000,
       30000);
@@ -31,14 +31,17 @@ export class Options {
 
   constructor(
     public readonly logLevel: LogLevel = LogLevel.info,
-    public readonly inputFolder: string = '.',
-    public readonly outputFolder: string = '.',
+    public readonly inputFolder: string,
+    public readonly outputFolder: string | undefined,
     public readonly editor: IEditor | undefined,
     public readonly millisecondsBetweenScreenshots: number = 5000,
     public readonly maximumMillisecondsBetweenSnapshots: number = 30000){
 
     this.inputFolder = normalizeAndCreateFolder(this.inputFolder);
-    this.outputFolder = normalizeAndCreateFolder(this.outputFolder);
+
+    if (this.outputFolder) {
+      this.outputFolder = normalizeAndCreateFolder(this.outputFolder);
+    }
   }
 
   public get definedEditor(): IEditor{
