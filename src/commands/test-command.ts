@@ -5,13 +5,13 @@ import { ISnapshotProducer } from '../recording/snapshot-producers/snapshot-prod
 import { FilesystemScreenshotProducer } from '../recording/screenshot-producers/filesystem-screenshot-producer';
 import { ImpatientSnapshotProducer } from '../recording/snapshot-producers/impatient-snapshot-producer';
 import { SnapshotFolderUtilities } from '../recording/snapshot-folder-utilities';
-import { ISnapshotPersister } from '../recording/snapshot-persisters/snapshot-persister';
-import { RecordCommand } from './record-command';
-import { LoggingComparingSnapshotPersister } from '../recording/snapshot-persisters/logging-comparing-snapshot-persister';
-import { FilesystemSnapshotPersister } from '../recording/snapshot-persisters/filesystem-snapshot-persister';
 import { Log } from '../common/log';
 import { DisplayableError } from '../common/displayable-error';
-import { ISessionProducer, SessionProducer } from '../recording/session-producers/session-producer';
+import { ISnapshotConsumer } from '../recording/snapshot-consumers/snapshot-consumer';
+import { FilesystemSnapshotConsumer } from '../recording/snapshot-consumers/filesystem-snapshot-consumer';
+import { LoggingComparingSnapshotConsumer } from '../recording/snapshot-consumers/logging-comparing-snapshot-consumer';
+import { SessionRunner } from '../recording/sessions/session-runner';
+import { SessionRunningCommand } from './session-running-command';
 
 export class TestCommandFactory implements ICommandFactory {
   public create(options: Options): ICommand {
@@ -26,21 +26,21 @@ export class TestCommandFactory implements ICommandFactory {
         new SnapshotFolderUtilities()),
       options.definedEditor);
 
-    const sessionProducer: ISessionProducer = new SessionProducer(
-      snapshotProducer);
-
     const outputResults = !!options.outputFolder;
 
     Log.verbose(outputResults ? 'Writing new results to: ' + options.outputFolder : 'Comparing to results in: ' + options.inputFolder);
-
-    const snapshotPersister: ISnapshotPersister = options.outputFolder
-      ? new FilesystemSnapshotPersister(
+    const snapshotConsumer: ISnapshotConsumer = options.outputFolder
+      ? new FilesystemSnapshotConsumer(
         options.outputFolder,
         new SnapshotFolderUtilities())
-      : new LoggingComparingSnapshotPersister(
+      : new LoggingComparingSnapshotConsumer(
         options.inputFolder,
         new SnapshotFolderUtilities());
 
-    return new RecordCommand(sessionProducer, snapshotPersister);
+    const sessionRunner = new SessionRunner(
+      snapshotProducer,
+      snapshotConsumer);
+
+    return new SessionRunningCommand(sessionRunner);
   }
 }

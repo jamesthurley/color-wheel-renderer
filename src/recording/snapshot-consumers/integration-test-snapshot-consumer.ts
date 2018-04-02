@@ -1,7 +1,7 @@
-import { ComparingSnapshotPersister } from './comparing-snapshot-persister';
+import { ComparingSnapshotConsumer } from './comparing-snapshot-consumer';
 import { SnapshotFolderUtilities } from '../snapshot-folder-utilities';
 
-export class IntegrationTestComparingSnapshotPersister extends ComparingSnapshotPersister {
+export class IntegrationTestSnapshotConsumer extends ComparingSnapshotConsumer {
 
   private readonly writableComparisons: SnapshotComparison[] = [];
 

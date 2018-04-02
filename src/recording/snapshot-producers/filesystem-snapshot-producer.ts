@@ -11,7 +11,8 @@ export class FilesystemSnapshotProducer extends SessionSnapshotFolderReader impl
 
   constructor(
     sourceFolder: string,
-    snapshotFolderUtilities: SnapshotFolderUtilities) {
+    snapshotFolderUtilities: SnapshotFolderUtilities,
+    private readonly includeScreenshot: boolean = false) {
     super(sourceFolder, snapshotFolderUtilities);
   }
 
@@ -21,7 +22,11 @@ export class FilesystemSnapshotProducer extends SessionSnapshotFolderReader impl
       return undefined;
     }
 
-    const screenshot = await Jimp.read(join(folder, Constants.ScreenshotFileName));
+    let screenshot: Jimp | undefined;
+    if (this.includeScreenshot) {
+      screenshot = await Jimp.read(join(folder, Constants.ScreenshotFileName));
+    }
+
     const photo = await Jimp.read(join(folder, Constants.PhotoFileName));
     const historyItem = await Jimp.read(join(folder, Constants.HistoryItemFileName));
 

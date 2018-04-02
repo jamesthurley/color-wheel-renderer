@@ -1,50 +1,52 @@
 {
- "name": "opendarkroom",
- "version": "1.0.0",
- "description": "",
- "main": "index.js",
- "scripts": {
-  "help": "npm run start -- --help",
-  "odr": "npm run start",
-  "start": "ts-node src/index.ts",
-  "tslint": "tslint --project tsconfig.json",
-  "tsc": "tsc",
-  "test": "ava --verbose",
-  "ci": "npm run tslint && npm run tsc && npm run test"
- },
- "author": "James Thurley",
- "license": "MIT",
- "dependencies": {
-  "commander": "^2.15.1",
-  "desktop-screenshot": "^0.1.1",
-  "fs-extra": "^5.0.0",
-  "jimp": "^0.2.28"
- },
- "devDependencies": {
-  "@types/commander": "^2.12.2",
-  "@types/fs-extra": "^5.0.1",
-  "@types/node": "^9.4.7",
-  "ava": "^1.0.0-beta.3",
-  "ts-node": "^5.0.1",
-  "tslint": "^5.9.1",
-  "typescript": "^2.7.2"
- },
- "ava": {
-  "files": [
-   "integration-tests/**/*.spec.{js,ts}",
-   "src/**/*.spec.{js,ts}"
-  ],
-  "sources": [
-   "src/**/*.{js,ts}",
-   "!dist/**/*"
-  ],
-  "concurrency": 2,
-  "failFast": false,
-  "failWithoutAssertions": false,
-  "tap": false,
-  "compileEnhancements": false,
-  "require": [
-   "ts-node/register"
-  ]
- }
+  "name": "opendarkroom",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "help": "npm run start -- --help",
+    "odr": "npm run start",
+    "start": "ts-node src/index.ts",
+    "tslint": "tslint --project tsconfig.json",
+    "tsc": "tsc",
+    "test": "ava --verbose",
+    "ci": "npm run tslint && npm run tsc && npm run test"
+  },
+  "author": "James Thurley",
+  "license": "MIT",
+  "dependencies": {
+    "commander": "^2.15.1",
+    "desktop-screenshot": "^0.1.1",
+    "fs-extra": "^5.0.0",
+    "gifencoder": "^1.1.0",
+    "jimp": "^0.2.28",
+    "png-file-stream": "^1.0.0"
+  },
+  "devDependencies": {
+    "@types/commander": "^2.12.2",
+    "@types/fs-extra": "^5.0.1",
+    "@types/node": "^9.4.7",
+    "ava": "^1.0.0-beta.3",
+    "ts-node": "^5.0.1",
+    "tslint": "^5.9.1",
+    "typescript": "^2.7.2"
+  },
+  "ava": {
+    "files": [
+      "integration-tests/**/*.spec.{js,ts}",
+      "src/**/*.spec.{js,ts}"
+    ],
+    "sources": [
+      "src/**/*.{js,ts}",
+      "!dist/**/*"
+    ],
+    "concurrency": 2,
+    "failFast": false,
+    "failWithoutAssertions": false,
+    "tap": false,
+    "compileEnhancements": false,
+    "require": [
+      "ts-node/register"
+    ]
+  }
 }

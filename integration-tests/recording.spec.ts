@@ -3,10 +3,9 @@ import { ISnapshotProducer } from '../src/recording/snapshot-producers/snapshot-
 import { ImpatientSnapshotProducer } from '../src/recording/snapshot-producers/impatient-snapshot-producer';
 import { FilesystemScreenshotProducer } from '../src/recording/screenshot-producers/filesystem-screenshot-producer';
 import { SnapshotFolderUtilities } from '../src/recording/snapshot-folder-utilities';
-import { RecordCommand } from '../src/commands/record-command';
 import { EditorFactoryMap } from '../src/editors/editor-factory-map';
-import { IntegrationTestComparingSnapshotPersister } from '../src/recording/snapshot-persisters/integration-test-comparing-snapshot-persister';
-import { SessionProducer, ISessionProducer } from '../src/recording/session-producers/session-producer';
+import { SessionRunner, ISessionRunner } from '../src/recording/sessions/session-runner';
+import { IntegrationTestSnapshotConsumer } from '../src/recording/snapshot-consumers/integration-test-snapshot-consumer';
 
 const macro: Macro = async (t, inputFolder: string, editorType: string) => {
 
@@ -25,18 +24,17 @@ const macro: Macro = async (t, inputFolder: string, editorType: string) => {
       new SnapshotFolderUtilities()),
     editor);
 
-  const sessionProducer: ISessionProducer = new SessionProducer(
-    snapshotProducer);
-
-  const snapshotPersister = new IntegrationTestComparingSnapshotPersister(
+  const snapshotConsumer = new IntegrationTestSnapshotConsumer(
     inputFolder,
     new SnapshotFolderUtilities());
 
-  const record = new RecordCommand(sessionProducer, snapshotPersister);
+  const sessionRunner: ISessionRunner = new SessionRunner(
+    snapshotProducer,
+    snapshotConsumer);
 
-  await record.execute();
+  await sessionRunner.run();
 
-  for (const comparison of snapshotPersister.comparisons) {
+  for (const comparison of snapshotConsumer.comparisons) {
     t.deepEqual(comparison.actual, comparison.expected, comparison.message);
   }
 };

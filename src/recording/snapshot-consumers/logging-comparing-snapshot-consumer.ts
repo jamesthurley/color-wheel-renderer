@@ -1,10 +1,10 @@
-import { ComparingSnapshotPersister } from './comparing-snapshot-persister';
+import { ComparingSnapshotConsumer } from './comparing-snapshot-consumer';
 import { SnapshotFolderUtilities } from '../snapshot-folder-utilities';
 import { jsonEquals } from '../../common/json-equals';
 import { jsonStringify } from '../../common/json-stringify';
 import { Log } from '../../common/log';
 
-export class LoggingComparingSnapshotPersister extends ComparingSnapshotPersister {
+export class LoggingComparingSnapshotConsumer extends ComparingSnapshotConsumer {
   constructor(
     sessionFolder: string,
     snapshotFolderUtilities: SnapshotFolderUtilities) {

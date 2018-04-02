@@ -2,13 +2,14 @@ import { Options } from '../options';
 import { LiveScreenshotProducer } from '../recording/screenshot-producers/live-screenshot-producer';
 import { PatientSnapshotProducer } from '../recording/snapshot-producers/patient-snapshot-producer';
 import { ISnapshotProducer } from '../recording/snapshot-producers/snapshot-producer';
-import { ISnapshotPersister } from '../recording/snapshot-persisters/snapshot-persister';
-import { FilesystemSnapshotPersister } from '../recording/snapshot-persisters/filesystem-snapshot-persister';
+import { ISnapshotConsumer } from '../recording/snapshot-consumers/snapshot-consumer';
+import { FilesystemSnapshotConsumer } from '../recording/snapshot-consumers/filesystem-snapshot-consumer';
 import { ICommandFactory } from './command-factory';
 import { ICommand } from './command';
 import { SnapshotFolderUtilities } from '../recording/snapshot-folder-utilities';
 import { DisplayableError } from '../common/displayable-error';
-import { ISessionProducer, SessionProducer } from '../recording/session-producers/session-producer';
+import { SessionRunner } from '../recording/sessions/session-runner';
+import { SessionRunningCommand } from './session-running-command';
 
 export class RecordCommandFactory implements ICommandFactory {
   public create(options: Options): ICommand {
@@ -19,29 +20,18 @@ export class RecordCommandFactory implements ICommandFactory {
       new LiveScreenshotProducer(),
       options.definedEditor);
 
-    const sessionProducer: ISessionProducer = new SessionProducer(
-      snapshotProducer);
-
     if (!options.outputFolder) {
       throw new DisplayableError('Output folder must be provided.');
     }
 
-    const snapshotPersister: ISnapshotPersister = new FilesystemSnapshotPersister(
+    const snapshotConsumer: ISnapshotConsumer = new FilesystemSnapshotConsumer(
       options.outputFolder,
       new SnapshotFolderUtilities());
 
-    return new RecordCommand(sessionProducer, snapshotPersister);
-  }
-}
+    const sessionRunner = new SessionRunner(
+      snapshotProducer,
+      snapshotConsumer);
 
-export class RecordCommand implements ICommand {
-  constructor(
-    private readonly sessionProducer: ISessionProducer,
-    private readonly snapshotPersister: ISnapshotPersister) {
-  }
-
-  public async execute(): Promise<void> {
-    const session = await this.sessionProducer.getSession();
-    this.snapshotPersister.saveSnapshots(session.snapshots);
+    return new SessionRunningCommand(sessionRunner);
   }
 }
