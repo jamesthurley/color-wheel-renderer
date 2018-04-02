@@ -4,7 +4,7 @@ export class Log {
   public static logLevel: LogLevel;
 
   public static verbose(text: string) {
-    if (Log.logLevel === LogLevel.verbose){
+    if (Log.logLevel === LogLevel.verbose) {
       console.log(text);
     }
   }

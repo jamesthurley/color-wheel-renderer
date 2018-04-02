@@ -10,9 +10,14 @@ import { RecordCommand } from './record-command';
 import { LoggingComparingSnapshotPersister } from '../recording/snapshot-persisters/logging-comparing-snapshot-persister';
 import { FilesystemSnapshotPersister } from '../recording/snapshot-persisters/filesystem-snapshot-persister';
 import { Log } from '../common/log';
+import { DisplayableError } from '../common/displayable-error';
 
 export class TestCommandFactory implements ICommandFactory {
   public create(options: Options): ICommand {
+
+    if (!options.inputFolder) {
+      throw new DisplayableError('Input session folder must be provided.');
+    }
 
     const snapshotProducer: ISnapshotProducer = new ImpatientSnapshotProducer(
       new FilesystemScreenshotProducer(

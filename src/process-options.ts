@@ -1,36 +1,33 @@
 import { Options, LogLevel } from './options';
-import { normalizeAndCreateFolder } from './common/normalize-and-create-folder';
 import { EditorFactoryMap } from './editors/editor-factory-map';
 import { Log } from './common/log';
 
-export function processOptions(editor: string | undefined, input: any): Options | undefined {
+export function processOptions(editor: string | undefined, unprocessed: IUnprocessedOptions): Options | undefined {
   const options = {...Options.default()};
 
-  if (input.verbose) {
-    options.logLevel = LogLevel.verbose;
-  }
-  if (input.input) {
-    options.inputFolder = normalizeAndCreateFolder(input.input);
-  }
-  if (input.output) {
-    options.outputFolder = normalizeAndCreateFolder(input.output);
-  }
-  else if (input.noDefaultOutput) {
-    options.outputFolder = undefined;
+  if (unprocessed.useDefaultInput) {
+    options.inputFolder = '.';
   }
 
-  if (options.inputFolder && !input.outputFolder){
-    if (!input.noDefaultOutput) {
-      options.outputFolder = options.inputFolder;
-    }
+  if (unprocessed.useDefaultOutput) {
+    options.outputFolder = '.';
   }
-  else if (options.outputFolder && !input.inputFolder){
-    options.inputFolder = options.outputFolder;
+
+  if (unprocessed.verbose) {
+    options.logLevel = LogLevel.verbose;
+  }
+
+  if (unprocessed.input) {
+    options.inputFolder = unprocessed.input;
+  }
+
+  if (unprocessed.output) {
+    options.outputFolder = unprocessed.output;
   }
 
   if (editor) {
     const factory = EditorFactoryMap.get(editor);
-    if (!factory){
+    if (!factory) {
       Log.error('Unknown editor: ' + editor);
       return undefined;
     }
@@ -42,4 +39,12 @@ export function processOptions(editor: string | undefined, input: any): Options 
   Log.verbose('Options: ' + JSON.stringify(options, undefined, 2));
 
   return Options.create(options);
+}
+
+interface IUnprocessedOptions {
+  input: string | undefined;
+  output: string | undefined;
+  verbose: boolean;
+  useDefaultInput?: boolean;
+  useDefaultOutput?: boolean;
 }

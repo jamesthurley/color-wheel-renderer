@@ -8,7 +8,8 @@
       "quotemark": [true, "single"],
       "one-line": [
         true,
-        "check-open-brace"
+        "check-open-brace",
+        "check-whitespace"
       ],
       "no-console": [false],
       "object-literal-sort-keys": false,

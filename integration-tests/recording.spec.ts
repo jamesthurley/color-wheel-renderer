@@ -10,7 +10,7 @@ import { IntegrationTestComparingSnapshotPersister } from '../src/recording/snap
 const macro: Macro = async (t, inputFolder: string, editorType: string) => {
 
   const editorFactory = EditorFactoryMap.get(editorType);
-  if (!editorFactory){
+  if (!editorFactory) {
     t.fail('Unknown editor: ' + editorType);
   }
 

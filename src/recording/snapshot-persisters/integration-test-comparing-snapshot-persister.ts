@@ -15,7 +15,7 @@ export class IntegrationTestComparingSnapshotPersister extends ComparingSnapshot
     return [...this.writableComparisons];
   }
 
-  protected compare(expected: any, actual: any, type: string, snapshotNumber: number){
+  protected compare(expected: any, actual: any, type: string, snapshotNumber: number) {
     this.writableComparisons.push(new SnapshotComparison(
       `Snapshot ${snapshotNumber} ${type} differs.`,
       expected,
@@ -27,6 +27,6 @@ export class SnapshotComparison {
   constructor(
     public readonly message: string,
     public readonly expected: any,
-    public readonly actual: any){
+    public readonly actual: any) {
   }
 }

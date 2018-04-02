@@ -3,7 +3,6 @@ import { Log } from './common/log';
 import { processOptions } from './process-options';
 import { EditorFactoryMap } from './editors/editor-factory-map';
 import { ICommandFactory } from './commands/command-factory';
-import { RunCommandFactory } from './commands/run-command';
 import { RenderCommandFactory } from './commands/render-command';
 import { TestCommandFactory } from './commands/test-command';
 import { RecordCommandFactory } from './commands/record-command';
@@ -23,15 +22,6 @@ editorsHelp = 'Editor can be one of [' + editorsHelp + '].';
 
 program
   .version('0.1.0', '-v, --version');
-
-const run = program
-  .command('run <editor>')
-  .description(`Records a session and generates a video. ${editorsHelp}`)
-  .action((editor: string, options: any) => {
-    executeAction(editor, options, new RunCommandFactory());
-  });
-outputOption(run);
-verboseOption(run);
 
 const record = program
   .command('record <editor>')
@@ -56,7 +46,7 @@ const test = program
   .command('test <editor>')
   .description(`Test a previously recorded session to see if the results have changed. ${editorsHelp}`)
   .action((editor: string, options: any) => {
-    options.noDefaultOutput = true;
+    options.useDefaultInput = true;
     executeAction(editor, options, new TestCommandFactory());
   });
 inputOption(test);

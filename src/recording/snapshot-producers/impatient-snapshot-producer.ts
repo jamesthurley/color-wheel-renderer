@@ -6,7 +6,7 @@ export class ImpatientSnapshotProducer extends PatientSnapshotProducer {
 
   constructor(
     screenshotProducer: IScreenshotProducer,
-    editor: IEditor){
+    editor: IEditor) {
       super(0, 0, screenshotProducer, editor);
   }
 }

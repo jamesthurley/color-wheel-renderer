@@ -4,15 +4,15 @@ import { isUndefined } from 'util';
 import { DisplayableError } from './common/displayable-error';
 
 export enum LogLevel {
-  verbose = 0,
-  info = 1,
+  verbose = 'verbose',
+  info = 'info',
 }
 
 export class Options {
   public static default(): Options {
     return new Options(
       LogLevel.info,
-      '.',
+      undefined,
       undefined,
       undefined,
       5000,
@@ -31,21 +31,23 @@ export class Options {
 
   constructor(
     public readonly logLevel: LogLevel = LogLevel.info,
-    public readonly inputFolder: string,
+    public readonly inputFolder: string | undefined,
     public readonly outputFolder: string | undefined,
     public readonly editor: IEditor | undefined,
     public readonly millisecondsBetweenScreenshots: number = 5000,
-    public readonly maximumMillisecondsBetweenSnapshots: number = 30000){
+    public readonly maximumMillisecondsBetweenSnapshots: number = 30000) {
 
-    this.inputFolder = normalizeAndCreateFolder(this.inputFolder);
+    if (this.inputFolder) {
+      this.inputFolder = normalizeAndCreateFolder(this.inputFolder);
+    }
 
     if (this.outputFolder) {
       this.outputFolder = normalizeAndCreateFolder(this.outputFolder);
     }
   }
 
-  public get definedEditor(): IEditor{
-    if (isUndefined(this.editor)){
+  public get definedEditor(): IEditor {
+    if (isUndefined(this.editor)) {
       throw new DisplayableError('Editor was not defined.');
     }
     return this.editor;

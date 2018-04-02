@@ -1,7 +1,7 @@
 import * as Jimp from 'jimp';
 import { IRectangle } from '../common/rectangle';
 
-export class Snapshot{
+export class Snapshot {
   constructor(
     public readonly screenshot: Jimp,
     public readonly photoRectangle: IRectangle,

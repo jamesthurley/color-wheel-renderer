@@ -14,11 +14,11 @@ export class PatientSnapshotProducer implements ISnapshotProducer {
     private readonly millisecondsBetweenScreenshots: number,
     private readonly maximumMillisecondsBetweenSnapshots: number,
     private readonly screenshotProducer: IScreenshotProducer,
-    private readonly editor: IEditor){
+    private readonly editor: IEditor) {
   }
 
   public async getNextSnapshot(snapshot: Snapshot | undefined): Promise<Snapshot | undefined> {
-    if (!snapshot){
+    if (!snapshot) {
       return this.getSnapshot(undefined);
     }
 
@@ -31,7 +31,7 @@ export class PatientSnapshotProducer implements ISnapshotProducer {
     let foundNewHistoryItem = false;
     let screenshot: Jimp | undefined;
     do {
-      if (this.millisecondsBetweenScreenshots){
+      if (this.millisecondsBetweenScreenshots) {
         await sleep(this.millisecondsBetweenScreenshots);
         Log.info('.');
       }
@@ -53,7 +53,7 @@ export class PatientSnapshotProducer implements ISnapshotProducer {
   }
 
   private async getSnapshot(screenshot?: Jimp): Promise<Snapshot | undefined> {
-    if (!screenshot){
+    if (!screenshot) {
       Log.info('Taking screenshot...');
       screenshot = await this.screenshotProducer.getScreenshot();
     }

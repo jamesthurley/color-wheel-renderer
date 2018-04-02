@@ -4,9 +4,11 @@
  "description": "",
  "main": "index.js",
  "scripts": {
+  "help": "npm run start -- --help",
+  "odr": "npm run start",
   "start": "ts-node src/index.ts",
-  "tsc": "tsc",
   "tslint": "tslint --project tsconfig.json",
+  "tsc": "tsc",
   "test": "ava --verbose",
   "ci": "npm run tslint && npm run tsc && npm run test"
  },

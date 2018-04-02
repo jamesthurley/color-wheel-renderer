@@ -11,8 +11,8 @@ export class LoggingComparingSnapshotPersister extends ComparingSnapshotPersiste
       super(sessionFolder, snapshotFolderUtilities);
   }
 
-  protected compare(expected: any, actual: any, type: string, snapshotNumber: number){
-    if (!jsonEquals(expected, actual)){
+  protected compare(expected: any, actual: any, type: string, snapshotNumber: number) {
+    if (!jsonEquals(expected, actual)) {
 
       const failureMessage = `Snapshot ${snapshotNumber} ${type} differs.
 Expected:

@@ -51,7 +51,7 @@ export abstract class LightroomEditor extends EditorBase {
 
   public findActiveHistoryItemRectangle(image: Jimp): IRectangle | undefined {
 
-    if (!this.photoBorderLeftIndex){
+    if (!this.photoBorderLeftIndex) {
       throw new DisplayableError('Photo left border position not set. Ensure a photo has been located.');
     }
 
