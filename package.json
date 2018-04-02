@@ -18,9 +18,8 @@
     "commander": "^2.15.1",
     "desktop-screenshot": "^0.1.1",
     "fs-extra": "^5.0.0",
-    "gifencoder": "^1.1.0",
-    "jimp": "^0.2.28",
-    "png-file-stream": "^1.0.0"
+    "gifwrap": "^0.7.5",
+    "jimp": "^0.2.28"
   },
   "devDependencies": {
     "@types/commander": "^2.12.2",
