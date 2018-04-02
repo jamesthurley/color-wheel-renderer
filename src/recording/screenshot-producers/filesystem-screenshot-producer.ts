@@ -3,29 +3,22 @@ import { IScreenshotProducer } from './screenshot-producer';
 import { SnapshotFolderUtilities } from '../snapshot-folder-utilities';
 import { join } from 'path';
 import { Constants } from '../../common/constants';
+import { SessionSnapshotFolderReader } from '../session-snapshot-folder-reader';
 
-export class FilesystemScreenshotProducer implements IScreenshotProducer {
-
-  private folders: ReadonlyArray<string>;
-  private folderIndex: number = 0;
+export class FilesystemScreenshotProducer extends SessionSnapshotFolderReader implements IScreenshotProducer {
 
   constructor(
-    private readonly sourceFolder: string,
-    private readonly snapshotFolderUtilities: SnapshotFolderUtilities) {
+    sourceFolder: string,
+    snapshotFolderUtilities: SnapshotFolderUtilities) {
+    super(sourceFolder, snapshotFolderUtilities);
   }
 
-  public getScreenshot(): Promise<Jimp | undefined> {
-    if (!this.folders) {
-      this.folders = this.snapshotFolderUtilities.getOrderedSnapshotFolders(this.sourceFolder);
+  public async getScreenshot(): Promise<Jimp | undefined> {
+    const folder = this.getNextFolder();
+    if (!folder) {
+      return undefined;
     }
 
-    if (this.folderIndex >= this.folders.length) {
-      return Promise.resolve(undefined);
-    }
-
-    const screenshotFolder = this.folders[this.folderIndex];
-    ++this.folderIndex;
-
-    return Promise.resolve(Jimp.read(join(screenshotFolder, Constants.ScreenshotFileName)));
+    return await Jimp.read(join(folder, Constants.ScreenshotFileName));
   }
 }

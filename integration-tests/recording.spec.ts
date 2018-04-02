@@ -6,6 +6,7 @@ import { SnapshotFolderUtilities } from '../src/recording/snapshot-folder-utilit
 import { RecordCommand } from '../src/commands/record-command';
 import { EditorFactoryMap } from '../src/editors/editor-factory-map';
 import { IntegrationTestComparingSnapshotPersister } from '../src/recording/snapshot-persisters/integration-test-comparing-snapshot-persister';
+import { SessionProducer, ISessionProducer } from '../src/recording/session-producers/session-producer';
 
 const macro: Macro = async (t, inputFolder: string, editorType: string) => {
 
@@ -24,11 +25,14 @@ const macro: Macro = async (t, inputFolder: string, editorType: string) => {
       new SnapshotFolderUtilities()),
     editor);
 
+  const sessionProducer: ISessionProducer = new SessionProducer(
+    snapshotProducer);
+
   const snapshotPersister = new IntegrationTestComparingSnapshotPersister(
     inputFolder,
     new SnapshotFolderUtilities());
 
-  const record = new RecordCommand(snapshotProducer, snapshotPersister);
+  const record = new RecordCommand(sessionProducer, snapshotPersister);
 
   await record.execute();
 

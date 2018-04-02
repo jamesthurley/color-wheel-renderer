@@ -11,6 +11,7 @@ import { LoggingComparingSnapshotPersister } from '../recording/snapshot-persist
 import { FilesystemSnapshotPersister } from '../recording/snapshot-persisters/filesystem-snapshot-persister';
 import { Log } from '../common/log';
 import { DisplayableError } from '../common/displayable-error';
+import { ISessionProducer, SessionProducer } from '../recording/session-producers/session-producer';
 
 export class TestCommandFactory implements ICommandFactory {
   public create(options: Options): ICommand {
@@ -25,6 +26,9 @@ export class TestCommandFactory implements ICommandFactory {
         new SnapshotFolderUtilities()),
       options.definedEditor);
 
+    const sessionProducer: ISessionProducer = new SessionProducer(
+      snapshotProducer);
+
     const outputResults = !!options.outputFolder;
 
     Log.verbose(outputResults ? 'Writing new results to: ' + options.outputFolder : 'Comparing to results in: ' + options.inputFolder);
@@ -37,5 +41,6 @@ export class TestCommandFactory implements ICommandFactory {
         options.inputFolder,
         new SnapshotFolderUtilities());
 
-    return new RecordCommand(snapshotProducer, snapshotPersister);  }
+    return new RecordCommand(sessionProducer, snapshotPersister);
+  }
 }
