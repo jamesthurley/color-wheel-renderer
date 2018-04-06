@@ -29,6 +29,10 @@ export abstract class ComparingSnapshotConsumer implements ISnapshotConsumer {
     return Promise.resolve();
   }
 
+  public complete(): Promise<void> {
+    return Promise.resolve();
+  }
+
   protected abstract compare(expected: any, actual: any, type: string, snapshotNumber: number): void;
 
   private loadRectangle(path: string): Rectangle {

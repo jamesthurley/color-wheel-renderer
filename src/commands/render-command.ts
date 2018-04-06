@@ -21,7 +21,7 @@ export class RenderCommandFactory implements ICommandFactory {
       options.inputFolder,
       new SnapshotFolderUtilities());
 
-    const snapshotConsumer: ISnapshotConsumer = new GifSnapshotConsumer();
+    const snapshotConsumer: ISnapshotConsumer = new GifSnapshotConsumer(options.outputFolder || options.inputFolder);
 
     const sessionRunner = new SessionRunner(
       snapshotProducer,

@@ -70,20 +70,21 @@ function outputOption(command: program.Command): program.Command {
   return command.option('-o --output <path>', 'Folder where test results written to.');
 }
 
-function executeAction(editor: string | undefined, commandLineOptions: any, commandFactory: ICommandFactory) {
-  const options = processOptions(editor, commandLineOptions);
-  if (options) {
-    const command = commandFactory.create(options);
-    command.execute().then(
-      () => Log.info('Done.'),
-      (error: any) => {
-        if (error.isDisplayable) {
-          Log.error(error.message);
-        }
-        else {
-          Log.error('There was an unexpected error.', error);
-        }
-      },
-    );
+async function executeAction(editor: string | undefined, commandLineOptions: any, commandFactory: ICommandFactory) {
+  try {
+    const options = processOptions(editor, commandLineOptions);
+    if (options) {
+      const command = commandFactory.create(options);
+      await command.execute();
+      Log.info('Done.');
+    }
+  }
+  catch (error) {
+    if (error.isDisplayable) {
+      Log.error(error.message);
+    }
+    else {
+      Log.error('There was an unexpected error.', error);
+    }
   }
 }

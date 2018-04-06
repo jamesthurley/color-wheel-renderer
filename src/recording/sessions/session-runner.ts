@@ -22,6 +22,8 @@ export class SessionRunner implements ISessionRunner {
       snapshot = await this.snapshotProducer.getNextSnapshot(snapshot);
     }
 
+    await this.snapshotConsumer.complete();
+
     Log.info(`Processed ${snapshotCount} snapshots.`);
   }
 }

@@ -31,4 +31,8 @@ export class FilesystemSnapshotConsumer implements ISnapshotConsumer {
 
     return Promise.resolve();
   }
+
+  public complete(): Promise<void> {
+    return Promise.resolve();
+  }
 }
