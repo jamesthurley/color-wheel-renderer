@@ -44,3 +44,8 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
+
+# Output files
+*.gif
+*.mov
+*.mp4

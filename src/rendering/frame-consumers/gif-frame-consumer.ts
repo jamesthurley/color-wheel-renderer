@@ -1,13 +1,13 @@
-import { ISnapshotConsumer } from '../recording/snapshot-consumers/snapshot-consumer';
-import { Snapshot } from '../recording/snapshot';
 import { GifFrame, BitmapImage, GifUtil } from 'gifwrap';
 import { join } from 'path';
-import { Log } from '../common/log';
+import { Log } from '../../common/log';
+import { IFrameConsumer } from './frame-consumer';
+import * as Jimp from 'jimp';
 
 export const LONG_FRAME_DELAY_CENTISECS = 200;
 export const SHORT_FRAME_DELAY_CENTISECS = 50;
 
-export class GifSnapshotConsumer implements ISnapshotConsumer {
+export class GifFrameConsumer implements IFrameConsumer {
 
   private readonly frames: GifFrame[] = [];
 
@@ -15,14 +15,15 @@ export class GifSnapshotConsumer implements ISnapshotConsumer {
     private readonly sessionFolder: string) {
   }
 
-  public consume(snapshot: Snapshot): Promise<void> {
-    const bitmapImage = new BitmapImage(snapshot.photo.bitmap);
+  public consume(frame: Jimp): Promise<void> {
+    const bitmapImage = new BitmapImage(frame.bitmap);
 
-    Log.info('Resampling photo ' + (this.frames.length + 1));
+    Log.info('Resampling frame ' + (this.frames.length + 1));
     GifUtil.quantizeDekker(bitmapImage, 256);
-    const frame = new GifFrame(bitmapImage, { delayCentisecs: SHORT_FRAME_DELAY_CENTISECS });
 
-    this.frames.push(frame);
+    const gifFrame = new GifFrame(bitmapImage, { delayCentisecs: SHORT_FRAME_DELAY_CENTISECS });
+    this.frames.push(gifFrame);
+
     return Promise.resolve();
   }
 
