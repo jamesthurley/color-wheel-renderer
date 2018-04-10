@@ -1,2 +1,7 @@
- - Sample multiple X and Y positions when finding photo border, to avoid icons with similar colours.
- - History items are 1 pixel too short in Y direction (and possibly X, and possibly photos too.
+ - Sample multiple X and Y positions when finding photo border, to avoid icons with similar colours causing confusion.
+ - Finish implementing "lightroom-mac".
+ - Release as packaged node application.
+ - Add tests for output frames (sum of differences between reference and result).
+ - MP4 or equivalent rendering support.
+ - Upload to Imgur support.
+ - Documentation.

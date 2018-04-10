@@ -1,5 +1,5 @@
 import * as fse from 'fs-extra';
-import { Snapshot } from '../snapshot';
+import { ISnapshot } from '../snapshot';
 import { SnapshotFolderUtilities } from '../snapshot-folder-utilities';
 import { join } from 'path';
 import { Constants } from '../../common/constants';
@@ -14,17 +14,19 @@ export class FilesystemSnapshotConsumer implements ISnapshotConsumer {
     private readonly snapshotFolderUtilities: SnapshotFolderUtilities) {
   }
 
-  public consume(snapshot: Snapshot): Promise<void> {
+  public async consume(snapshot: ISnapshot): Promise<void> {
     ++this.snapshotNumber;
 
     const outputFolder = this.snapshotFolderUtilities.getSnapshotFolderPath(this.sessionFolder, this.snapshotNumber);
 
-    if (snapshot.screenshot) {
-      snapshot.screenshot.write(join(outputFolder, Constants.ScreenshotFileName));
-    }
+    const screenshot = await snapshot.loadScreenshot();
+    screenshot.write(join(outputFolder, Constants.ScreenshotFileName));
 
-    snapshot.historyItem.write(join(outputFolder, Constants.HistoryItemFileName));
-    snapshot.photo.write(join(outputFolder, Constants.PhotoFileName));
+    const historyItem = await snapshot.loadHistoryItem();
+    historyItem.write(join(outputFolder, Constants.HistoryItemFileName));
+
+    const photo = await snapshot.loadPhoto();
+    photo.write(join(outputFolder, Constants.PhotoFileName));
 
     fse.writeJsonSync(join(outputFolder, Constants.HistoryItemMetadataFileName), snapshot.historyItemRectangle);
     fse.writeJsonSync(join(outputFolder, Constants.PhotoMetadataFileName), snapshot.photoRectangle);

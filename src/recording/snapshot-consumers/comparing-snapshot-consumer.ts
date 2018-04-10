@@ -1,5 +1,5 @@
 import * as fse from 'fs-extra';
-import { Snapshot } from '../snapshot';
+import { ISnapshot } from '../snapshot';
 import { SnapshotFolderUtilities } from '../snapshot-folder-utilities';
 import { join } from 'path';
 import { Constants } from '../../common/constants';
@@ -15,7 +15,7 @@ export abstract class ComparingSnapshotConsumer implements ISnapshotConsumer {
     private readonly snapshotFolderUtilities: SnapshotFolderUtilities) {
   }
 
-  public consume(snapshot: Snapshot): Promise<void> {
+  public consume(snapshot: ISnapshot): Promise<void> {
     ++this.snapshotNumber;
 
     const inputFolder = this.snapshotFolderUtilities.getSnapshotFolderPath(this.sessionFolder, this.snapshotNumber);

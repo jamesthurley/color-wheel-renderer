@@ -1,4 +1,4 @@
-import { Snapshot } from '../snapshot';
+import { ISnapshot, CachedSnapshot } from '../snapshot';
 import { Log } from '../../common/log';
 import { IScreenshotProducer } from '../screenshot-producers/screenshot-producer';
 import { IEditor } from '../../editors/editor';
@@ -17,7 +17,7 @@ export class PatientSnapshotProducer implements ISnapshotProducer {
     private readonly editor: IEditor) {
   }
 
-  public async getNextSnapshot(snapshot: Snapshot | undefined): Promise<Snapshot | undefined> {
+  public async getNextSnapshot(snapshot: ISnapshot | undefined): Promise<ISnapshot | undefined> {
     if (!snapshot) {
       return this.getSnapshot(undefined);
     }
@@ -52,7 +52,7 @@ export class PatientSnapshotProducer implements ISnapshotProducer {
     return foundNewHistoryItem ? this.getSnapshot(screenshot) : undefined;
   }
 
-  private async getSnapshot(screenshot?: Jimp): Promise<Snapshot | undefined> {
+  private async getSnapshot(screenshot?: Jimp): Promise<ISnapshot | undefined> {
     if (!screenshot) {
       Log.info('Taking screenshot...');
       screenshot = await this.screenshotProducer.getScreenshot();
@@ -102,7 +102,7 @@ export class PatientSnapshotProducer implements ISnapshotProducer {
         historyItemRectangle.height,
       );
 
-    return new Snapshot(
+    return new CachedSnapshot(
       screenshot,
       photoRectangle,
       photo,

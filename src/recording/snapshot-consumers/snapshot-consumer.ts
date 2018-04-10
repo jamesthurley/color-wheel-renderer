@@ -1,6 +1,6 @@
-import { Snapshot } from '../snapshot';
+import { ISnapshot } from '../snapshot';
 
 export interface ISnapshotConsumer {
-  consume(snapshot: Snapshot): Promise<void>;
+  consume(snapshot: ISnapshot): Promise<void>;
   complete(): Promise<void>;
 }

@@ -1,5 +1,5 @@
-import { Snapshot } from '../snapshot';
+import { ISnapshot } from '../snapshot';
 
 export interface ISnapshotProducer {
-  getNextSnapshot(snapshot: Snapshot | undefined): Promise<Snapshot | undefined>;
+  getNextSnapshot(snapshot: ISnapshot | undefined): Promise<ISnapshot | undefined>;
 }

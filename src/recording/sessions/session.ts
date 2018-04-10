@@ -1,7 +1,7 @@
-import { Snapshot } from '../snapshot';
+import { ISnapshot } from '../snapshot';
 
 export class Session {
   constructor(
-    public readonly snapshots: ReadonlyArray<Snapshot>) {
+    public readonly snapshots: ReadonlyArray<ISnapshot>) {
   }
 }

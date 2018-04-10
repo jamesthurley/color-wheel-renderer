@@ -1,6 +1,6 @@
-import * as Jimp from 'jimp';
+import { IFrame } from '../frame';
 
 export interface IFrameConsumer {
-  consume(frame: Jimp): Promise<void>;
+  consume(frame: IFrame): Promise<void>;
   complete(): Promise<void>;
 }

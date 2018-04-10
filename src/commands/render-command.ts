@@ -8,7 +8,7 @@ import { ISnapshotProducer } from '../recording/snapshot-producers/snapshot-prod
 import { SessionRunner } from '../recording/sessions/session-runner';
 import { SessionRunningCommand } from './session-running-command';
 import { ISnapshotConsumer } from '../recording/snapshot-consumers/snapshot-consumer';
-import { PhotoOnlySnapshotConsumer } from '../rendering/photo-only-snapshot-consumer';
+import { RenderingSnapshotConsumer } from '../rendering/snapshot-consumers/rendering-snapshot-consumer';
 import { GifFrameConsumer } from '../rendering/frame-consumers/gif-frame-consumer';
 
 export class RenderCommandFactory implements ICommandFactory {
@@ -22,7 +22,7 @@ export class RenderCommandFactory implements ICommandFactory {
       options.inputFolder,
       new SnapshotFolderUtilities());
 
-    const snapshotConsumer: ISnapshotConsumer = new PhotoOnlySnapshotConsumer(
+    const snapshotConsumer: ISnapshotConsumer = new RenderingSnapshotConsumer(
       new GifFrameConsumer(options.outputFolder || options.inputFolder));
 
     const sessionRunner = new SessionRunner(
