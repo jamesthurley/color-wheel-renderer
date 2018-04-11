@@ -1,4 +1,4 @@
-import { IFrame } from '../frame';
+import { IFrame } from './frame';
 
 export interface IFrameConsumer {
   consume(frame: IFrame): Promise<void>;

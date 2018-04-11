@@ -1,5 +1,5 @@
 import { ICommand } from './command';
-import { ISessionRunner } from '../recording/sessions/session-runner';
+import { ISessionRunner } from '../pipeline/session-runner';
 
 export class SessionRunningCommand implements ICommand {
   constructor(

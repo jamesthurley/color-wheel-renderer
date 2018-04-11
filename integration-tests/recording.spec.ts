@@ -1,11 +1,11 @@
 import test, { Macro } from 'ava';
-import { ISnapshotProducer } from '../src/recording/snapshot-producers/snapshot-producer';
-import { ImpatientSnapshotProducer } from '../src/recording/snapshot-producers/impatient-snapshot-producer';
-import { FilesystemScreenshotProducer } from '../src/recording/screenshot-producers/filesystem-screenshot-producer';
-import { SnapshotFolderUtilities } from '../src/recording/snapshot-folder-utilities';
+import { ISnapshotProducer } from '../src/pipeline/snapshot-producer';
+import { ImpatientSnapshotProducer } from '../src/testing/snapshot-producers/impatient-snapshot-producer';
+import { FilesystemScreenshotProducer } from '../src/testing/screenshot-producers/filesystem-screenshot-producer';
+import { SnapshotFolderUtilities } from '../src/pipeline-common/snapshot-folder-utilities';
 import { EditorFactoryMap } from '../src/editors/editor-factory-map';
-import { SessionRunner, ISessionRunner } from '../src/recording/sessions/session-runner';
-import { IntegrationTestSnapshotConsumer } from '../src/recording/snapshot-consumers/integration-test-snapshot-consumer';
+import { SessionRunner, ISessionRunner } from '../src/pipeline/session-runner';
+import { IntegrationTestSnapshotConsumer } from '../src/testing/snapshot-consumers/integration-test-snapshot-consumer';
 
 const macro: Macro = async (t, inputFolder: string, editorType: string) => {
 

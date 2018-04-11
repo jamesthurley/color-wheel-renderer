@@ -1,6 +1,6 @@
-import { ISnapshotProducer } from '../snapshot-producers/snapshot-producer';
-import { Log } from '../../common/log';
-import { ISnapshotConsumer } from '../snapshot-consumers/snapshot-consumer';
+import { ISnapshotProducer } from './snapshot-producer';
+import { Log } from '../common/log';
+import { ISnapshotConsumer } from './snapshot-consumer';
 
 export interface ISessionRunner {
   run(): Promise<void>;

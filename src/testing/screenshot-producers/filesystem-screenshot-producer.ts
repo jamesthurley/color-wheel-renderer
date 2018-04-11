@@ -1,11 +1,11 @@
 import * as Jimp from 'jimp';
-import { IScreenshotProducer } from './screenshot-producer';
-import { SnapshotFolderUtilities } from '../snapshot-folder-utilities';
+import { IScreenshotProducer } from '../../pipeline/screenshot-producer';
+import { SnapshotFolderUtilities } from '../../pipeline-common/snapshot-folder-utilities';
 import { join } from 'path';
 import { Constants } from '../../common/constants';
-import { SessionSnapshotFolderReader } from '../session-snapshot-folder-reader';
+import { SessionSnapshotFolderReaderBase } from '../../pipeline-common/session-snapshot-folder-reader-base';
 
-export class FilesystemScreenshotProducer extends SessionSnapshotFolderReader implements IScreenshotProducer {
+export class FilesystemScreenshotProducer extends SessionSnapshotFolderReaderBase implements IScreenshotProducer {
 
   constructor(
     sourceFolder: string,

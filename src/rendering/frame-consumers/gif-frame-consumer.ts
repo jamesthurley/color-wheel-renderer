@@ -1,8 +1,8 @@
 import { GifFrame, BitmapImage, GifUtil } from 'gifwrap';
 import { join } from 'path';
 import { Log } from '../../common/log';
-import { IFrameConsumer } from './frame-consumer';
-import { IFrame } from '../frame';
+import { IFrameConsumer } from '../../pipeline/frame-consumer';
+import { IFrame } from '../../pipeline/frame';
 
 export class GifFrameConsumer implements IFrameConsumer {
 

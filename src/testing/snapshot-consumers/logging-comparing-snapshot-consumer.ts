@@ -1,5 +1,5 @@
 import { ComparingSnapshotConsumer } from './comparing-snapshot-consumer';
-import { SnapshotFolderUtilities } from '../snapshot-folder-utilities';
+import { SnapshotFolderUtilities } from '../../pipeline-common/snapshot-folder-utilities';
 import { jsonEquals } from '../../common/json-equals';
 import { jsonStringify } from '../../common/json-stringify';
 import { Log } from '../../common/log';

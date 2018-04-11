@@ -1,5 +1,5 @@
-import { PatientSnapshotProducer } from './patient-snapshot-producer';
-import { IScreenshotProducer } from '../screenshot-producers/screenshot-producer';
+import { PatientSnapshotProducer } from '../../recording/snapshot-producers/patient-snapshot-producer';
+import { IScreenshotProducer } from '../../pipeline/screenshot-producer';
 import { IEditor } from '../../editors/editor';
 
 export class ImpatientSnapshotProducer extends PatientSnapshotProducer {

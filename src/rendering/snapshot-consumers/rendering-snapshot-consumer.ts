@@ -1,9 +1,9 @@
-import { ISnapshotConsumer } from '../../recording/snapshot-consumers/snapshot-consumer';
-import { ISnapshot } from '../../recording/snapshot';
-import { IFrameConsumer } from '../frame-consumers/frame-consumer';
+import { ISnapshotConsumer } from '../../pipeline/snapshot-consumer';
+import { ISnapshot } from '../../pipeline/snapshot';
+import { IFrameConsumer } from '../../pipeline/frame-consumer';
 import * as Jimp from 'jimp';
 import { Log } from '../../common/log';
-import { Frame } from '../frame';
+import { Frame } from '../../pipeline/frame';
 import { FrameMetadata } from '../frame-metadata';
 import { FitFrameMetadataToTarget } from '../fit-frame-metadata-to-target';
 

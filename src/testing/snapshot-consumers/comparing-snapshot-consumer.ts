@@ -1,10 +1,10 @@
 import * as fse from 'fs-extra';
-import { ISnapshot } from '../snapshot';
-import { SnapshotFolderUtilities } from '../snapshot-folder-utilities';
+import { ISnapshot } from '../../pipeline/snapshot';
+import { SnapshotFolderUtilities } from '../../pipeline-common/snapshot-folder-utilities';
 import { join } from 'path';
 import { Constants } from '../../common/constants';
 import { Rectangle } from '../../common/rectangle';
-import { ISnapshotConsumer } from './snapshot-consumer';
+import { ISnapshotConsumer } from '../../pipeline/snapshot-consumer';
 
 export abstract class ComparingSnapshotConsumer implements ISnapshotConsumer {
 

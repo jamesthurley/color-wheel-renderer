@@ -1,16 +1,16 @@
 import { Options } from '../options';
 import { ICommandFactory } from './command-factory';
 import { ICommand } from './command';
-import { ISnapshotProducer } from '../recording/snapshot-producers/snapshot-producer';
-import { FilesystemScreenshotProducer } from '../recording/screenshot-producers/filesystem-screenshot-producer';
-import { ImpatientSnapshotProducer } from '../recording/snapshot-producers/impatient-snapshot-producer';
-import { SnapshotFolderUtilities } from '../recording/snapshot-folder-utilities';
+import { ISnapshotProducer } from '../pipeline/snapshot-producer';
+import { FilesystemScreenshotProducer } from '../testing/screenshot-producers/filesystem-screenshot-producer';
+import { ImpatientSnapshotProducer } from '../testing/snapshot-producers/impatient-snapshot-producer';
+import { SnapshotFolderUtilities } from '../pipeline-common/snapshot-folder-utilities';
 import { Log } from '../common/log';
 import { DisplayableError } from '../common/displayable-error';
-import { ISnapshotConsumer } from '../recording/snapshot-consumers/snapshot-consumer';
+import { ISnapshotConsumer } from '../pipeline/snapshot-consumer';
 import { FilesystemSnapshotConsumer } from '../recording/snapshot-consumers/filesystem-snapshot-consumer';
-import { LoggingComparingSnapshotConsumer } from '../recording/snapshot-consumers/logging-comparing-snapshot-consumer';
-import { SessionRunner } from '../recording/sessions/session-runner';
+import { LoggingComparingSnapshotConsumer } from '../testing/snapshot-consumers/logging-comparing-snapshot-consumer';
+import { SessionRunner } from '../pipeline/session-runner';
 import { SessionRunningCommand } from './session-running-command';
 
 export class TestCommandFactory implements ICommandFactory {

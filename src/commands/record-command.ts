@@ -1,14 +1,14 @@
 import { Options } from '../options';
 import { LiveScreenshotProducer } from '../recording/screenshot-producers/live-screenshot-producer';
 import { PatientSnapshotProducer } from '../recording/snapshot-producers/patient-snapshot-producer';
-import { ISnapshotProducer } from '../recording/snapshot-producers/snapshot-producer';
-import { ISnapshotConsumer } from '../recording/snapshot-consumers/snapshot-consumer';
+import { ISnapshotProducer } from '../pipeline/snapshot-producer';
+import { ISnapshotConsumer } from '../pipeline/snapshot-consumer';
 import { FilesystemSnapshotConsumer } from '../recording/snapshot-consumers/filesystem-snapshot-consumer';
 import { ICommandFactory } from './command-factory';
 import { ICommand } from './command';
-import { SnapshotFolderUtilities } from '../recording/snapshot-folder-utilities';
+import { SnapshotFolderUtilities } from '../pipeline-common/snapshot-folder-utilities';
 import { DisplayableError } from '../common/displayable-error';
-import { SessionRunner } from '../recording/sessions/session-runner';
+import { SessionRunner } from '../pipeline/session-runner';
 import { SessionRunningCommand } from './session-running-command';
 
 export class RecordCommandFactory implements ICommandFactory {

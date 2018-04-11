@@ -1,4 +1,4 @@
-import { ISnapshot } from '../snapshot';
+import { ISnapshot } from './snapshot';
 
 export class Session {
   constructor(

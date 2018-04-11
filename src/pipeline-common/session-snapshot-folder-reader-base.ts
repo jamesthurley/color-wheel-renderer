@@ -1,6 +1,6 @@
 import { SnapshotFolderUtilities } from './snapshot-folder-utilities';
 
-export abstract class SessionSnapshotFolderReader {
+export abstract class SessionSnapshotFolderReaderBase {
 
   private folders: ReadonlyArray<string>;
   private folderIndex: number = 0;

@@ -1,14 +1,14 @@
 import * as Jimp from 'jimp';
 import * as fse from 'fs-extra';
-import { ISnapshotProducer } from './snapshot-producer';
-import { SnapshotFolderUtilities } from '../snapshot-folder-utilities';
-import { ISnapshot, LazySnapshot } from '../snapshot';
+import { ISnapshotProducer } from '../../pipeline/snapshot-producer';
+import { SnapshotFolderUtilities } from '../../pipeline-common/snapshot-folder-utilities';
+import { ISnapshot, LazySnapshot } from '../../pipeline/snapshot';
 import { join } from 'path';
 import { Constants } from '../../common/constants';
-import { SessionSnapshotFolderReader } from '../session-snapshot-folder-reader';
+import { SessionSnapshotFolderReaderBase } from '../../pipeline-common/session-snapshot-folder-reader-base';
 import { IRectangle } from '../../common/rectangle';
 
-export class FilesystemSnapshotProducer extends SessionSnapshotFolderReader implements ISnapshotProducer {
+export class FilesystemSnapshotProducer extends SessionSnapshotFolderReaderBase implements ISnapshotProducer {
 
   constructor(
     sourceFolder: string,

@@ -2,12 +2,12 @@ import { Options } from '../options';
 import { ICommandFactory } from './command-factory';
 import { ICommand } from './command';
 import { DisplayableError } from '../common/displayable-error';
-import { SnapshotFolderUtilities } from '../recording/snapshot-folder-utilities';
-import { FilesystemSnapshotProducer } from '../recording/snapshot-producers/filesystem-snapshot-producer';
-import { ISnapshotProducer } from '../recording/snapshot-producers/snapshot-producer';
-import { SessionRunner } from '../recording/sessions/session-runner';
+import { SnapshotFolderUtilities } from '../pipeline-common/snapshot-folder-utilities';
+import { FilesystemSnapshotProducer } from '../rendering/snapshot-producers/filesystem-snapshot-producer';
+import { ISnapshotProducer } from '../pipeline/snapshot-producer';
+import { SessionRunner } from '../pipeline/session-runner';
 import { SessionRunningCommand } from './session-running-command';
-import { ISnapshotConsumer } from '../recording/snapshot-consumers/snapshot-consumer';
+import { ISnapshotConsumer } from '../pipeline/snapshot-consumer';
 import { RenderingSnapshotConsumer } from '../rendering/snapshot-consumers/rendering-snapshot-consumer';
 import { GifFrameConsumer } from '../rendering/frame-consumers/gif-frame-consumer';
 

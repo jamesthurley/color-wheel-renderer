@@ -1,7 +1,7 @@
 import * as Jimp from 'jimp';
 import * as screenshot from 'desktop-screenshot';
 import * as fs from 'fs';
-import { IScreenshotProducer } from './screenshot-producer';
+import { IScreenshotProducer } from '../../pipeline/screenshot-producer';
 
 export class LiveScreenshotProducer implements IScreenshotProducer {
   public async getScreenshot(): Promise<Jimp | undefined> {

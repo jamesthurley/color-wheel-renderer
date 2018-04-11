@@ -1,10 +1,10 @@
-import { ISnapshot, CachedSnapshot } from '../snapshot';
+import { ISnapshot, CachedSnapshot } from '../../pipeline/snapshot';
 import { Log } from '../../common/log';
-import { IScreenshotProducer } from '../screenshot-producers/screenshot-producer';
+import { IScreenshotProducer } from '../../pipeline/screenshot-producer';
 import { IEditor } from '../../editors/editor';
 import { getMilliseconds } from '../../common/get-milliseconds';
 import { jsonEquals } from '../../common/json-equals';
-import { ISnapshotProducer } from './snapshot-producer';
+import { ISnapshotProducer } from '../../pipeline/snapshot-producer';
 import { sleep } from '../../common/sleep';
 import * as Jimp from 'jimp';
 

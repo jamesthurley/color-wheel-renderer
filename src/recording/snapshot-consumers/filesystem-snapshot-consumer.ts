@@ -1,9 +1,9 @@
 import * as fse from 'fs-extra';
-import { ISnapshot } from '../snapshot';
-import { SnapshotFolderUtilities } from '../snapshot-folder-utilities';
+import { ISnapshot } from '../../pipeline/snapshot';
+import { SnapshotFolderUtilities } from '../../pipeline-common/snapshot-folder-utilities';
 import { join } from 'path';
 import { Constants } from '../../common/constants';
-import { ISnapshotConsumer } from './snapshot-consumer';
+import { ISnapshotConsumer } from '../../pipeline/snapshot-consumer';
 
 export class FilesystemSnapshotConsumer implements ISnapshotConsumer {
 
