@@ -18,7 +18,7 @@ export class GifFrameConsumer implements IFrameConsumer {
     Log.info(`Resampling frame ${this.frames.length + 1} colors.`);
     GifUtil.quantizeDekker(bitmapImage, 256);
 
-    const gifFrame = new GifFrame(bitmapImage, { delayCentisecs: frame.durationCentiseconds });
+    const gifFrame = new GifFrame(bitmapImage, { delayCentisecs: frame.metadata.durationCentiseconds });
     this.frames.push(gifFrame);
 
     return Promise.resolve();

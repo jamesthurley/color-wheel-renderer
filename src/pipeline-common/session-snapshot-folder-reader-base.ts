@@ -12,7 +12,7 @@ export abstract class SessionSnapshotFolderReaderBase {
 
   protected getNextFolder(): string | undefined {
     if (!this.folders) {
-      this.folders = this.snapshotFolderUtilities.getOrderedSnapshotFolders(this.sourceFolder);
+      this.folders = this.snapshotFolderUtilities.getOrderedFolders(this.sourceFolder);
     }
 
     if (this.folderIndex >= this.folders.length) {

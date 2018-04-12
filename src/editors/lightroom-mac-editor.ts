@@ -1,5 +1,5 @@
 import { LightroomEditor } from './lightroom-editor';
-import { Pixel } from './editor-base';
+import { Pixel } from '../common/pixel';
 
 export const LightroomMacEditorKey = 'lightroom-mac';
 

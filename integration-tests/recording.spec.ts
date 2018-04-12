@@ -5,7 +5,9 @@ import { FilesystemScreenshotProducer } from '../src/testing/screenshot-producer
 import { SnapshotFolderUtilities } from '../src/pipeline-common/snapshot-folder-utilities';
 import { EditorFactoryMap } from '../src/editors/editor-factory-map';
 import { SessionRunner, ISessionRunner } from '../src/pipeline/session-runner';
-import { IntegrationTestSnapshotConsumer } from '../src/testing/snapshot-consumers/integration-test-snapshot-consumer';
+import { ComparingSnapshotConsumer } from '../src/testing/snapshot-consumers/comparing-snapshot-consumer';
+import { IntegrationTestConsumerHelper } from '../src/testing/integration-test-consumer-helper';
+import { compareImage } from '../src/common/compare-image';
 
 const macro: Macro = async (t, inputFolder: string, editorType: string) => {
 
@@ -24,7 +26,9 @@ const macro: Macro = async (t, inputFolder: string, editorType: string) => {
       new SnapshotFolderUtilities()),
     editor);
 
-  const snapshotConsumer = new IntegrationTestSnapshotConsumer(
+  const comparisonHelper = new IntegrationTestConsumerHelper();
+  const snapshotConsumer = new ComparingSnapshotConsumer(
+    comparisonHelper,
     inputFolder,
     new SnapshotFolderUtilities());
 
@@ -34,8 +38,13 @@ const macro: Macro = async (t, inputFolder: string, editorType: string) => {
 
   await sessionRunner.run();
 
-  for (const comparison of snapshotConsumer.comparisons) {
+  for (const comparison of comparisonHelper.objectComparisons) {
     t.deepEqual(comparison.actual, comparison.expected, comparison.message);
+  }
+
+  for (const comparison of comparisonHelper.imageComparisons) {
+    const result = await compareImage(comparison.expected, comparison.actual);
+    t.deepEqual(result.differences, [], comparison.message);
   }
 };
 

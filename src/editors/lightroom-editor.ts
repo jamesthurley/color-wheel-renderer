@@ -1,10 +1,12 @@
-import { EditorBase, Pixel } from './editor-base';
+import { EditorBase } from './editor-base';
 import * as Jimp from 'jimp';
 import { IRectangle } from '../common/rectangle';
 import { Log } from '../common/log';
 import { DisplayableError } from '../common/displayable-error';
 import { isUndefined } from 'util';
 import { Border } from '../common/border';
+import { getPixelAtIndex } from '../common/get-pixel-at-index';
+import { Pixel } from '../common/pixel';
 
 // We'll try and support retina/high density displays by trying larger
 // offsets in sequence.
@@ -103,7 +105,7 @@ export abstract class LightroomEditor extends EditorBase {
         return;
       }
 
-      const pixel = this.getPixelAtIndex(image, index);
+      const pixel = getPixelAtIndex(image, index);
 
       if (this.isPhotoBorderColor(pixel)) {
         consecutiveBorderColorCount++;
@@ -276,7 +278,7 @@ export abstract class LightroomEditor extends EditorBase {
   }
 
   private isActiveHistoryItemAtIndex(image: Jimp, index: number): boolean {
-    const pixel = this.getPixelAtIndex(image, index);
+    const pixel = getPixelAtIndex(image, index);
     return this.isActiveHistoryItemColor(pixel);
   }
 }

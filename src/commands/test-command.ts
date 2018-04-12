@@ -9,9 +9,10 @@ import { Log } from '../common/log';
 import { DisplayableError } from '../common/displayable-error';
 import { ISnapshotConsumer } from '../pipeline/snapshot-consumer';
 import { FilesystemSnapshotConsumer } from '../recording/snapshot-consumers/filesystem-snapshot-consumer';
-import { LoggingComparingSnapshotConsumer } from '../testing/snapshot-consumers/logging-comparing-snapshot-consumer';
 import { SessionRunner } from '../pipeline/session-runner';
 import { SessionRunningCommand } from './session-running-command';
+import { ComparingSnapshotConsumer } from '../testing/snapshot-consumers/comparing-snapshot-consumer';
+import { LoggingConsumerHelper } from '../testing/logging-consumer-helper';
 
 export class TestCommandFactory implements ICommandFactory {
   public create(options: Options): ICommand {
@@ -31,11 +32,12 @@ export class TestCommandFactory implements ICommandFactory {
     Log.verbose(outputResults ? 'Writing new results to: ' + options.outputFolder : 'Comparing to results in: ' + options.inputFolder);
     const snapshotConsumer: ISnapshotConsumer = options.outputFolder
       ? new FilesystemSnapshotConsumer(
-        options.outputFolder,
-        new SnapshotFolderUtilities())
-      : new LoggingComparingSnapshotConsumer(
-        options.inputFolder,
-        new SnapshotFolderUtilities());
+          options.outputFolder,
+          new SnapshotFolderUtilities())
+      : new ComparingSnapshotConsumer(
+          new LoggingConsumerHelper(),
+          options.inputFolder,
+          new SnapshotFolderUtilities());
 
     const sessionRunner = new SessionRunner(
       snapshotProducer,

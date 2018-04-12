@@ -5,3 +5,4 @@
  - MP4 or equivalent rendering support.
  - Upload to Imgur support.
  - Documentation.
+ - Test error conditions (missing images when testing, etc).

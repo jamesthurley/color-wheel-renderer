@@ -1,8 +1,8 @@
 import { Constants } from '../common/constants';
 import { NumberedFolderUtilitiesBase } from './numbered-folder-utilities-base';
 
-export class SnapshotFolderUtilities extends NumberedFolderUtilitiesBase {
+export class FrameFolderUtilities extends NumberedFolderUtilitiesBase {
   constructor() {
-    super(Constants.SnapshotFolderPrefix);
+    super(Constants.FrameFolderPrefix);
   }
 }

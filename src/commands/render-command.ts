@@ -10,6 +10,9 @@ import { SessionRunningCommand } from './session-running-command';
 import { ISnapshotConsumer } from '../pipeline/snapshot-consumer';
 import { RenderingSnapshotConsumer } from '../rendering/snapshot-consumers/rendering-snapshot-consumer';
 import { GifFrameConsumer } from '../rendering/frame-consumers/gif-frame-consumer';
+import { FilesystemFrameConsumer } from '../rendering/frame-consumers/filesystem-frame-consumer';
+import { FrameFolderUtilities } from '../pipeline-common/frame-folder-utilities';
+import { AggregateFrameConsumer } from '../rendering/frame-consumers/aggregate-frame-consumer';
 
 export class RenderCommandFactory implements ICommandFactory {
   public create(options: Options): ICommand {
@@ -23,7 +26,13 @@ export class RenderCommandFactory implements ICommandFactory {
       new SnapshotFolderUtilities());
 
     const snapshotConsumer: ISnapshotConsumer = new RenderingSnapshotConsumer(
-      new GifFrameConsumer(options.outputFolder || options.inputFolder));
+      new AggregateFrameConsumer(
+        [
+          new FilesystemFrameConsumer(
+            options.outputFolder || options.inputFolder,
+            new FrameFolderUtilities()),
+          new GifFrameConsumer(options.outputFolder || options.inputFolder),
+        ]));
 
     const sessionRunner = new SessionRunner(
       snapshotProducer,

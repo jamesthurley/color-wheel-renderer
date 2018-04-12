@@ -17,7 +17,7 @@ export class FilesystemSnapshotConsumer implements ISnapshotConsumer {
   public async consume(snapshot: ISnapshot): Promise<void> {
     ++this.snapshotNumber;
 
-    const outputFolder = this.snapshotFolderUtilities.getSnapshotFolderPath(this.sessionFolder, this.snapshotNumber);
+    const outputFolder = this.snapshotFolderUtilities.getFolderPath(this.sessionFolder, this.snapshotNumber);
 
     const screenshot = await snapshot.loadScreenshot();
     screenshot.write(join(outputFolder, Constants.ScreenshotFileName));
