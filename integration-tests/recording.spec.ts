@@ -7,7 +7,8 @@ import { EditorFactoryMap } from '../src/editors/editor-factory-map';
 import { SessionRunner, ISessionRunner } from '../src/pipeline/session-runner';
 import { ComparingSnapshotConsumer } from '../src/testing/snapshot-consumers/comparing-snapshot-consumer';
 import { IntegrationTestConsumerHelper } from '../src/testing/integration-test-consumer-helper';
-import { compareImage } from '../src/common/compare-image';
+import { ISnapshotConsumer } from '../src/pipeline/snapshot-consumer';
+import { evaluateComparisons } from './evaluate-comparisons';
 
 const macro: Macro = async (t, inputFolder: string, editorType: string) => {
 
@@ -27,7 +28,7 @@ const macro: Macro = async (t, inputFolder: string, editorType: string) => {
     editor);
 
   const comparisonHelper = new IntegrationTestConsumerHelper();
-  const snapshotConsumer = new ComparingSnapshotConsumer(
+  const snapshotConsumer: ISnapshotConsumer = new ComparingSnapshotConsumer(
     comparisonHelper,
     inputFolder,
     new SnapshotFolderUtilities());
@@ -38,14 +39,7 @@ const macro: Macro = async (t, inputFolder: string, editorType: string) => {
 
   await sessionRunner.run();
 
-  for (const comparison of comparisonHelper.objectComparisons) {
-    t.deepEqual(comparison.actual, comparison.expected, comparison.message);
-  }
-
-  for (const comparison of comparisonHelper.imageComparisons) {
-    const result = await compareImage(comparison.expected, comparison.actual);
-    t.deepEqual(result.differences, [], comparison.message);
-  }
+  await evaluateComparisons(t, comparisonHelper);
 };
 
 macro.title = (providedTitle: string, inputFolder: string, editorType: string) => `Test Recording: ${inputFolder} / ${editorType}`.trim();

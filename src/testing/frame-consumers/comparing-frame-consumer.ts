@@ -8,7 +8,7 @@ import { IFrame } from '../../pipeline/frame';
 import { FrameMetadata } from '../../pipeline/frame-metadata';
 import { IComparingConsumerHelper } from '../comparing-consumer-helper';
 
-export abstract class ComparingFrameConsumer implements IFrameConsumer {
+export class ComparingFrameConsumer implements IFrameConsumer {
 
   constructor(
     private readonly helper: IComparingConsumerHelper,

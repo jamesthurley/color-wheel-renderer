@@ -4,15 +4,12 @@ import { processOptions } from './process-options';
 import { EditorFactoryMap } from './editors/editor-factory-map';
 import { ICommandFactory } from './commands/command-factory';
 import { RenderCommandFactory } from './commands/render-command';
-import { TestCommandFactory } from './commands/test-command';
+import { TestRecordCommandFactory } from './commands/test-record-command';
 import { RecordCommandFactory } from './commands/record-command';
+import { TestRenderCommandFactory } from './commands/test-render-command';
 
 let editorsHelp: string = '';
-for (const editorKey in EditorFactoryMap) {
-  if (!EditorFactoryMap.hasOwnProperty(editorKey)) {
-    continue;
-  }
-
+for (const editorKey of EditorFactoryMap.keys()) {
   if (editorsHelp.length) {
     editorsHelp += ', ';
   }
@@ -36,22 +33,34 @@ const render = program
   .command('render')
   .description('Render a previously recorded session to a video.')
   .action((options: any) => {
+    options.useDefaultInput = true;
     executeAction(undefined, options, new RenderCommandFactory());
   });
 inputOption(render);
 outputOption(render);
 verboseOption(render);
 
-const test = program
-  .command('test <editor>')
+const testRecord = program
+  .command('test-record <editor>')
   .description(`Test a previously recorded session to see if the results have changed. ${editorsHelp}`)
   .action((editor: string, options: any) => {
     options.useDefaultInput = true;
-    executeAction(editor, options, new TestCommandFactory());
+    executeAction(editor, options, new TestRecordCommandFactory());
   });
-inputOption(test);
-outputOption(test);
-verboseOption(test);
+inputOption(testRecord);
+outputOption(testRecord);
+verboseOption(testRecord);
+
+const testRender = program
+  .command('test-render')
+  .description(`Test a previously rendered session to see if the results have changed.`)
+  .action((options: any) => {
+    options.useDefaultInput = true;
+    executeAction(undefined, options, new TestRenderCommandFactory());
+  });
+inputOption(testRender);
+outputOption(testRender);
+verboseOption(testRender);
 
 // This removes extra arguments when debugging under e.g. VSCode.
 const argv: string[] = process.argv.filter(v => v !== '--');

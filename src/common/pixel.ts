@@ -5,4 +5,8 @@ export class Pixel {
     public readonly green: number,
     public readonly blue: number) {
   }
+
+  public toString() {
+    return `${this.red},${this.blue},${this.green}`;
+  }
 }

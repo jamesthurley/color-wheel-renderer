@@ -14,7 +14,7 @@ import { SessionRunningCommand } from './session-running-command';
 import { ComparingSnapshotConsumer } from '../testing/snapshot-consumers/comparing-snapshot-consumer';
 import { LoggingConsumerHelper } from '../testing/logging-consumer-helper';
 
-export class TestCommandFactory implements ICommandFactory {
+export class TestRecordCommandFactory implements ICommandFactory {
   public create(options: Options): ICommand {
 
     if (!options.inputFolder) {
@@ -27,9 +27,8 @@ export class TestCommandFactory implements ICommandFactory {
         new SnapshotFolderUtilities()),
       options.definedEditor);
 
-    const outputResults = !!options.outputFolder;
+    Log.verbose(options.outputFolder ? 'Writing new results to: ' + options.outputFolder : 'Comparing to results in: ' + options.inputFolder);
 
-    Log.verbose(outputResults ? 'Writing new results to: ' + options.outputFolder : 'Comparing to results in: ' + options.inputFolder);
     const snapshotConsumer: ISnapshotConsumer = options.outputFolder
       ? new FilesystemSnapshotConsumer(
           options.outputFolder,

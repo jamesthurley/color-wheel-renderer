@@ -4,6 +4,7 @@ import { SnapshotFolderUtilities } from '../../pipeline-common/snapshot-folder-u
 import { join } from 'path';
 import { Constants } from '../../common/constants';
 import { ISnapshotConsumer } from '../../pipeline/snapshot-consumer';
+import { DEFAULT_JSON_OPTIONS } from '../../common/default-json-options';
 
 export class FilesystemSnapshotConsumer implements ISnapshotConsumer {
 
@@ -28,8 +29,8 @@ export class FilesystemSnapshotConsumer implements ISnapshotConsumer {
     const photo = await snapshot.loadPhoto();
     photo.write(join(outputFolder, Constants.PhotoFileName));
 
-    fse.writeJsonSync(join(outputFolder, Constants.HistoryItemMetadataFileName), snapshot.historyItemRectangle);
-    fse.writeJsonSync(join(outputFolder, Constants.PhotoMetadataFileName), snapshot.photoRectangle);
+    fse.writeJsonSync(join(outputFolder, Constants.HistoryItemMetadataFileName), snapshot.historyItemRectangle, DEFAULT_JSON_OPTIONS);
+    fse.writeJsonSync(join(outputFolder, Constants.PhotoMetadataFileName), snapshot.photoRectangle, DEFAULT_JSON_OPTIONS);
 
     return Promise.resolve();
   }

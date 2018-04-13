@@ -4,6 +4,7 @@ import { IFrameConsumer } from '../../pipeline/frame-consumer';
 import { IFrame } from '../../pipeline/frame';
 import { Constants } from '../../common/constants';
 import { FrameFolderUtilities } from '../../pipeline-common/frame-folder-utilities';
+import { DEFAULT_JSON_OPTIONS } from '../../common/default-json-options';
 
 export class FilesystemFrameConsumer implements IFrameConsumer {
 
@@ -18,16 +19,12 @@ export class FilesystemFrameConsumer implements IFrameConsumer {
     ++this.frameNumber;
 
     const outputFolder = this.frameFolderUtilities.getFolderPath(this.sessionFolder, this.frameNumber);
-
     const frameImage = frame.image;
-    const frameMetadata = {
-      ...frame,
-      image: undefined,
-    };
+    const frameMetadata = frame.metadata;
 
     frameImage.write(join(outputFolder, Constants.FrameFileName));
 
-    fse.writeJsonSync(join(outputFolder, Constants.FrameMetadataFileName), frameMetadata);
+    fse.writeJsonSync(join(outputFolder, Constants.FrameMetadataFileName), frameMetadata, DEFAULT_JSON_OPTIONS);
 
     return Promise.resolve();
   }
