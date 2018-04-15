@@ -19,7 +19,7 @@ ${jsonStringify(actual)}`;
       Log.error(failureMessage);
     }
     else {
-      Log.info(`${this.consumedType} ${this.consumedCount} ${type} matches.`);
+      Log.success(`${this.consumedType} ${this.consumedCount} ${type} matches.`);
     }
 
     return Promise.resolve();
@@ -37,7 +37,7 @@ ${jsonStringify(actual)}`;
       Log.error(failureMessage);
     }
     else {
-      Log.info(`${this.consumedType} ${this.consumedCount} ${type} matches.`);
+      Log.success(`${this.consumedType} ${this.consumedCount} ${type} matches.`);
     }
 
     return Promise.resolve();

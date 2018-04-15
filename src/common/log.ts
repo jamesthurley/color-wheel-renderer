@@ -1,26 +1,31 @@
 import { LogLevel } from '../options';
+import * as colors from 'colors';
 
 export class Log {
   public static logLevel: LogLevel;
 
   public static verbose(text: string) {
     if (Log.logLevel === LogLevel.verbose) {
-      console.log(text);
+      console.log(colors.gray(text));
     }
   }
 
   public static info(text: string) {
-    console.log(text);
+    console.log(colors.white(text));
+  }
+
+  public static success(text: string) {
+    console.log(colors.green(text));
   }
 
   public static warn(text: string) {
-    console.warn('WARNING: ' + text);
+    console.warn(colors.yellow('WARNING: ' + text));
   }
 
   public static error(text: string, error?: Error) {
-    console.error('ERROR: ' + text);
+    console.error(colors.red('ERROR: ' + text));
     if (error) {
-      console.error(error);
+      console.error(colors.red('' + error));
     }
   }
 }
