@@ -2,7 +2,7 @@ import { SnapshotFolderUtilities } from './snapshot-folder-utilities';
 
 export abstract class SessionSnapshotFolderReaderBase {
 
-  private folders: ReadonlyArray<string>;
+  private folders: ReadonlyArray<string> | undefined;
   private folderIndex: number = 0;
 
   constructor(

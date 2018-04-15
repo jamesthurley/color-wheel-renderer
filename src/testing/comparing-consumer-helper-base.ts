@@ -5,7 +5,7 @@ import { DisplayableError } from '../common/displayable-error';
 export abstract class ComparingConsumerHelperBase implements IComparingConsumerHelper {
 
   private writableConsumedCount: number = 0;
-  private writableConsumedType: string;
+  private writableConsumedType: string = '';
 
   public get consumedCount(): number {
     return this.writableConsumedCount;

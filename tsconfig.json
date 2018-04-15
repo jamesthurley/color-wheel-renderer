@@ -2,7 +2,9 @@
   "compilerOptions": {
     "target": "es6",
     "module": "commonjs",
+    "declaration": true,
     "outDir": "dist",
+    "strict": true,
     "sourceMap": true,
     "noImplicitAny": true,
     "noImplicitReturns": true,
@@ -10,8 +12,7 @@
     "strictNullChecks": true
   },
   "include": [
-    "src/**/*.ts",
-    "integration-tests/**/*.ts"
+    "src/**/*.ts"
   ],
   "exclude": [
     "node_modules"

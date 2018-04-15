@@ -41,7 +41,7 @@ export function processOptions(editor: string | undefined, unprocessed: IUnproce
   return Options.create(options);
 }
 
-interface IUnprocessedOptions {
+export interface IUnprocessedOptions {
   input: string | undefined;
   output: string | undefined;
   verbose: boolean;

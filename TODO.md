@@ -1,8 +1,10 @@
+ - Release as packaged node application.
+ - Documentation.
+
  - Sample multiple X and Y positions when finding photo border, to avoid icons with similar colours causing confusion.
  - Finish implementing "lightroom-mac".
- - Release as packaged node application.
- - Add tests for output frames (sum of differences between reference and result).
+
  - MP4 or equivalent rendering support.
  - Upload to Imgur support.
- - Documentation.
+
  - Test error conditions (missing images when testing, etc).

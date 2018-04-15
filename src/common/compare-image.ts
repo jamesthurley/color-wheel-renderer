@@ -1,6 +1,5 @@
 import * as Jimp from 'jimp';
 import { getPixelAtIndex } from './get-pixel-at-index';
-import { Pixel } from './pixel';
 
 export function compareImage(expected: Jimp, actual: Jimp): Promise<ImageComparisonResult> {
   const messages: string[] = [];

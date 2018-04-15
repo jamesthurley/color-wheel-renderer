@@ -2,18 +2,33 @@
   "name": "opendarkroom",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types" : "dist/index.d.ts",
+  "preferGlobal": true,
+  "bin": { "odr": "dist/index.js" },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/opendarkroom/toolkit.git"
+  },
   "scripts": {
     "help": "npm run start -- --help",
     "odr": "npm run start",
     "start": "ts-node src/index.ts",
-    "tslint": "tslint --project tsconfig.json",
+    "tslint": "tslint",
     "tsc": "tsc",
+    "lint": "npm run tslint -- --project tsconfig.json && npm run tslint -- --project tsconfig.tests.json",
+    "build": "npm run tsc",
+    "build-tests": "npm run tsc -- --project tsconfig.tests.json",
+    "build-all": "npm run build && npm run build-tests",
     "test": "ava --verbose",
-    "ci": "npm run tslint && npm run tsc && npm run test"
+    "ci": "npm run lint && npm run build-all && npm run test"
   },
   "author": "James Thurley",
   "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/opendarkroom/toolkit/issues"
+  },
+  "homepage":"https://opendarkroom.com/",
   "dependencies": {
     "commander": "^2.15.1",
     "desktop-screenshot": "^0.1.1",

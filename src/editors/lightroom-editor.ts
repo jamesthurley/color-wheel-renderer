@@ -30,7 +30,7 @@ enum BorderSearchState {
 
 export abstract class LightroomEditor extends EditorBase {
 
-  private photoBorderLeftIndex: number;
+  private photoBorderLeftIndex: number = 0;
 
   public findPhotoRectangle(image: Jimp): IRectangle | undefined {
     const xBorders = this.findPhotoBorders(image, DIMENSION_INDEX_X);

@@ -14,7 +14,7 @@ export const SHORT_FRAME_DELAY_CENTISECS = 50;
 export class RenderingSnapshotConsumer implements ISnapshotConsumer {
 
   private snapshots: ISnapshot[] = [];
-  private maxFrameSize: Size;
+  private maxFrameSize: Size = new Size(0, 0);
 
   constructor(
     private readonly frameConsumer: IFrameConsumer) {
@@ -23,7 +23,7 @@ export class RenderingSnapshotConsumer implements ISnapshotConsumer {
   public consume(snapshot: ISnapshot): Promise<void> {
     this.snapshots.push(snapshot);
 
-    if (!this.maxFrameSize) {
+    if (this.snapshots.length === 1) {
       this.maxFrameSize = new Size(
         snapshot.photoRectangle.width,
         snapshot.photoRectangle.height);

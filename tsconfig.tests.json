@@ -1,0 +1,10 @@
+{
+  "extends": "./tsconfig",
+  "compilerOptions": {
+    "outDir": "dist-tests"
+  },
+  "include": [
+    "src/**/*.ts",
+    "integration-tests/**/*.spec.ts"
+  ]
+}
