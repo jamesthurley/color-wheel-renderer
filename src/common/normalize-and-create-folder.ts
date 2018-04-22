@@ -1,5 +1,5 @@
 import { createFolders } from './create-folders';
-import { normalize } from 'path';
+import { normalize, dirname } from 'path';
 
 export function normalizeAndCreateFolder(path: string): string {
   if (!path.endsWith('/') && !path.endsWith('\\')) {
@@ -8,6 +8,15 @@ export function normalizeAndCreateFolder(path: string): string {
 
   path = normalize(path);
   createFolders(path);
+
+  return path;
+}
+
+export function normalizeAndCreateFolderForFile(path: string): string {
+  const folderPath = dirname(path);
+
+  path = normalize(path);
+  createFolders(folderPath);
 
   return path;
 }

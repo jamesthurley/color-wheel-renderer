@@ -1,14 +1,20 @@
 #!/usr/bin/env node
 import * as program from 'commander';
 import { Log } from './common/log';
-import { processSessionOptions, IUnprocessedSessionOptions } from './process-session-options';
 import { EditorFactoryMap } from './editors/editor-factory-map';
 import { ICommandFactory } from './commands/command-factory';
-import { RenderCommandFactory } from './commands/render-command';
-import { TestRecordCommandFactory } from './commands/test-record-command';
-import { RecordCommandFactory } from './commands/record-command';
-import { TestRenderCommandFactory } from './commands/test-render-command';
-import { RenderColorWheelCommandFactory } from './commands/render-color-wheel-command';
+import { RenderCommandFactory } from './commands/session-commands/render-session-command-factory';
+import { TestRecordCommandFactory } from './commands/session-commands/test-record-session-command-factory';
+import { RecordCommandFactory } from './commands/session-commands/record-session-command-factory';
+import { TestRenderCommandFactory } from './commands/session-commands/test-render-session-command-factory';
+import { RenderColorWheelCommandFactory } from './commands/color-wheel-commands/render-color-wheel-command-factory';
+import { ICommandOptionsProcessor } from './commands/command-options-processor';
+import { SessionOptions } from './commands/session-commands/session-options';
+import { IUnprocessedSessionOptions } from './commands/session-commands/unprocessed-session-options';
+import { SessionOptionsProcessor } from './commands/session-commands/session-options-processor';
+import { IUnprocessedColorWheelOptions } from './commands/color-wheel-commands/unprocessed-color-wheel-options';
+import { ColorWheelOptions } from './commands/color-wheel-commands/color-wheel-options';
+import { ColorWheelOptionsProcessor } from './commands/color-wheel-commands/color-wheel-options-processor';
 
 let editorsHelp: string = '';
 for (const editorKey of EditorFactoryMap.keys()) {
@@ -26,7 +32,10 @@ const record = program
   .command('record-session <editor>')
   .description(`Record a session, and keep intermediate files. ${editorsHelp}`)
   .action((editor: string, options: IUnprocessedSessionOptions) => {
-    executeAction(editor, options, new RecordCommandFactory());
+    executeAction<IUnprocessedSessionOptions, SessionOptions>(
+      options,
+      new SessionOptionsProcessor(),
+      new RecordCommandFactory());
   });
 outputOption(record);
 verboseOption(record);
@@ -36,7 +45,10 @@ const render = program
   .description('Render a previously recorded session to a video.')
   .action((options: IUnprocessedSessionOptions) => {
     options.useDefaultInput = true;
-    executeAction(undefined, options, new RenderCommandFactory());
+    executeAction<IUnprocessedSessionOptions, SessionOptions>(
+      options,
+      new SessionOptionsProcessor(),
+      new RenderCommandFactory());
   });
 inputOption(render);
 outputOption(render);
@@ -47,7 +59,11 @@ const testRecord = program
   .description(`Test a previously recorded session to see if the results have changed. ${editorsHelp}`)
   .action((editor: string, options: IUnprocessedSessionOptions) => {
     options.useDefaultInput = true;
-    executeAction(editor, options, new TestRecordCommandFactory());
+    options.editor = editor;
+    executeAction<IUnprocessedSessionOptions, SessionOptions>(
+      options,
+      new SessionOptionsProcessor(),
+      new TestRecordCommandFactory());
   });
 inputOption(testRecord);
 outputOption(testRecord);
@@ -58,7 +74,10 @@ const testRender = program
   .description(`Test a previously rendered session to see if the results have changed.`)
   .action((options: IUnprocessedSessionOptions) => {
     options.useDefaultInput = true;
-    executeAction(undefined, options, new TestRenderCommandFactory());
+    executeAction<IUnprocessedSessionOptions, SessionOptions>(
+      options,
+      new SessionOptionsProcessor(),
+      new TestRenderCommandFactory());
   });
 inputOption(testRender);
 outputOption(testRender);
@@ -67,9 +86,12 @@ verboseOption(testRender);
 const renderColorWheel = program
   .command('render-color-wheel')
   .description('Renders a color wheel to a file.')
-  .action((options: IUnprocessedSessionOptions) => {
+  .action((options: IUnprocessedColorWheelOptions) => {
     options.useDefaultOutput = true;
-    executeAction(undefined, options, new RenderColorWheelCommandFactory());
+    executeAction<IUnprocessedColorWheelOptions, ColorWheelOptions>(
+      options,
+      new ColorWheelOptionsProcessor(),
+      new RenderColorWheelCommandFactory());
   });
 outputOption(renderColorWheel);
 verboseOption(renderColorWheel);
@@ -91,9 +113,12 @@ function outputOption(command: program.Command): program.Command {
   return command.option('-o --output <path>', 'Folder where test results written to.');
 }
 
-async function executeAction(editor: string | undefined, commandLineOptions: IUnprocessedSessionOptions, commandFactory: ICommandFactory) {
+async function executeAction<TUnprocessedOptions, TOptions>(
+  commandLineOptions: TUnprocessedOptions,
+  optionsProcessor: ICommandOptionsProcessor<TUnprocessedOptions, TOptions>,
+  commandFactory: ICommandFactory<TOptions>) {
   try {
-    const options = processSessionOptions(editor, commandLineOptions);
+    const options = optionsProcessor.process(commandLineOptions);
     if (options) {
       const command = commandFactory.create(options);
       await command.execute();

@@ -1,5 +1,5 @@
-import { LogLevel } from '../session-options';
 import * as colors from 'colors';
+import { LogLevel } from './log-level';
 
 export class Log {
   public static logLevel: LogLevel;

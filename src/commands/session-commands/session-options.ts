@@ -1,12 +1,8 @@
-import { IEditor } from './editors/editor';
-import { normalizeAndCreateFolder } from './common/normalize-and-create-folder';
+import { IEditor } from '../../editors/editor';
+import { normalizeAndCreateFolder } from '../../common/normalize-and-create-folder';
 import { isUndefined } from 'util';
-import { DisplayableError } from './common/displayable-error';
-
-export enum LogLevel {
-  verbose = 'verbose',
-  info = 'info',
-}
+import { DisplayableError } from '../../common/displayable-error';
+import { LogLevel } from '../../common/log-level';
 
 export class SessionOptions {
   public static default(): SessionOptions {
