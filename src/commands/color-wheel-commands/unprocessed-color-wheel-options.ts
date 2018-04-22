@@ -1,5 +1,8 @@
 export interface IUnprocessedColorWheelOptions {
-  useDefaultOutput?: boolean;
-  outputFile: string | undefined;
+  output: string | undefined;
   verbose: boolean;
+  width: string;
+  height: string;
+  margin: string;
+  buckets: string;
 }

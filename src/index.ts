@@ -87,13 +87,16 @@ const renderColorWheel = program
   .command('render-color-wheel')
   .description('Renders a color wheel to a file.')
   .action((options: IUnprocessedColorWheelOptions) => {
-    options.useDefaultOutput = true;
     executeAction<IUnprocessedColorWheelOptions, ColorWheelOptions>(
       options,
       new ColorWheelOptionsProcessor(),
       new RenderColorWheelCommandFactory());
-  });
-outputOption(renderColorWheel);
+  })
+  .option('-o --output <filePath>', 'Path to file where color wheel should be saved.')
+  .option('-w --width <pixels>', 'Width of output image.')
+  .option('-h --height <pixels>', 'Height of output image.')
+  .option('-m --margin <pixels>', 'Size of margin around color wheel.')
+  .option('-b --buckets <count>', 'Number of buckets to divide colors into. Defaults to 0, which gives a smooth output.');
 verboseOption(renderColorWheel);
 
 // This removes extra arguments when debugging under e.g. VSCode.
@@ -106,11 +109,11 @@ function verboseOption(command: program.Command): program.Command {
 }
 
 function inputOption(command: program.Command): program.Command {
-  return command.option('-i --input <path>', 'Recording input folder where session should be read from.');
+  return command.option('-i --input <folderPath>', 'Recording input folder where session should be read from.');
 }
 
 function outputOption(command: program.Command): program.Command {
-  return command.option('-o --output <path>', 'Folder where test results written to.');
+  return command.option('-o --output <folderPath>', 'Folder where test results written to.');
 }
 
 async function executeAction<TUnprocessedOptions, TOptions>(
@@ -126,7 +129,7 @@ async function executeAction<TUnprocessedOptions, TOptions>(
     }
   }
   catch (error) {
-    if (error.isDisplayable) {
+    if (error && error.isDisplayable) {
       Log.error(error.message);
     }
     else {

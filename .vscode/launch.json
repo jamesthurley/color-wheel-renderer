@@ -7,7 +7,7 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Launch Program",
+      "name": "Test Record Session",
       "sourceMaps": true,
       "cwd": "${workspaceRoot}",
       "runtimeArgs": [
@@ -18,11 +18,31 @@
       "args": [
         "${workspaceFolder}/src/index.ts",
         "--",
-        "test",
+        "test-record-session",
         "lightroom-windows",
         "--verbose",
         "-i",
         "..\\opendarkroomtests\\lightroom-windows-smart-collection-icon-in-center-y"
+      ]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Render Color Wheel",
+      "sourceMaps": true,
+      "cwd": "${workspaceRoot}",
+      "runtimeArgs": [
+        "--nolazy",
+        "-r",
+        "ts-node/register"
+      ],
+      "args": [
+        "${workspaceFolder}/src/index.ts",
+        "--",
+        "render-color-wheel",
+        "--verbose",
+        "-w",
+        "512"
       ]
     }
   ]

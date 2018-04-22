@@ -4,6 +4,8 @@ import { ColorWheelOptions } from './color-wheel-options';
 import { LogLevel } from '../../common/log-level';
 import { DisplayableError } from '../../common/displayable-error';
 import { Log } from '../../common/log';
+import { Size } from '../../common/size';
+import { toNumber } from '../../common/to-number';
 
 export class ColorWheelOptionsProcessor implements ICommandOptionsProcessor<IUnprocessedColorWheelOptions, ColorWheelOptions> {
   public process(unprocessed: IUnprocessedColorWheelOptions): ColorWheelOptions | undefined {
@@ -13,16 +15,28 @@ export class ColorWheelOptionsProcessor implements ICommandOptionsProcessor<IUnp
       options.logLevel = LogLevel.verbose;
     }
 
-    if (unprocessed.useDefaultOutput) {
-      options.outputFile = './color-wheel.png';
-    }
-
-    if (unprocessed.outputFile) {
-      if (!unprocessed.outputFile.toLocaleLowerCase().endsWith('.png')) {
+    if (unprocessed.output) {
+      if (!unprocessed.output.toLocaleLowerCase().endsWith('.png')) {
         throw new DisplayableError('Output file should have a .png extension.');
       }
 
-      options.outputFile = unprocessed.outputFile;
+      options.outputFile = unprocessed.output;
+    }
+
+    if (unprocessed.height || unprocessed.width) {
+      const width = toNumber(unprocessed.width, 'width');
+      const height = toNumber(unprocessed.height, 'height');
+      options.imageSize = new Size(
+        width || height,
+        height || width);
+    }
+
+    if (unprocessed.margin) {
+      options.margin = toNumber(unprocessed.margin, 'margin');
+    }
+
+    if (unprocessed.buckets) {
+      options.bucketCount = toNumber(unprocessed.buckets, 'buckets');
     }
 
     Log.logLevel = options.logLevel;

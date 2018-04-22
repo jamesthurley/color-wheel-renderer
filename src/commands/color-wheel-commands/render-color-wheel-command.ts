@@ -1,21 +1,25 @@
 import { ICommand } from '../command';
 import { generateColorWheel } from '../../color-wheel/generate-color-wheel';
+import { Size } from '../../common/size';
 
 export class RenderColorWheelCommand implements ICommand {
   constructor(
-    public readonly outputFile: string) {
+    public readonly outputFile: string,
+    public readonly imageSize: Size,
+    public readonly borderSize: number,
+    public readonly bucketCount: number) {
   }
 
   public execute(): Promise<void> {
+    // We generate one twice as large so that we can supersample to get nice smooth lines
+    // between buckets.
+    const image = generateColorWheel(
+      this.imageSize.width * 2,
+      this.imageSize.height * 2,
+      this.borderSize,
+      this.bucketCount);
 
-    const imageWidth = 1024;
-    const imageHeight = 1024;
-
-    const borderSize = 8;
-    const bucketCount = 36;
-
-    const image = generateColorWheel(imageWidth * 2, imageHeight * 2, borderSize, bucketCount);
-    image.resize(imageWidth, imageHeight);
+    image.resize(this.imageSize.width, this.imageSize.height);
     image.write(this.outputFile);
     return Promise.resolve();
   }
