@@ -1,4 +1,4 @@
-import { Options } from '../options';
+import { SessionOptions } from '../session-options';
 import { LiveScreenshotProducer } from '../recording/screenshot-producers/live-screenshot-producer';
 import { PatientSnapshotProducer } from '../recording/snapshot-producers/patient-snapshot-producer';
 import { ISnapshotProducer } from '../pipeline/snapshot-producer';
@@ -12,7 +12,7 @@ import { SessionRunner } from '../pipeline/session-runner';
 import { SessionRunningCommand } from './session-running-command';
 
 export class RecordCommandFactory implements ICommandFactory {
-  public create(options: Options): ICommand {
+  public create(options: SessionOptions): ICommand {
 
     const snapshotProducer: ISnapshotProducer = new PatientSnapshotProducer(
       options.millisecondsBetweenScreenshots,

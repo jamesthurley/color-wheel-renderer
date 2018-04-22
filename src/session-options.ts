@@ -8,9 +8,9 @@ export enum LogLevel {
   info = 'info',
 }
 
-export class Options {
-  public static default(): Options {
-    return new Options(
+export class SessionOptions {
+  public static default(): SessionOptions {
+    return new SessionOptions(
       LogLevel.info,
       undefined,
       undefined,
@@ -19,8 +19,8 @@ export class Options {
       30000);
   }
 
-  public static create(source: Options): Options {
-    return new Options(
+  public static create(source: SessionOptions): SessionOptions {
+    return new SessionOptions(
       source.logLevel,
       source.inputFolder,
       source.outputFolder,

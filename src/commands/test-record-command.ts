@@ -1,4 +1,4 @@
-import { Options } from '../options';
+import { SessionOptions } from '../session-options';
 import { ICommandFactory } from './command-factory';
 import { ICommand } from './command';
 import { ISnapshotProducer } from '../pipeline/snapshot-producer';
@@ -15,7 +15,7 @@ import { ComparingSnapshotConsumer } from '../testing/snapshot-consumers/compari
 import { LoggingConsumerHelper } from '../testing/logging-consumer-helper';
 
 export class TestRecordCommandFactory implements ICommandFactory {
-  public create(options: Options): ICommand {
+  public create(options: SessionOptions): ICommand {
 
     if (!options.inputFolder) {
       throw new DisplayableError('Input session folder must be provided.');

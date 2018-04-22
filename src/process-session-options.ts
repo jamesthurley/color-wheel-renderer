@@ -1,9 +1,9 @@
-import { Options, LogLevel } from './options';
+import { SessionOptions, LogLevel } from './session-options';
 import { EditorFactoryMap } from './editors/editor-factory-map';
 import { Log } from './common/log';
 
-export function processOptions(editor: string | undefined, unprocessed: IUnprocessedOptions): Options | undefined {
-  const options = {...Options.default()};
+export function processSessionOptions(editor: string | undefined, unprocessed: IUnprocessedSessionOptions): SessionOptions | undefined {
+  const options = {...SessionOptions.default()};
 
   if (unprocessed.useDefaultInput) {
     options.inputFolder = '.';
@@ -38,10 +38,10 @@ export function processOptions(editor: string | undefined, unprocessed: IUnproce
   Log.logLevel = options.logLevel;
   Log.verbose('Options: ' + JSON.stringify(options, undefined, 2));
 
-  return Options.create(options);
+  return SessionOptions.create(options);
 }
 
-export interface IUnprocessedOptions {
+export interface IUnprocessedSessionOptions {
   input: string | undefined;
   output: string | undefined;
   verbose: boolean;

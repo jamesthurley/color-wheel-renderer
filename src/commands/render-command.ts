@@ -1,4 +1,4 @@
-import { Options } from '../options';
+import { SessionOptions } from '../session-options';
 import { ICommandFactory } from './command-factory';
 import { ICommand } from './command';
 import { DisplayableError } from '../common/displayable-error';
@@ -15,7 +15,7 @@ import { FrameFolderUtilities } from '../pipeline-common/frame-folder-utilities'
 import { AggregateFrameConsumer } from '../rendering/frame-consumers/aggregate-frame-consumer';
 
 export class RenderCommandFactory implements ICommandFactory {
-  public create(options: Options): ICommand {
+  public create(options: SessionOptions): ICommand {
 
     if (!options.inputFolder) {
       throw new DisplayableError('Input session folder must be provided.');

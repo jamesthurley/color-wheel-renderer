@@ -1,13 +1,14 @@
 #!/usr/bin/env node
 import * as program from 'commander';
 import { Log } from './common/log';
-import { processOptions } from './process-options';
+import { processSessionOptions, IUnprocessedSessionOptions } from './process-session-options';
 import { EditorFactoryMap } from './editors/editor-factory-map';
 import { ICommandFactory } from './commands/command-factory';
 import { RenderCommandFactory } from './commands/render-command';
 import { TestRecordCommandFactory } from './commands/test-record-command';
 import { RecordCommandFactory } from './commands/record-command';
 import { TestRenderCommandFactory } from './commands/test-render-command';
+import { RenderColorWheelCommandFactory } from './commands/render-color-wheel-command';
 
 let editorsHelp: string = '';
 for (const editorKey of EditorFactoryMap.keys()) {
@@ -22,18 +23,18 @@ program
   .version('0.1.0', '-v, --version');
 
 const record = program
-  .command('record <editor>')
+  .command('record-session <editor>')
   .description(`Record a session, and keep intermediate files. ${editorsHelp}`)
-  .action((editor: string, options: any) => {
+  .action((editor: string, options: IUnprocessedSessionOptions) => {
     executeAction(editor, options, new RecordCommandFactory());
   });
 outputOption(record);
 verboseOption(record);
 
 const render = program
-  .command('render')
+  .command('render-session')
   .description('Render a previously recorded session to a video.')
-  .action((options: any) => {
+  .action((options: IUnprocessedSessionOptions) => {
     options.useDefaultInput = true;
     executeAction(undefined, options, new RenderCommandFactory());
   });
@@ -42,9 +43,9 @@ outputOption(render);
 verboseOption(render);
 
 const testRecord = program
-  .command('test-record <editor>')
+  .command('test-record-session <editor>')
   .description(`Test a previously recorded session to see if the results have changed. ${editorsHelp}`)
-  .action((editor: string, options: any) => {
+  .action((editor: string, options: IUnprocessedSessionOptions) => {
     options.useDefaultInput = true;
     executeAction(editor, options, new TestRecordCommandFactory());
   });
@@ -53,15 +54,25 @@ outputOption(testRecord);
 verboseOption(testRecord);
 
 const testRender = program
-  .command('test-render')
+  .command('test-render-session')
   .description(`Test a previously rendered session to see if the results have changed.`)
-  .action((options: any) => {
+  .action((options: IUnprocessedSessionOptions) => {
     options.useDefaultInput = true;
     executeAction(undefined, options, new TestRenderCommandFactory());
   });
 inputOption(testRender);
 outputOption(testRender);
 verboseOption(testRender);
+
+const renderColorWheel = program
+  .command('render-color-wheel')
+  .description('Renders a color wheel to a file.')
+  .action((options: IUnprocessedSessionOptions) => {
+    options.useDefaultOutput = true;
+    executeAction(undefined, options, new RenderColorWheelCommandFactory());
+  });
+outputOption(renderColorWheel);
+verboseOption(renderColorWheel);
 
 // This removes extra arguments when debugging under e.g. VSCode.
 const argv: string[] = process.argv.filter(v => v !== '--');
@@ -80,9 +91,9 @@ function outputOption(command: program.Command): program.Command {
   return command.option('-o --output <path>', 'Folder where test results written to.');
 }
 
-async function executeAction(editor: string | undefined, commandLineOptions: any, commandFactory: ICommandFactory) {
+async function executeAction(editor: string | undefined, commandLineOptions: IUnprocessedSessionOptions, commandFactory: ICommandFactory) {
   try {
-    const options = processOptions(editor, commandLineOptions);
+    const options = processSessionOptions(editor, commandLineOptions);
     if (options) {
       const command = commandFactory.create(options);
       await command.execute();

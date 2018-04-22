@@ -1,4 +1,4 @@
-import { LogLevel } from '../options';
+import { LogLevel } from '../session-options';
 import * as colors from 'colors';
 
 export class Log {
