@@ -4,5 +4,6 @@ export interface IUnprocessedColorWheelOptions {
   width: string;
   height: string;
   margin: string;
-  buckets: string;
+  hueBuckets: string;
+  saturationBuckets: string;
 }

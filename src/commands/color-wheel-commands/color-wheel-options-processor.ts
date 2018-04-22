@@ -35,8 +35,12 @@ export class ColorWheelOptionsProcessor implements ICommandOptionsProcessor<IUnp
       options.margin = toNumber(unprocessed.margin, 'margin');
     }
 
-    if (unprocessed.buckets) {
-      options.bucketCount = toNumber(unprocessed.buckets, 'buckets');
+    if (unprocessed.hueBuckets) {
+      options.hueBuckets = toNumber(unprocessed.hueBuckets, 'hueBuckets');
+    }
+
+    if (unprocessed.saturationBuckets) {
+      options.saturationBuckets = toNumber(unprocessed.saturationBuckets, 'saturationBuckets');
     }
 
     Log.logLevel = options.logLevel;

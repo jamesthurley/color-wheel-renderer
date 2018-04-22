@@ -4,7 +4,8 @@ import { getAngleDegrees } from './get-angle-degrees';
 import { bucket } from './bucket';
 import { Pixel } from '../common/pixel';
 
-export function generateColorWheel(imageWidth: number, imageHeight: number, borderSize: number, bucketCount: number = 0): Jimp {
+export function generateColorWheel(
+  imageWidth: number, imageHeight: number, borderSize: number, hueBuckets: number = 0, saturationBuckets: number = 0): Jimp {
 
   const wheelDiameter = Math.min(imageWidth, imageHeight) - borderSize;
 
@@ -24,11 +25,13 @@ export function generateColorWheel(imageWidth: number, imageHeight: number, bord
   image.scan(0, 0, imageWidth, imageHeight, (imageX: number, imageY: number, index: number) => {
     const relativeX = imageX - centerX;
     const relativeY = imageY - centerY;
-    const distanceFromCenter = Math.sqrt(Math.pow(relativeX, 2) + Math.pow(relativeY, 2));
+    let distanceFromCenter = Math.sqrt(Math.pow(relativeX, 2) + Math.pow(relativeY, 2));
 
     if (distanceFromCenter > edgeDistance) {
       return;
     }
+
+    distanceFromCenter = bucket(distanceFromCenter, edgeDistance, saturationBuckets);
 
     let saturation = 1;
     let value = 1;
@@ -41,7 +44,7 @@ export function generateColorWheel(imageWidth: number, imageHeight: number, bord
     }
 
     let angleDegrees = getAngleDegrees(0, 0, relativeX, relativeY);
-    angleDegrees = bucket(angleDegrees, 360, bucketCount);
+    angleDegrees = bucket(angleDegrees, 360, hueBuckets);
 
     // https://www.rapidtables.com/convert/color/hsv-to-rgb.html
     const c = value * saturation;

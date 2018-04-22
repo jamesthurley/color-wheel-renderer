@@ -9,6 +9,7 @@ export class RenderColorWheelCommandFactory implements ICommandFactory<ColorWhee
       options.outputFile,
       options.imageSize,
       options.margin,
-      options.bucketCount);
+      options.hueBuckets,
+      options.saturationBuckets);
   }
 }

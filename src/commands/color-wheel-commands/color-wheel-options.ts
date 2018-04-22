@@ -9,6 +9,7 @@ export class ColorWheelOptions {
       './color-wheel.png',
       new Size(1024, 1024),
       10,
+      0,
       0);
   }
 
@@ -18,7 +19,8 @@ export class ColorWheelOptions {
       source.outputFile,
       source.imageSize,
       source.margin,
-      source.bucketCount);
+      source.hueBuckets,
+      source.saturationBuckets);
   }
 
   constructor(
@@ -26,7 +28,8 @@ export class ColorWheelOptions {
     public readonly outputFile: string,
     public readonly imageSize: Size,
     public readonly margin: number,
-    public readonly bucketCount: number) {
+    public readonly hueBuckets: number,
+    public readonly saturationBuckets: number) {
 
     if (this.outputFile) {
       this.outputFile = normalizeAndCreateFolderForFile(this.outputFile);

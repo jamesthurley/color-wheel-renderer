@@ -7,7 +7,8 @@ export class RenderColorWheelCommand implements ICommand {
     public readonly outputFile: string,
     public readonly imageSize: Size,
     public readonly borderSize: number,
-    public readonly bucketCount: number) {
+    public readonly hueBuckets: number,
+    public readonly saturationBuckets: number) {
   }
 
   public execute(): Promise<void> {
@@ -17,7 +18,8 @@ export class RenderColorWheelCommand implements ICommand {
       this.imageSize.width * 2,
       this.imageSize.height * 2,
       this.borderSize,
-      this.bucketCount);
+      this.hueBuckets,
+      this.saturationBuckets);
 
     image.resize(this.imageSize.width, this.imageSize.height);
     image.write(this.outputFile);
