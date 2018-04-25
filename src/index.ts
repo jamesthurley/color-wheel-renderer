@@ -93,7 +93,6 @@ const renderColorWheel = program
       new RenderColorWheelCommandFactory());
   })
   .option('-o --output <filePath>', 'Path to file where color wheel should be saved.')
-  .option('-w --width <pixels>', 'Width of output image.')
   .option('-h --height <pixels>', 'Height of output image.')
   .option('-m --margin <pixels>', 'Size of margin around color wheel.')
   .option('-b --hue-buckets <count>', 'Number of hue buckets to divide colors into. Defaults to 0, which gives a smooth output.')

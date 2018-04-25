@@ -1,6 +1,21 @@
-export function bucket(v: number, maximum: number, buckets: number): number {
+export enum BucketDirection {
+  down,
+  up,
+}
+
+export function bucket(value: number, maximum: number, buckets: number, direction: BucketDirection) {
+  switch (direction) {
+    case BucketDirection.up:
+      return bucketUp(value, maximum, buckets);
+
+    default:
+      return bucketDown(value, maximum, buckets);
+  }
+}
+
+export function bucketDown(value: number, maximum: number, buckets: number): number {
   if (buckets < 1) {
-    return v;
+    return value;
   }
 
   const bucketSize = maximum / buckets;
@@ -8,7 +23,7 @@ export function bucket(v: number, maximum: number, buckets: number): number {
   let currentBucketMax = bucketSize;
   for (let bucketIndex = 0; bucketIndex < buckets; ++bucketIndex) {
 
-    if (v >= currentBucketMin && v < currentBucketMax) {
+    if (value >= currentBucketMin && value < currentBucketMax) {
       return currentBucketMin;
     }
 
@@ -17,4 +32,8 @@ export function bucket(v: number, maximum: number, buckets: number): number {
   }
 
   return maximum;
+}
+
+export function bucketUp(value: number, maximum: number, buckets: number): number {
+  return maximum - bucketDown(maximum - value, maximum, buckets);
 }

@@ -4,7 +4,6 @@ import { ColorWheelOptions } from './color-wheel-options';
 import { LogLevel } from '../../common/log-level';
 import { DisplayableError } from '../../common/displayable-error';
 import { Log } from '../../common/log';
-import { Size } from '../../common/size';
 import { toNumber } from '../../common/to-number';
 
 export class ColorWheelOptionsProcessor implements ICommandOptionsProcessor<IUnprocessedColorWheelOptions, ColorWheelOptions> {
@@ -23,12 +22,9 @@ export class ColorWheelOptionsProcessor implements ICommandOptionsProcessor<IUnp
       options.outputFile = unprocessed.output;
     }
 
-    if (unprocessed.height || unprocessed.width) {
-      const width = toNumber(unprocessed.width, 'width');
+    if (unprocessed.height) {
       const height = toNumber(unprocessed.height, 'height');
-      options.imageSize = new Size(
-        width || height,
-        height || width);
+      options.imageHeight = height;
     }
 
     if (unprocessed.margin) {
