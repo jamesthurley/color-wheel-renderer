@@ -1,5 +1,5 @@
 import { ICommand } from '../command';
-import { generateColorWheel } from '../../color-wheel/generate-color-wheel';
+import { generateColorWheel } from '../../color-wheels/generate-color-wheel';
 import { Size } from '../../common/size';
 
 export class RenderColorWheelCommand implements ICommand {
