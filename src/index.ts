@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import * as program from 'commander';
 import { Log } from './common/log';
-import { EditorFactoryMap } from './editors/editor-factory-map';
+import { EditorFactoryMap } from './sessions/editors/editor-factory-map';
 import { ICommandFactory } from './commands/command-factory';
 import { RenderCommandFactory } from './commands/session-commands/render-session-command-factory';
 import { TestRecordCommandFactory } from './commands/session-commands/test-record-session-command-factory';

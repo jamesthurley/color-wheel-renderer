@@ -1,14 +1,14 @@
 import test, { Macro } from 'ava';
-import { ISnapshotProducer } from '../src/pipeline/snapshot-producer';
-import { SnapshotFolderUtilities } from '../src/pipeline-common/snapshot-folder-utilities';
-import { SessionRunner, ISessionRunner } from '../src/pipeline/session-runner';
-import { IntegrationTestConsumerHelper } from '../src/testing/integration-test-consumer-helper';
-import { ISnapshotConsumer } from '../src/pipeline/snapshot-consumer';
-import { FilesystemSnapshotProducer } from '../src/rendering/snapshot-producers/filesystem-snapshot-producer';
-import { RenderingSnapshotConsumer } from '../src/rendering/snapshot-consumers/rendering-snapshot-consumer';
-import { ComparingFrameConsumer } from '../src/testing/frame-consumers/comparing-frame-consumer';
+import { ISnapshotProducer } from '../src/sessions/pipeline/snapshot-producer';
+import { SnapshotFolderUtilities } from '../src/sessions/pipeline-common/snapshot-folder-utilities';
+import { SessionRunner, ISessionRunner } from '../src/sessions/pipeline/session-runner';
+import { IntegrationTestConsumerHelper } from '../src/sessions/testing/integration-test-consumer-helper';
+import { ISnapshotConsumer } from '../src/sessions/pipeline/snapshot-consumer';
+import { FilesystemSnapshotProducer } from '../src/sessions/rendering/snapshot-producers/filesystem-snapshot-producer';
+import { RenderingSnapshotConsumer } from '../src/sessions/rendering/snapshot-consumers/rendering-snapshot-consumer';
+import { ComparingFrameConsumer } from '../src/sessions/testing/frame-consumers/comparing-frame-consumer';
 import { evaluateComparisons } from './evaluate-comparisons';
-import { FrameFolderUtilities } from '../src/pipeline-common/frame-folder-utilities';
+import { FrameFolderUtilities } from '../src/sessions/pipeline-common/frame-folder-utilities';
 
 const macro: Macro = async (t, inputFolder: string) => {
 

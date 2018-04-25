@@ -1,14 +1,14 @@
 import { SessionOptions } from './session-options';
-import { LiveScreenshotProducer } from '../../recording/screenshot-producers/live-screenshot-producer';
-import { PatientSnapshotProducer } from '../../recording/snapshot-producers/patient-snapshot-producer';
-import { ISnapshotProducer } from '../../pipeline/snapshot-producer';
-import { ISnapshotConsumer } from '../../pipeline/snapshot-consumer';
-import { FilesystemSnapshotConsumer } from '../../recording/snapshot-consumers/filesystem-snapshot-consumer';
+import { LiveScreenshotProducer } from '../../sessions/recording/screenshot-producers/live-screenshot-producer';
+import { PatientSnapshotProducer } from '../../sessions/recording/snapshot-producers/patient-snapshot-producer';
+import { ISnapshotProducer } from '../../sessions/pipeline/snapshot-producer';
+import { ISnapshotConsumer } from '../../sessions/pipeline/snapshot-consumer';
+import { FilesystemSnapshotConsumer } from '../../sessions/recording/snapshot-consumers/filesystem-snapshot-consumer';
 import { ICommandFactory } from '../command-factory';
 import { ICommand } from '../command';
-import { SnapshotFolderUtilities } from '../../pipeline-common/snapshot-folder-utilities';
+import { SnapshotFolderUtilities } from '../../sessions/pipeline-common/snapshot-folder-utilities';
 import { DisplayableError } from '../../common/displayable-error';
-import { SessionRunner } from '../../pipeline/session-runner';
+import { SessionRunner } from '../../sessions/pipeline/session-runner';
 import { SessionRunningCommand } from './session-running-command';
 
 export class RecordCommandFactory implements ICommandFactory<SessionOptions> {

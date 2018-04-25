@@ -1,4 +1,4 @@
-import { IEditor } from '../../editors/editor';
+import { IEditor } from '../../sessions/editors/editor';
 import { normalizeAndCreateFolder } from '../../common/normalize-and-create-folder';
 import { isUndefined } from 'util';
 import { DisplayableError } from '../../common/displayable-error';

@@ -8,3 +8,5 @@
  - Upload to Imgur support.
 
  - Test error conditions (missing images when testing, etc).
+
+ - Documentation cache invalidation.

@@ -1,18 +1,18 @@
 import { SessionOptions } from './session-options';
 import { ICommandFactory } from '../command-factory';
 import { ICommand } from '../command';
-import { ISnapshotProducer } from '../../pipeline/snapshot-producer';
-import { FilesystemScreenshotProducer } from '../../testing/screenshot-producers/filesystem-screenshot-producer';
-import { ImpatientSnapshotProducer } from '../../testing/snapshot-producers/impatient-snapshot-producer';
-import { SnapshotFolderUtilities } from '../../pipeline-common/snapshot-folder-utilities';
+import { ISnapshotProducer } from '../../sessions/pipeline/snapshot-producer';
+import { FilesystemScreenshotProducer } from '../../sessions/testing/screenshot-producers/filesystem-screenshot-producer';
+import { ImpatientSnapshotProducer } from '../../sessions/testing/snapshot-producers/impatient-snapshot-producer';
+import { SnapshotFolderUtilities } from '../../sessions/pipeline-common/snapshot-folder-utilities';
 import { Log } from '../../common/log';
 import { DisplayableError } from '../../common/displayable-error';
-import { ISnapshotConsumer } from '../../pipeline/snapshot-consumer';
-import { FilesystemSnapshotConsumer } from '../../recording/snapshot-consumers/filesystem-snapshot-consumer';
-import { SessionRunner } from '../../pipeline/session-runner';
+import { ISnapshotConsumer } from '../../sessions/pipeline/snapshot-consumer';
+import { FilesystemSnapshotConsumer } from '../../sessions/recording/snapshot-consumers/filesystem-snapshot-consumer';
+import { SessionRunner } from '../../sessions/pipeline/session-runner';
 import { SessionRunningCommand } from './session-running-command';
-import { ComparingSnapshotConsumer } from '../../testing/snapshot-consumers/comparing-snapshot-consumer';
-import { LoggingConsumerHelper } from '../../testing/logging-consumer-helper';
+import { ComparingSnapshotConsumer } from '../../sessions/testing/snapshot-consumers/comparing-snapshot-consumer';
+import { LoggingConsumerHelper } from '../../sessions/testing/logging-consumer-helper';
 
 export class TestRecordCommandFactory implements ICommandFactory<SessionOptions> {
   public create(options: SessionOptions): ICommand {

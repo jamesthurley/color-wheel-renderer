@@ -1,7 +1,7 @@
 import { ICommandOptionsProcessor } from '../command-options-processor';
 import { SessionOptions } from './session-options';
 import { IUnprocessedSessionOptions } from './unprocessed-session-options';
-import { EditorFactoryMap } from '../../editors/editor-factory-map';
+import { EditorFactoryMap } from '../../sessions/editors/editor-factory-map';
 import { Log } from '../../common/log';
 import { LogLevel } from '../../common/log-level';
 
