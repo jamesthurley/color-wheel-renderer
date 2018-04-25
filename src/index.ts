@@ -96,8 +96,8 @@ const renderColorWheel = program
   .option('-w --width <pixels>', 'Width of output image.')
   .option('-h --height <pixels>', 'Height of output image.')
   .option('-m --margin <pixels>', 'Size of margin around color wheel.')
-  .option('-b --hueBuckets <count>', 'Number of hue buckets to divide colors into. Defaults to 0, which gives a smooth output.')
-  .option('-s --saturationBuckets <count>', 'Number of saturation buckets to divide colors into. Defaults to 0, which gives a smooth output.');
+  .option('-b --hue-buckets <count>', 'Number of hue buckets to divide colors into. Defaults to 0, which gives a smooth output.')
+  .option('-s --saturation-buckets <count>', 'Number of saturation buckets to divide colors into. Defaults to 0, which gives a smooth output.');
 verboseOption(renderColorWheel);
 
 // This removes extra arguments when debugging under e.g. VSCode.
