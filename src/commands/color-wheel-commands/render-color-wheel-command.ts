@@ -5,6 +5,8 @@ import { HsvFixedSaturationPixelRenderer } from '../../color-wheels/pixel-render
 import { ColorWheelDefinition } from '../../color-wheels/color-wheel-definition';
 import { ColorWheelSetRenderer } from '../../color-wheels/color-wheel-set-renderer';
 import { BucketDirection } from '../../color-wheels/bucket';
+import { HslFixedSaturationPixelRenderer } from '../../color-wheels/pixel-renderers/hsl-fixed-saturation-pixel-renderer';
+import { HslFixedLightnessPixelRenderer } from '../../color-wheels/pixel-renderers/hsl-fixed-lightness-pixel-renderer';
 
 export class RenderColorWheelCommand implements ICommand {
   constructor(
@@ -17,10 +19,23 @@ export class RenderColorWheelCommand implements ICommand {
   }
 
   public execute(): Promise<void> {
+
     const pixelRenderers: IColorModelPixelRenderer[] = [
-      new HsvFixedSaturationPixelRenderer(1, false, false, BucketDirection.down, BucketDirection.down),
-      new HsvFixedValuePixelRenderer(1, false, true, BucketDirection.down, BucketDirection.down),
+      new HslFixedSaturationPixelRenderer(1, false, false, BucketDirection.down, BucketDirection.down),
     ];
+
+    // const pixelRenderers: IColorModelPixelRenderer[] = [
+    //   new HsvFixedSaturationPixelRenderer(1, false, false, BucketDirection.down, BucketDirection.down),
+    //   new HsvFixedValuePixelRenderer(1, false, true, BucketDirection.down, BucketDirection.down),
+    // ];
+
+    // const pixelRenderers: IColorModelPixelRenderer[] = [
+    //   new HslFixedLightnessPixelRenderer(0.9, false, false, BucketDirection.down, BucketDirection.down),
+    //   new HslFixedLightnessPixelRenderer(0.75, false, false, BucketDirection.down, BucketDirection.down),
+    //   new HslFixedLightnessPixelRenderer(0.5, false, false, BucketDirection.down, BucketDirection.down),
+    //   new HslFixedLightnessPixelRenderer(0.25, false, false, BucketDirection.down, BucketDirection.down),
+    //   new HslFixedLightnessPixelRenderer(0.1, false, false, BucketDirection.down, BucketDirection.down),
+    // ];
 
     // const pixelRenderers: IColorModelPixelRenderer[] = [
     //   new HsvFixedValuePixelRenderer(1, false, true, BucketDirection.down, BucketDirection.down),
@@ -38,6 +53,49 @@ export class RenderColorWheelCommand implements ICommand {
         this.saturationBuckets,
         pixelRenderers),
     ];
+
+    // const colorWheelDefinitions: ColorWheelDefinition[] = [
+    //   new ColorWheelDefinition(
+    //     this.imageSize,
+    //     this.borderSize,
+    //     this.hueBuckets,
+    //     this.saturationBuckets,
+    //     [
+    //       new HslFixedLightnessPixelRenderer(0.1, false, false, BucketDirection.down, BucketDirection.up),
+    //     ]),
+    //   new ColorWheelDefinition(
+    //     this.imageSize,
+    //     this.borderSize,
+    //     this.hueBuckets,
+    //     this.saturationBuckets,
+    //     [
+    //       new HslFixedLightnessPixelRenderer(0.3, false, false, BucketDirection.down, BucketDirection.up),
+    //     ]),
+    //   new ColorWheelDefinition(
+    //     this.imageSize,
+    //     this.borderSize,
+    //     this.hueBuckets,
+    //     this.saturationBuckets,
+    //     [
+    //       new HslFixedLightnessPixelRenderer(0.5, false, false, BucketDirection.down, BucketDirection.up),
+    //     ]),
+    //   new ColorWheelDefinition(
+    //     this.imageSize,
+    //     this.borderSize,
+    //     this.hueBuckets,
+    //     this.saturationBuckets,
+    //     [
+    //       new HslFixedLightnessPixelRenderer(0.7, false, false, BucketDirection.down, BucketDirection.up),
+    //     ]),
+    //   new ColorWheelDefinition(
+    //     this.imageSize,
+    //     this.borderSize,
+    //     this.hueBuckets,
+    //     this.saturationBuckets,
+    //     [
+    //       new HslFixedLightnessPixelRenderer(0.9, false, false, BucketDirection.down, BucketDirection.up),
+    //     ]),
+    // ];
 
     const image = this.colorWheelSetRenderer.render(colorWheelDefinitions, 0);
 

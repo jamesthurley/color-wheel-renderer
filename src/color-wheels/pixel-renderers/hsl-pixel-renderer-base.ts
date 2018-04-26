@@ -1,16 +1,16 @@
 import { Pixel } from '../../common/pixel';
 import { ensureRange } from '../ensure-range';
 
-export abstract class HsvPixelRendererBase {
-  public renderInner(hue: number, saturation: number, value: number): Pixel {
+export abstract class HslPixelRendererBase {
+  public renderInner(hue: number, saturation: number, lightness: number): Pixel {
     hue = ensureRange(hue, 0, 360);
     saturation = ensureRange(saturation, 0, 1);
-    value = ensureRange(value, 0, 1);
+    lightness = ensureRange(lightness, 0, 1);
 
-    // https://www.rapidtables.com/convert/color/hsv-to-rgb.html
-    const c = value * saturation;
+    // https://www.rapidtables.com/convert/color/hsl-to-rgb.html
+    const c = (1 - Math.abs((2 * lightness) - 1)) * saturation;
     const x = c * (1 - Math.abs((hue / 60) % 2 - 1));
-    const m = value - c;
+    const m = lightness - (c / 2);
 
     let i: Pixel;
     if (hue >= 0 && hue < 60) {
