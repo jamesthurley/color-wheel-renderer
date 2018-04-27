@@ -8,11 +8,7 @@ import { ColorWheelRenderer } from '../../color-wheels/color-wheel-renderer';
 export class RenderColorWheelCommandFactory implements ICommandFactory<ColorWheelOptions> {
   public create(options: ColorWheelOptions): ICommand {
     return new RenderColorWheelCommand(
-      options.outputFile,
-      options.imageHeight,
-      options.margin,
-      options.hueBuckets,
-      options.saturationBuckets,
+      options,
       new ColorWheelSetRenderer(new ColorWheelRenderer()));
   }
 }

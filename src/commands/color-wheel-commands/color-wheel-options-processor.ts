@@ -10,6 +10,10 @@ export class ColorWheelOptionsProcessor implements ICommandOptionsProcessor<IUnp
   public process(unprocessed: IUnprocessedColorWheelOptions): ColorWheelOptions | undefined {
     const options = {...ColorWheelOptions.default()};
 
+    if (unprocessed.type) {
+      options.type = unprocessed.type;
+    }
+
     if (unprocessed.verbose) {
       options.logLevel = LogLevel.verbose;
     }
@@ -22,13 +26,21 @@ export class ColorWheelOptionsProcessor implements ICommandOptionsProcessor<IUnp
       options.outputFile = unprocessed.output;
     }
 
-    if (unprocessed.height) {
-      const height = toNumber(unprocessed.height, 'height');
-      options.imageHeight = height;
+    if (unprocessed.diameter) {
+      const diameter = toNumber(unprocessed.diameter, 'diameter');
+      options.diameter = diameter;
     }
 
     if (unprocessed.margin) {
       options.margin = toNumber(unprocessed.margin, 'margin');
+    }
+
+    if (unprocessed.expand) {
+      options.expand = unprocessed.expand;
+    }
+
+    if (unprocessed.reverseRadialColors) {
+      options.reverseRadialColors = unprocessed.reverseRadialColors;
     }
 
     if (unprocessed.hueBuckets) {
@@ -37,6 +49,26 @@ export class ColorWheelOptionsProcessor implements ICommandOptionsProcessor<IUnp
 
     if (unprocessed.saturationBuckets) {
       options.saturationBuckets = toNumber(unprocessed.saturationBuckets, 'saturationBuckets');
+    }
+
+    if (unprocessed.lightnessBuckets) {
+      options.lightnessBuckets = toNumber(unprocessed.lightnessBuckets, 'lightnessBuckets');
+    }
+
+    if (unprocessed.valueBuckets) {
+      options.valueBuckets = toNumber(unprocessed.valueBuckets, 'valueBuckets');
+    }
+
+    if (unprocessed.saturation && unprocessed.saturation.length) {
+      options.saturation = unprocessed.saturation.map(v => toNumber(v, 'saturation'));
+    }
+
+    if (unprocessed.lightness && unprocessed.lightness.length) {
+      options.lightness = unprocessed.lightness.map(v => toNumber(v, 'lightness'));
+    }
+
+    if (unprocessed.value && unprocessed.value.length) {
+      options.value = unprocessed.value.map(v => toNumber(v, 'value'));
     }
 
     Log.logLevel = options.logLevel;
