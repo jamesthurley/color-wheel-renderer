@@ -8,14 +8,9 @@ export interface IUnprocessedColorWheelOptions {
   expand: boolean;
   reverseRadialColors: boolean;
 
-  hueBuckets: string;
-  saturationBuckets: string;
-  lightnessBuckets: string;
-  valueBuckets: string;
-
-  saturation: string[];
-  lightness: string[];
-  value: string[];
+  angularBuckets: string;
+  radialBuckets: string;
+  fixed: string[];
 }
 
 export enum ColorWheelType {

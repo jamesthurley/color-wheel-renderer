@@ -1,5 +1,4 @@
 import { ICommand } from '../command';
-import { IColorModelPixelRenderer } from '../../color-wheels/pixel-renderers/color-model-pixel-renderer';
 import { HsvFixedValuePixelRenderer } from '../../color-wheels/pixel-renderers/hsv-fixed-value-pixel-renderer';
 import { HsvFixedSaturationPixelRenderer } from '../../color-wheels/pixel-renderers/hsv-fixed-saturation-pixel-renderer';
 import { ColorWheelDefinition } from '../../color-wheels/color-wheel-definition';
@@ -18,202 +17,67 @@ export class RenderColorWheelCommand implements ICommand {
   }
 
   public execute(): Promise<void> {
-
     let colorWheelDefinitions: ColorWheelDefinition[] = [];
+
+    const size = this.options.diameter + this.options.margin * 2;
+
+    if (this.options.expand) {
+      colorWheelDefinitions = [
+        new ColorWheelDefinition(
+          size,
+          this.options.margin,
+          this.options.angularBuckets,
+          this.options.radialBuckets,
+          this.options.fixed.map(
+            v => this.createPixelRenderer(
+              this.options.type, v, false, this.options.reverseRadialColors, BucketDirection.down, this.options.reverseRadialColors ? BucketDirection.down : BucketDirection.up))),
+      ];
+    }
+    else {
+      colorWheelDefinitions =
+        this.options.fixed.map(v => new ColorWheelDefinition(
+          size,
+          this.options.margin,
+          this.options.angularBuckets,
+          this.options.radialBuckets,
+          [
+            this.createPixelRenderer(
+              this.options.type, v, false, this.options.reverseRadialColors, BucketDirection.down, this.options.reverseRadialColors ? BucketDirection.down : BucketDirection.up),
+          ]));
+    }
+
+    const image = this.colorWheelSetRenderer.render(colorWheelDefinitions, 0);
+    image.write(this.options.outputFile);
+    return Promise.resolve();
+  }
+
+  private createPixelRenderer(
+    type: ColorWheelType,
+    fixed: number,
+    isAngleInverted: boolean,
+    isVaryingDimensionInverted: boolean,
+    angleBucketDirection: BucketDirection,
+    varyingDimensionBucketDirection: BucketDirection) {
 
     switch (this.options.type) {
       case ColorWheelType.HslFixedSaturation:
-        if (this.options.expand) {
-          colorWheelDefinitions = [
-            new ColorWheelDefinition(
-              this.options.diameter,
-              this.options.margin,
-              this.options.hueBuckets,
-              this.options.lightnessBuckets,
-              this.options.saturation.map(
-                v => new HslFixedSaturationPixelRenderer(
-                  v, false, this.options.reverseRadialColors, BucketDirection.down, this.options.reverseRadialColors ? BucketDirection.down : BucketDirection.up))),
-          ];
-        }
-        else {
-          colorWheelDefinitions =
-            this.options.saturation.map(v => new ColorWheelDefinition(
-              this.options.diameter,
-              this.options.margin,
-              this.options.hueBuckets,
-              this.options.lightnessBuckets,
-              [
-                new HslFixedSaturationPixelRenderer(
-                  v, false, this.options.reverseRadialColors, BucketDirection.down, this.options.reverseRadialColors ? BucketDirection.down : BucketDirection.up),
-              ]));
-        }
-        break;
+        return new HslFixedSaturationPixelRenderer(
+         fixed, false, this.options.reverseRadialColors, BucketDirection.down, this.options.reverseRadialColors ? BucketDirection.down : BucketDirection.up);
 
       case ColorWheelType.HslFixedLightness:
-        if (this.options.expand) {
-          colorWheelDefinitions = [
-            new ColorWheelDefinition(
-              this.options.diameter,
-              this.options.margin,
-              this.options.hueBuckets,
-              this.options.saturationBuckets,
-              this.options.lightness.map(
-                v => new HslFixedLightnessPixelRenderer(
-                  v, false, this.options.reverseRadialColors, BucketDirection.down, this.options.reverseRadialColors ? BucketDirection.down : BucketDirection.up))),
-          ];
-        }
-        else {
-          colorWheelDefinitions =
-            this.options.lightness.map(v => new ColorWheelDefinition(
-              this.options.diameter,
-              this.options.margin,
-              this.options.hueBuckets,
-              this.options.saturationBuckets,
-              [
-                new HslFixedLightnessPixelRenderer(
-                  v, false, this.options.reverseRadialColors, BucketDirection.down, this.options.reverseRadialColors ? BucketDirection.down : BucketDirection.up),
-              ]));
-        }
-        break;
+        return new HslFixedLightnessPixelRenderer(
+          fixed, false, this.options.reverseRadialColors, BucketDirection.down, this.options.reverseRadialColors ? BucketDirection.down : BucketDirection.up);
 
       case ColorWheelType.HsvFixedSaturation:
-        if (this.options.expand) {
-          colorWheelDefinitions = [
-            new ColorWheelDefinition(
-              this.options.diameter,
-              this.options.margin,
-              this.options.hueBuckets,
-              this.options.valueBuckets,
-              this.options.saturation.map(
-                v => new HsvFixedSaturationPixelRenderer(
-                  v, false, this.options.reverseRadialColors, BucketDirection.down, this.options.reverseRadialColors ? BucketDirection.down : BucketDirection.up))),
-          ];
-        }
-        else {
-          colorWheelDefinitions =
-            this.options.saturation.map(v => new ColorWheelDefinition(
-              this.options.diameter,
-              this.options.margin,
-              this.options.hueBuckets,
-              this.options.valueBuckets,
-              [
-                new HsvFixedSaturationPixelRenderer(
-                  v, false, this.options.reverseRadialColors, BucketDirection.down, this.options.reverseRadialColors ? BucketDirection.down : BucketDirection.up),
-              ]));
-        }
-        break;
+        return new HsvFixedSaturationPixelRenderer(
+          fixed, false, this.options.reverseRadialColors, BucketDirection.down, this.options.reverseRadialColors ? BucketDirection.down : BucketDirection.up);
 
       case ColorWheelType.HsvFixedValue:
-        if (this.options.expand) {
-          colorWheelDefinitions = [
-            new ColorWheelDefinition(
-              this.options.diameter,
-              this.options.margin,
-              this.options.hueBuckets,
-              this.options.saturationBuckets,
-              this.options.value.map(
-                v => new HsvFixedValuePixelRenderer(
-                  v, false, this.options.reverseRadialColors, BucketDirection.down, this.options.reverseRadialColors ? BucketDirection.down : BucketDirection.up))),
-          ];
-        }
-        else {
-          colorWheelDefinitions =
-            this.options.value.map(v => new ColorWheelDefinition(
-              this.options.diameter,
-              this.options.margin,
-              this.options.hueBuckets,
-              this.options.saturationBuckets,
-              [
-                new HsvFixedValuePixelRenderer(
-                  v, false, this.options.reverseRadialColors, BucketDirection.down, this.options.reverseRadialColors ? BucketDirection.down : BucketDirection.up),
-              ]));
-        }
-        break;
+        return new HsvFixedValuePixelRenderer(
+          fixed, false, this.options.reverseRadialColors, BucketDirection.down, this.options.reverseRadialColors ? BucketDirection.down : BucketDirection.up);
 
       default:
-        throw new DisplayableError('Unexpected color wheel type.');
+        throw new DisplayableError('Unexpected color wheel type: ' + type);
     }
-
-    // const pixelRenderers: IColorModelPixelRenderer[] = [
-    //   new HslFixedSaturationPixelRenderer(1, false, false, BucketDirection.down, BucketDirection.down),
-    // ];
-
-    // const pixelRenderers: IColorModelPixelRenderer[] = [
-    //   new HsvFixedSaturationPixelRenderer(1, false, false, BucketDirection.down, BucketDirection.down),
-    //   new HsvFixedValuePixelRenderer(1, false, true, BucketDirection.down, BucketDirection.down),
-    // ];
-
-    // const pixelRenderers: IColorModelPixelRenderer[] = [
-    //   new HslFixedLightnessPixelRenderer(0.9, false, false, BucketDirection.down, BucketDirection.down),
-    //   new HslFixedLightnessPixelRenderer(0.75, false, false, BucketDirection.down, BucketDirection.down),
-    //   new HslFixedLightnessPixelRenderer(0.5, false, false, BucketDirection.down, BucketDirection.down),
-    //   new HslFixedLightnessPixelRenderer(0.25, false, false, BucketDirection.down, BucketDirection.down),
-    //   new HslFixedLightnessPixelRenderer(0.1, false, false, BucketDirection.down, BucketDirection.down),
-    // ];
-
-    // const pixelRenderers: IColorModelPixelRenderer[] = [
-    //   new HsvFixedValuePixelRenderer(1, false, true, BucketDirection.down, BucketDirection.down),
-    //   new HsvFixedValuePixelRenderer(0.8, false, true, BucketDirection.down, BucketDirection.down),
-    //   new HsvFixedValuePixelRenderer(0.6, false, true, BucketDirection.down, BucketDirection.down),
-    //   new HsvFixedValuePixelRenderer(0.4, false, true, BucketDirection.down, BucketDirection.down),
-    //   new HsvFixedValuePixelRenderer(0.2, false, true, BucketDirection.down, BucketDirection.down),
-    // ];
-
-    // const colorWheelDefinitions: ColorWheelDefinition[] = [
-    //   new ColorWheelDefinition(
-    //     this.imageSize,
-    //     this.borderSize,
-    //     this.hueBuckets,
-    //     this.saturationBuckets,
-    //     pixelRenderers),
-    // ];
-
-    // const colorWheelDefinitions: ColorWheelDefinition[] = [
-    //   new ColorWheelDefinition(
-    //     this.imageSize,
-    //     this.borderSize,
-    //     this.hueBuckets,
-    //     this.saturationBuckets,
-    //     [
-    //       new HslFixedLightnessPixelRenderer(0.1, false, false, BucketDirection.down, BucketDirection.up),
-    //     ]),
-    //   new ColorWheelDefinition(
-    //     this.imageSize,
-    //     this.borderSize,
-    //     this.hueBuckets,
-    //     this.saturationBuckets,
-    //     [
-    //       new HslFixedLightnessPixelRenderer(0.3, false, false, BucketDirection.down, BucketDirection.up),
-    //     ]),
-    //   new ColorWheelDefinition(
-    //     this.imageSize,
-    //     this.borderSize,
-    //     this.hueBuckets,
-    //     this.saturationBuckets,
-    //     [
-    //       new HslFixedLightnessPixelRenderer(0.5, false, false, BucketDirection.down, BucketDirection.up),
-    //     ]),
-    //   new ColorWheelDefinition(
-    //     this.imageSize,
-    //     this.borderSize,
-    //     this.hueBuckets,
-    //     this.saturationBuckets,
-    //     [
-    //       new HslFixedLightnessPixelRenderer(0.7, false, false, BucketDirection.down, BucketDirection.up),
-    //     ]),
-    //   new ColorWheelDefinition(
-    //     this.imageSize,
-    //     this.borderSize,
-    //     this.hueBuckets,
-    //     this.saturationBuckets,
-    //     [
-    //       new HslFixedLightnessPixelRenderer(0.9, false, false, BucketDirection.down, BucketDirection.up),
-    //     ]),
-    // ];
-
-    const image = this.colorWheelSetRenderer.render(colorWheelDefinitions, 0);
-
-    image.write(this.options.outputFile);
-    return Promise.resolve();
   }
 }

@@ -3,22 +3,18 @@ import { LogLevel } from '../../common/log-level';
 import { ColorWheelType } from './unprocessed-color-wheel-options';
 
 export class ColorWheelOptions {
-  public static default(): ColorWheelOptions {
+  public static default(type: ColorWheelType): ColorWheelOptions {
     return new ColorWheelOptions(
-      ColorWheelType.HslFixedLightness,
+      type,
       LogLevel.info,
       './color-wheel.png',
-      1024,
+      980,
       10,
       false,
       false,
       0,
       0,
-      0,
-      0,
-      [1],
-      [0.5],
-      [1]);
+      type === ColorWheelType.HslFixedLightness ? [0.5] : [1]);
   }
 
   public static create(source: ColorWheelOptions): ColorWheelOptions {
@@ -30,13 +26,9 @@ export class ColorWheelOptions {
       source.margin,
       source.expand,
       source.reverseRadialColors,
-      source.hueBuckets,
-      source.saturationBuckets,
-      source.lightnessBuckets,
-      source.valueBuckets,
-      source.saturation,
-      source.lightness,
-      source.value);
+      source.angularBuckets,
+      source.radialBuckets,
+      source.fixed);
   }
 
   constructor(
@@ -47,13 +39,9 @@ export class ColorWheelOptions {
     public readonly margin: number,
     public readonly expand: boolean,
     public readonly reverseRadialColors: boolean,
-    public readonly hueBuckets: number,
-    public readonly saturationBuckets: number,
-    public readonly lightnessBuckets: number,
-    public readonly valueBuckets: number,
-    public readonly saturation: number[],
-    public readonly lightness: number[],
-    public readonly value: number[]) {
+    public readonly angularBuckets: number,
+    public readonly radialBuckets: number,
+    public readonly fixed: number[]) {
 
     if (this.outputFile) {
       this.outputFile = normalizeAndCreateFolderForFile(this.outputFile);
