@@ -12,6 +12,7 @@ export class ColorWheelOptions {
       10,
       false,
       false,
+      false,
       0,
       0,
       type === ColorWheelType.HslFixedLightness ? [0.5] : [1]);
@@ -26,6 +27,7 @@ export class ColorWheelOptions {
       source.margin,
       source.expand,
       source.reverseRadialColors,
+      source.reverseRadialBucketing,
       source.angularBuckets,
       source.radialBuckets,
       source.fixed);
@@ -39,6 +41,7 @@ export class ColorWheelOptions {
     public readonly margin: number,
     public readonly expand: boolean,
     public readonly reverseRadialColors: boolean,
+    public readonly reverseRadialBucketing: boolean,
     public readonly angularBuckets: number,
     public readonly radialBuckets: number,
     public readonly fixed: number[]) {

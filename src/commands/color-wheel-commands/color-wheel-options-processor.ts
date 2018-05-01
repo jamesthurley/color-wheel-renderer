@@ -44,6 +44,10 @@ export class ColorWheelOptionsProcessor implements ICommandOptionsProcessor<IUnp
       options.reverseRadialColors = unprocessed.reverseRadialColors;
     }
 
+    if (unprocessed.reverseRadialBucketing) {
+      options.reverseRadialBucketing = unprocessed.reverseRadialBucketing;
+    }
+
     if (unprocessed.angularBuckets) {
       options.angularBuckets = toNumber(unprocessed.angularBuckets, 'angularBuckets');
     }

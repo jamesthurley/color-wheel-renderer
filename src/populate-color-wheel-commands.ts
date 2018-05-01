@@ -45,6 +45,7 @@ export function populateColorWheelCommands(program: commander.CommanderStatic) {
     .option('-d --diameter <pixels>', 'Diameter of the color wheel in pixels.')
     .option('-m --margin <pixels>', 'Size of margin around color wheel in pixels.')
     .option('-e --expand', 'Add additional wheels to outside of previous wheel.')
-    .option('-c --reverse-radial-colors', 'Reverses the order of colours from the center to edge of the wheel.');
+    .option('-c --reverse-radial-colors', 'Reverses the order of colours from the center to edge of the wheel.')
+    .option('-b --reverse-radial-bucketing', 'Reverses the direction of radial bucketing from the default. Defaults to outwards, or inwards if colors are reversed.');
   verboseOption(colorWheel);
 }

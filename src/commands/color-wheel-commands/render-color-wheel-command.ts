@@ -28,9 +28,7 @@ export class RenderColorWheelCommand implements ICommand {
           this.options.margin,
           this.options.angularBuckets,
           this.options.radialBuckets,
-          this.options.fixed.map(
-            v => this.createPixelRenderer(
-              this.options.type, v, false, this.options.reverseRadialColors, BucketDirection.down, this.options.reverseRadialColors ? BucketDirection.down : BucketDirection.up))),
+          this.options.fixed.map(v => this.createPixelRenderer(this.options.type, v))),
       ];
     }
     else {
@@ -41,8 +39,7 @@ export class RenderColorWheelCommand implements ICommand {
           this.options.angularBuckets,
           this.options.radialBuckets,
           [
-            this.createPixelRenderer(
-              this.options.type, v, false, this.options.reverseRadialColors, BucketDirection.down, this.options.reverseRadialColors ? BucketDirection.down : BucketDirection.up),
+            this.createPixelRenderer(this.options.type, v),
           ]));
     }
 
@@ -51,30 +48,42 @@ export class RenderColorWheelCommand implements ICommand {
     return Promise.resolve();
   }
 
-  private createPixelRenderer(
-    type: ColorWheelType,
-    fixed: number,
-    isAngleInverted: boolean,
-    isVaryingDimensionInverted: boolean,
-    angleBucketDirection: BucketDirection,
-    varyingDimensionBucketDirection: BucketDirection) {
+  private createPixelRenderer(type: ColorWheelType, fixed: number) {
+
+    let radialBucketDirection: BucketDirection;
+    if (!this.options.reverseRadialColors) {
+      if (!this.options.reverseRadialBucketing) {
+        radialBucketDirection = BucketDirection.up;
+      }
+      else {
+        radialBucketDirection = BucketDirection.down;
+      }
+    }
+    else {
+      if (!this.options.reverseRadialBucketing) {
+        radialBucketDirection = BucketDirection.down;
+      }
+      else {
+        radialBucketDirection = BucketDirection.up;
+      }
+    }
 
     switch (this.options.type) {
       case ColorWheelType.HslFixedSaturation:
         return new HslFixedSaturationPixelRenderer(
-         fixed, false, this.options.reverseRadialColors, BucketDirection.down, this.options.reverseRadialColors ? BucketDirection.down : BucketDirection.up);
+         fixed, false, this.options.reverseRadialColors, BucketDirection.down, radialBucketDirection);
 
       case ColorWheelType.HslFixedLightness:
         return new HslFixedLightnessPixelRenderer(
-          fixed, false, this.options.reverseRadialColors, BucketDirection.down, this.options.reverseRadialColors ? BucketDirection.down : BucketDirection.up);
+          fixed, false, this.options.reverseRadialColors, BucketDirection.down, radialBucketDirection);
 
       case ColorWheelType.HsvFixedSaturation:
         return new HsvFixedSaturationPixelRenderer(
-          fixed, false, this.options.reverseRadialColors, BucketDirection.down, this.options.reverseRadialColors ? BucketDirection.down : BucketDirection.up);
+          fixed, false, this.options.reverseRadialColors, BucketDirection.down, radialBucketDirection);
 
       case ColorWheelType.HsvFixedValue:
         return new HsvFixedValuePixelRenderer(
-          fixed, false, this.options.reverseRadialColors, BucketDirection.down, this.options.reverseRadialColors ? BucketDirection.down : BucketDirection.up);
+          fixed, false, this.options.reverseRadialColors, BucketDirection.down, radialBucketDirection);
 
       default:
         throw new DisplayableError('Unexpected color wheel type: ' + type);

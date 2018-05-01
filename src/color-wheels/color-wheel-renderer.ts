@@ -1,6 +1,6 @@
 import * as Jimp from 'jimp';
 import { IColorModelPixelRenderer } from './pixel-renderers/color-model-pixel-renderer';
-import { bucketDown, bucketUp, bucket } from './bucket';
+import { bucket } from './bucket';
 import { getAngleDegrees } from './get-angle-degrees';
 import { DisplayableError } from '../common/displayable-error';
 

@@ -7,6 +7,7 @@ export interface IUnprocessedColorWheelOptions {
   margin: string;
   expand: boolean;
   reverseRadialColors: boolean;
+  reverseRadialBucketing: boolean;
 
   angularBuckets: string;
   radialBuckets: string;
