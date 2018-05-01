@@ -9,12 +9,12 @@ export class ColorWheelRenderer {
   public render(
     imageWidth: number,
     imageHeight: number,
-    borderSize: number,
+    marginSize: number,
     angleBuckets: number,
     distanceBuckets: number,
     pixelRenderers: ReadonlyArray<IColorModelPixelRenderer>): Jimp {
 
-    const wheelDiameter = Math.min(imageWidth, imageHeight) - borderSize;
+    const wheelDiameter = Math.min(imageWidth, imageHeight) - (marginSize * 2);
 
     const centerX = Math.floor(imageWidth / 2);
     const centerY = Math.floor(imageHeight / 2);

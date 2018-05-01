@@ -25,7 +25,7 @@ export class ColorWheelSetRenderer {
       const renderedWheel = this.colorWheelRenderer.render(
         colorWheel.size * supersample,
         colorWheel.size * supersample,
-        colorWheel.borderSize,
+        colorWheel.marginSize * supersample,
         colorWheel.angleBuckets,
         colorWheel.distanceBuckets,
         colorWheel.pixelRenderers);

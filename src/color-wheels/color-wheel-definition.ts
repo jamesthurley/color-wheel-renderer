@@ -3,7 +3,7 @@ import { IColorModelPixelRenderer } from './pixel-renderers/color-model-pixel-re
 export class ColorWheelDefinition {
   constructor(
     public readonly size: number,
-    public readonly borderSize: number,
+    public readonly marginSize: number,
     public readonly angleBuckets: number,
     public readonly distanceBuckets: number,
     public readonly pixelRenderers: ReadonlyArray<IColorModelPixelRenderer>) {
