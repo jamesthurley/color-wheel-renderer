@@ -18,20 +18,8 @@ export function bucketDown(value: number, maximum: number, buckets: number): num
     return value;
   }
 
-  const bucketSize = maximum / buckets;
-  let currentBucketMin = 0;
-  let currentBucketMax = bucketSize;
-  for (let bucketIndex = 0; bucketIndex < buckets; ++bucketIndex) {
-
-    if (value >= currentBucketMin && value < currentBucketMax) {
-      return currentBucketMin;
-    }
-
-    currentBucketMin = currentBucketMax;
-    currentBucketMax += bucketSize;
-  }
-
-  return maximum;
+  const factor = maximum / buckets;
+  return Math.floor(value / factor) * factor;
 }
 
 export function bucketUp(value: number, maximum: number, buckets: number): number {
