@@ -1,5 +1,7 @@
 # Open Darkroom
 
+[![Build Status](https://travis-ci.org/opendarkroom/toolkit.svg?branch=master)](https://travis-ci.org/opendarkroom/toolkit)
+
 https://opendarkroom.com
 
 Open Darkroom is an open source, multi-platform toolkit for photographers who want to share their digital post-processing workflow. 
