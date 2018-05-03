@@ -1,7 +1,7 @@
 {
   "name": "opendarkroom",
   "version": "0.1.0",
-  "description": "",
+  "description": "Open Darkroom is an open source, multi-platform toolkit for assisting with digital photography post-processing.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "preferGlobal": true,
@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/opendarkroom/toolkit.git"
+    "url": "https://github.com/opendarkroom/toolkit.git"
   },
   "scripts": {
     "prepare": "npm run build",

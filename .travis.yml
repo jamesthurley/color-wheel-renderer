@@ -5,3 +5,12 @@ install:
  - npm install
 script:
  - npm run ci
+notifications:
+  email:
+    on_failure: always
+deploy:
+  provider: npm
+  email: "mail@jamesthurley.com"
+  api_key: "$NPM_AUTH_TOKEN"
+  on:
+    tags: true
