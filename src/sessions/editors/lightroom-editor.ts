@@ -1,7 +1,6 @@
 import { EditorBase } from './editor-base';
 import * as Jimp from 'jimp';
 import { IRectangle } from '../../common/rectangle';
-import { Log } from '../../common/log';
 import { DisplayableError } from '../../common/displayable-error';
 import { isUndefined } from 'util';
 import { Border } from '../../common/border';
