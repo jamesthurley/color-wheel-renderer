@@ -13,6 +13,16 @@ However it also contains other utilities related to post-processing, such as a c
 
 Documentation and other topics are at <https://opendarkroom.com>.
 
+
+## Installation
+
+```
+npm install -g opendarkroom
+```
+
+See the documentation for more details.
+
+
 ## License
 
 Open Darkroom is released under the MIT License. See [LICENSE][1] file for details.
