@@ -7,17 +7,7 @@ import { isUndefined } from 'util';
 import { Border } from '../../common/border';
 import { getPixelAtIndex } from '../../common/get-pixel-at-index';
 import { Pixel } from '../../common/pixel';
-
-// We'll try and support retina/high density displays by trying larger
-// offsets in sequence.
-const pixelRatioMultipliers: number[] = [
-  1,
-  2,
-  3,
-];
-
-const borderLeftIndexOffsetBase: number = 15;
-let detectedPixelRatio: number = 0;
+import { VoteTally } from '../../common/vote-tally';
 
 const DIMENSION_INDEX_X = 0;
 const DIMENSION_INDEX_Y = 1;
@@ -26,6 +16,14 @@ enum BorderSearchState {
   noBorderFound,
   firstBorderFound,
   withinPhoto,
+}
+
+class PhotoBorderPositions {
+  constructor(
+    public readonly photoStartIndex: number,
+    public readonly photoEndIndex: number,
+    public readonly borderStartIndex: number) {
+  }
 }
 
 export abstract class LightroomEditor extends EditorBase {
@@ -51,40 +49,47 @@ export abstract class LightroomEditor extends EditorBase {
     return border.toRectangle();
   }
 
+  // This method will search several offsets for the history item rectangle, and return the most popular guess.
   public findActiveHistoryItemRectangle(image: Jimp): IRectangle | undefined {
-
     if (!this.photoBorderLeftIndex) {
       throw new DisplayableError('Photo left border position not set. Ensure a photo has been located.');
     }
 
-    if (detectedPixelRatio) {
-      Log.verbose(`Finding history item for ${detectedPixelRatio}x pixel ratio.`);
-      return this.findActiveHistoryItemRectangleForOffset(
+    const borderLeftIndexOffsetBase: number = 5;
+    const pixelsBetweenOffsets: number = 2;
+    const maximumOffsetsToSearch: number = 20;
+
+    const tally = new VoteTally<IRectangle>('Active History Item');
+    for (let i = 0; i < maximumOffsetsToSearch; ++i) {
+      tally.castVote(this.findActiveHistoryItemRectangleAtOffset(
         image,
         this.photoBorderLeftIndex,
-        detectedPixelRatio * borderLeftIndexOffsetBase);
+        borderLeftIndexOffsetBase + (i * pixelsBetweenOffsets)));
     }
 
-    for (const multiplier of pixelRatioMultipliers) {
-      Log.info(`Attempting to find history item for ${multiplier}x pixel ratio.`);
-      const result = this.findActiveHistoryItemRectangleForOffset(
-        image,
-        this.photoBorderLeftIndex,
-        multiplier * borderLeftIndexOffsetBase);
-
-      if (result) {
-        detectedPixelRatio = multiplier;
-        return result;
-      }
-    }
-
-    return undefined;
+    return tally.winner;
   }
 
   protected abstract isPhotoBorderColor(pixel: Pixel): boolean;
+
   protected abstract isActiveHistoryItemColor(pixel: Pixel): boolean;
 
-  private findPhotoBorders(image: Jimp, dimensionIndex: number) {
+  // This method will search several offsets for the photo borders, and return the most popular guess.
+  private findPhotoBorders(image: Jimp, dimensionIndex: number): PhotoBorderPositions | undefined {
+    const maximumSearchOffsets: number = 5;
+    const offsetSizePixels: number = 20;
+    const halfMaximumSearchOffsets: number = Math.floor(maximumSearchOffsets / 2);
+    const offsets = Array(maximumSearchOffsets).fill(0).map((v, i) => (i - halfMaximumSearchOffsets) * offsetSizePixels);
+
+    const tally = new VoteTally<PhotoBorderPositions>(`Photo Border ${dimensionIndex === DIMENSION_INDEX_X ? 'Left/Right' : 'Top/Bottom'}`);
+    for (const offset of offsets) {
+      tally.castVote(this.findPhotoBordersAtOffset(image, dimensionIndex, offset));
+    }
+
+    return tally.winner;
+  }
+
+  private findPhotoBordersAtOffset(image: Jimp, dimensionIndex: number, searchOffset: number): PhotoBorderPositions | undefined {
     const requiredConsecutiveBorderColorCount = 10;
 
     let state = BorderSearchState.noBorderFound;
@@ -94,12 +99,12 @@ export abstract class LightroomEditor extends EditorBase {
     let photoStartIndex: ReadonlyArray<number> | undefined;
     let photoEndIndex: ReadonlyArray<number> | undefined;
 
-    const scanX = dimensionIndex === DIMENSION_INDEX_X ? 0 : image.bitmap.width / 2;
-    const scanY = dimensionIndex === DIMENSION_INDEX_X ? image.bitmap.height / 2 : 0;
+    const scanX = dimensionIndex === DIMENSION_INDEX_X ? 0 : (image.bitmap.width / 2) + searchOffset;
+    const scanY = dimensionIndex === DIMENSION_INDEX_X ? (image.bitmap.height / 2) + searchOffset : 0;
     const scanW = dimensionIndex === DIMENSION_INDEX_X ? image.bitmap.width : 1;
     const scanH = dimensionIndex === DIMENSION_INDEX_X ? 1 : image.bitmap.height;
 
-    Log.verbose(`Scanning for photo borders. x:${scanX}, y:${scanY}, width:${scanW}, height:${scanH}`);
+    // Log.verbose(`Scanning for photo borders. x:${scanX}, y:${scanY}, width:${scanW}, height:${scanH}`);
     image.scan(scanX, scanY, scanW, scanH, (x, y, index) => {
       if (photoEndIndex) {
         return;
@@ -155,53 +160,54 @@ export abstract class LightroomEditor extends EditorBase {
     });
 
     if (!borderStartIndex) {
-      Log.error('Photo border not found.');
+      // Log.error('Photo border not found.');
       return undefined;
     }
     else if (!photoStartIndex) {
-      Log.error('Photo start position not found.');
+      // Log.error('Photo start position not found.');
       return undefined;
     }
     else if (!photoEndIndex) {
-      Log.error('Photo end position not found.');
+      // Log.error('Photo end position not found.');
       return undefined;
     }
 
-    return {
-      photoStartIndex: photoStartIndex[dimensionIndex],
-      photoEndIndex: photoEndIndex[dimensionIndex],
-      borderStartIndex: borderStartIndex[dimensionIndex],
-    };
+    return new PhotoBorderPositions(
+      photoStartIndex[dimensionIndex],
+      photoEndIndex[dimensionIndex],
+      borderStartIndex[dimensionIndex]);
   }
 
-  private findActiveHistoryItemRectangleForOffset(
+  private findActiveHistoryItemRectangleAtOffset(
     image: Jimp,
     borderLeftIndex: number,
     borderLeftIndexOffset: number): IRectangle | undefined {
 
     const xSearchIndex = borderLeftIndex - borderLeftIndexOffset;
 
+    // Log.verbose(`Scanning for active history item at offset ${borderLeftIndexOffset}, x:${xSearchIndex}.`);
+
     const top = this.findActiveHistoryItemTop(image, xSearchIndex);
     if (isUndefined(top)) {
-      Log.error('Active history item top border not found.');
+      // Log.verbose('Active history item top border not found.');
       return undefined;
     }
 
     const right = this.findActiveHistoryItemRight(image, xSearchIndex, top, borderLeftIndexOffset);
     if (isUndefined(right)) {
-      Log.error('Active history item right border not found.');
+      // Log.error('Active history item right border not found.');
       return undefined;
     }
 
     const bottom = this.findActiveHistoryItemBottom(image, right, top);
     if (isUndefined(bottom)) {
-      Log.error('Active history item bottom border not found.');
+      // Log.error('Active history item bottom border not found.');
       return undefined;
     }
 
     const left = this.findActiveHistoryItemLeft(image, right, top);
     if (isUndefined(left)) {
-      Log.error('Active history item left border not found.');
+      // Log.error('Active history item left border not found.');
       return undefined;
     }
 
