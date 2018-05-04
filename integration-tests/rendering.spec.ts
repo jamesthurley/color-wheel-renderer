@@ -9,8 +9,11 @@ import { RenderingSnapshotConsumer } from '../src/sessions/rendering/snapshot-co
 import { ComparingFrameConsumer } from '../src/sessions/testing/frame-consumers/comparing-frame-consumer';
 import { evaluateComparisons } from './evaluate-comparisons';
 import { FrameFolderUtilities } from '../src/sessions/pipeline-common/frame-folder-utilities';
+import { Log } from '../src/common/log';
+import { LogLevel } from '../src/common/log-level';
 
 const macro: Macro = async (t, inputFolder: string) => {
+  Log.logLevel = LogLevel.verbose;
 
   inputFolder = './integration-tests/input-data/recorded-sessions/' + inputFolder;
 
