@@ -2,8 +2,9 @@
 import * as program from 'commander';
 import { populateSessionCommands } from './populate-session-commands';
 import { populateColorWheelCommands } from './populate-color-wheel-commands';
+import {version} from '../package.json';
 
-program.version('0.1.0', '--version');
+program.version(version || '0.0.0', '--version');
 
 populateSessionCommands(program);
 populateColorWheelCommands(program);
