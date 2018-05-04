@@ -12,5 +12,7 @@ deploy:
   provider: npm
   email: "mail@jamesthurley.com"
   api_key: "$NPM_AUTH_TOKEN"
+  skip_cleanup: true
   on:
+    branch: master
     tags: true

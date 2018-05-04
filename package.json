@@ -8,12 +8,17 @@
   "bin": {
     "odr": "dist/index.js"
   },
+  "files": [
+    "dist/**/*"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/opendarkroom/toolkit.git"
   },
   "scripts": {
-    "prepare": "npm run build",
+    "prepublishOnly": "npm run clean && npm run build",
+    "preversion": "npm run ci",
+    "postversion": "git push && git push --tags",
     "start": "ts-node src/index.ts",
     "test": "ava --verbose",
     "clean": "rimraf dist dist-tests",
