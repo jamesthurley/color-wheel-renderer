@@ -4,10 +4,14 @@
 
 https://opendarkroom.com
 
-Open Darkroom is an open source, multi-platform toolkit for photographers who want to share their digital post-processing workflow. 
+Open Darkroom is an open source, multi-platform toolkit for digital post-processing.
 
-Primarily it is a tool for quickly turning your Adobe Lightroom edit history into a sharable animated GIF or MP4.
-However it also contains other utilities related to post-processing, such as a color wheel renderer.
+Currently you can:
+ - Generate a wide variety of color wheels.
+ - Quickly turn your edit history into a sharable video or GIF, so you can share your techniques with others.
+
+If you have any suggestions for new features please let us know in an [issue](https://github.com/opendarkroom/toolkit/issues).
+
 
 ## Links
 

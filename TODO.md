@@ -1,7 +1,7 @@
  - Documentation.
 
- - Sample multiple X and Y positions when finding photo border, to avoid icons with similar colours causing confusion.
  - Finish implementing "lightroom-mac".
+ - Find screenshots on the internet and use in tests.
 
  - MP4 or equivalent rendering support.
 
