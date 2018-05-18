@@ -1,10 +1,10 @@
-import { isUndefined } from 'util';
+import { isUndefined, isNull } from 'util';
 import { jsonEquals } from './json-equals';
 import { Log } from './log';
 import { jsonStringify } from './json-stringify';
 
 export class VoteTally<TSolution> {
-  private unsuccessfulVotes: number = 0;
+  private voteRecord: Array<number | null> = [];
   private readonly mutableSolutions: Array<SolutionTally<TSolution>> = [];
 
   constructor(public  readonly name: string) {
@@ -17,9 +17,9 @@ export class VoteTally<TSolution> {
 
   public get winner(): TSolution | undefined {
 
-    const unsuccessfulVotesMessage = `${this.unsuccessfulVotes} unsuccessful votes.`;
+    const voteRecordString = this.createVoteRecordString();
     if (this.solutions.length === 0) {
-      Log.verbose(`${this.name}: No solutions found. ${unsuccessfulVotesMessage}`);
+      Log.verbose(`${this.name}: No solutions found. ${voteRecordString}`);
       return undefined;
     }
 
@@ -27,10 +27,10 @@ export class VoteTally<TSolution> {
     solutionsCopy.sort((a, b) => b.voteCount - a.voteCount);
 
     if (solutionsCopy.length === 1) {
-      Log.verbose(`${this.name}: 1 solution found with ${solutionsCopy[0].voteCount} vote(s). ${unsuccessfulVotesMessage}`);
+      Log.verbose(`${this.name}: 1 solution found with ${solutionsCopy[0].voteCount} vote(s). ${voteRecordString}`);
     }
     else {
-      Log.verbose(`${this.name}: ${solutionsCopy.length} solution(s) found. ${unsuccessfulVotesMessage}`);
+      Log.verbose(`${this.name}: ${solutionsCopy.length} solution(s) found. ${voteRecordString}`);
       Log.verbose(jsonStringify(solutionsCopy));
     }
 
@@ -39,17 +39,29 @@ export class VoteTally<TSolution> {
 
   public castVote(solution: TSolution | undefined) {
     if (isUndefined(solution)) {
-      ++this.unsuccessfulVotes;
+      this.voteRecord.push(null);
       return;
     }
 
-    const matching = this.mutableSolutions.find(v => jsonEquals(v.solution, solution));
-    if (!matching) {
+    const matchingIndex = this.mutableSolutions.findIndex(v => jsonEquals(v.solution, solution));
+    if (matchingIndex === -1) {
+      this.voteRecord.push(this.mutableSolutions.length);
       this.mutableSolutions.push(new SolutionTally<TSolution>(solution));
     }
     else {
+      this.voteRecord.push(matchingIndex);
+      const matching = this.mutableSolutions[matchingIndex];
       matching.vote();
     }
+  }
+
+  private createVoteRecordString(): string {
+    let spacer = '';
+    if (this.voteRecord.some(v => !isNull(v) && v > 9)) {
+      spacer = ' ';
+    }
+
+    return 'Votes: [' + this.voteRecord.reduce((p: string, c: number | null) => p + (isNull(c) ? 'x' : c) + spacer, '') + ']';
   }
 }
 
