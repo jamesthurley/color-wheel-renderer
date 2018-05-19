@@ -45,6 +45,7 @@ export class RenderingSnapshotConsumer implements ISnapshotConsumer {
   public async complete(): Promise<void> {
 
     if (this.snapshots.length < 2) {
+      Log.warn('At least two snapshots are required to render frames.');
       return;
     }
 
