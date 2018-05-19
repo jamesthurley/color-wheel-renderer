@@ -31,8 +31,8 @@ export class VoteTally<TSolution> {
     }
     else {
       Log.verbose(`${this.name}: ${solutionsCopy.length} solution(s) found. ${voteRecordString}`);
-      Log.verbose(jsonStringify(solutionsCopy));
     }
+    Log.verbose(jsonStringify(solutionsCopy));
 
     return solutionsCopy[0].solution;
   }

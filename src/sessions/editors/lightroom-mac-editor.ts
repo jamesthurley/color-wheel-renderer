@@ -6,13 +6,15 @@ export const LightroomMacEditorKey = 'lightroom-mac';
 export class LightroomMacEditor extends LightroomEditor {
 
   protected isPhotoBorderColor(pixel: Pixel): boolean {
-    return this.isPhotoBorderGrayscale(pixel.red)
+    return this.isGrayscale(pixel)
+      && this.isPhotoBorderGrayscale(pixel.red)
       && this.isPhotoBorderGrayscale(pixel.green)
       && this.isPhotoBorderGrayscale(pixel.blue);
   }
 
   protected isActiveHistoryItemColor(pixel: Pixel): boolean {
-    return this.isActiveHistoryItemGrayscale(pixel.red)
+    return this.isGrayscale(pixel)
+      && this.isActiveHistoryItemGrayscale(pixel.red)
       && this.isActiveHistoryItemGrayscale(pixel.green)
       && this.isActiveHistoryItemGrayscale(pixel.blue);
   }
@@ -27,5 +29,11 @@ export class LightroomMacEditor extends LightroomEditor {
     const min: number = 190;
     const max: number = 220;
     return color >= min && color <= max;
+  }
+
+  private isGrayscale(pixel: Pixel) {
+    const tolerence = 8;
+    return Math.abs(pixel.red - pixel.blue) < tolerence
+      && (pixel.red - pixel.green) < tolerence;
   }
 }
