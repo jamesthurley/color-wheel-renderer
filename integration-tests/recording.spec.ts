@@ -9,8 +9,6 @@ import { ComparingSnapshotConsumer } from '../src/sessions/testing/snapshot-cons
 import { IntegrationTestConsumerHelper } from '../src/sessions/testing/integration-test-consumer-helper';
 import { ISnapshotConsumer } from '../src/sessions/pipeline/snapshot-consumer';
 import { evaluateComparisons } from './evaluate-comparisons';
-import { Log } from '../src/common/log';
-import { LogLevel } from '../src/common/log-level';
 import { setTestLogLevel } from './set-test-log-level';
 
 const macro: Macro = async (t, inputFolder: string, editorType: string) => {
