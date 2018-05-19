@@ -3,7 +3,6 @@ import { IScreenshotProducer } from '../../pipeline/screenshot-producer';
 import { IEditor } from '../../editors/editor';
 
 export class ImpatientSnapshotProducer extends PatientSnapshotProducer {
-
   constructor(
     screenshotProducer: IScreenshotProducer,
     editor: IEditor) {

@@ -11,9 +11,10 @@ import { evaluateComparisons } from './evaluate-comparisons';
 import { FrameFolderUtilities } from '../src/sessions/pipeline-common/frame-folder-utilities';
 import { Log } from '../src/common/log';
 import { LogLevel } from '../src/common/log-level';
+import { setTestLogLevel } from './set-test-log-level';
 
 const macro: Macro = async (t, inputFolder: string) => {
-  Log.logLevel = LogLevel.verbose;
+  setTestLogLevel();
 
   inputFolder = './integration-tests/input-data/recorded-sessions/' + inputFolder;
 

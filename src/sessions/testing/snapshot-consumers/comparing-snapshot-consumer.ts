@@ -7,6 +7,7 @@ import { Constants } from '../../../common/constants';
 import { Rectangle, IRectangle } from '../../../common/rectangle';
 import { ISnapshotConsumer } from '../../pipeline/snapshot-consumer';
 import { IComparingConsumerHelper } from '../comparing-consumer-helper';
+import { DebugImage } from '../../pipeline/debug-image';
 
 export class ComparingSnapshotConsumer implements ISnapshotConsumer {
 
@@ -15,6 +16,10 @@ export class ComparingSnapshotConsumer implements ISnapshotConsumer {
     private readonly sessionFolder: string,
     private readonly snapshotFolderUtilities: SnapshotFolderUtilities) {
       this.helper.consumedType = 'Snapshot';
+  }
+
+  public consumeDebugImages(debugImages: ReadonlyArray<DebugImage>): Promise<void> {
+    return Promise.resolve();
   }
 
   public async consume(snapshot: ISnapshot): Promise<void> {

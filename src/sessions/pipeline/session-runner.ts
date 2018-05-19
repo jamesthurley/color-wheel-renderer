@@ -15,11 +15,17 @@ export class SessionRunner implements ISessionRunner {
   public async run(): Promise<void> {
 
     let snapshotCount = 0;
-    let snapshot = await this.snapshotProducer.getNextSnapshot(undefined);
+    let snapshotResult = await this.snapshotProducer.getNextSnapshot(undefined);
+    await this.snapshotConsumer.consumeDebugImages(snapshotResult.debugImages);
+
+    let snapshot = snapshotResult.value;
     while (snapshot) {
       ++snapshotCount;
       await this.snapshotConsumer.consume(snapshot);
-      snapshot = await this.snapshotProducer.getNextSnapshot(snapshot);
+
+      snapshotResult = await this.snapshotProducer.getNextSnapshot(snapshot);
+      await this.snapshotConsumer.consumeDebugImages(snapshotResult.debugImages);
+      snapshot = snapshotResult.value;
     }
 
     await this.snapshotConsumer.complete();

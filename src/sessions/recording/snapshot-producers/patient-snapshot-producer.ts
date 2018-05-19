@@ -7,6 +7,8 @@ import { jsonEquals } from '../../../common/json-equals';
 import { ISnapshotProducer } from '../../pipeline/snapshot-producer';
 import { sleep } from '../../../common/sleep';
 import * as Jimp from 'jimp';
+import { WithDebugImages } from '../../pipeline/with-debug-images';
+import { DebugImage } from '../../pipeline/debug-image';
 
 export class PatientSnapshotProducer implements ISnapshotProducer {
 
@@ -17,7 +19,7 @@ export class PatientSnapshotProducer implements ISnapshotProducer {
     private readonly editor: IEditor) {
   }
 
-  public async getNextSnapshot(snapshot: ISnapshot | undefined): Promise<ISnapshot | undefined> {
+  public async getNextSnapshot(snapshot: ISnapshot | undefined): Promise<WithDebugImages<ISnapshot | undefined>> {
     if (!snapshot) {
       return this.getSnapshot(undefined);
     }
@@ -49,25 +51,31 @@ export class PatientSnapshotProducer implements ISnapshotProducer {
     }
     while (ellapsed < this.maximumMillisecondsBetweenSnapshots && !foundNewHistoryItem);
 
-    return foundNewHistoryItem ? this.getSnapshot(screenshot) : undefined;
+    return foundNewHistoryItem
+      ? this.getSnapshot(screenshot)
+      : new WithDebugImages<ISnapshot | undefined>(undefined, []);
   }
 
-  private async getSnapshot(screenshot?: Jimp): Promise<ISnapshot | undefined> {
+  private async getSnapshot(screenshot?: Jimp): Promise<WithDebugImages<ISnapshot | undefined>> {
+    const debugImages: DebugImage[] = [];
+
     if (!screenshot) {
       Log.info('Taking screenshot...');
       screenshot = await this.screenshotProducer.getScreenshot();
     }
 
     if (!screenshot) {
-      return undefined;
+      return new WithDebugImages<ISnapshot | undefined>(undefined, debugImages);
     }
 
     Log.info('Finding lightroom image...');
-    const photoRectangle = await this.editor.findPhotoRectangle(screenshot);
+    const photoRectangleResult = await this.editor.findPhotoRectangle(screenshot);
+    const photoRectangle = photoRectangleResult.value;
+    debugImages.push(...photoRectangleResult.debugImages);
 
     if (!photoRectangle) {
       Log.error('Failed to find photo.');
-      return undefined;
+      return new WithDebugImages<ISnapshot | undefined>(undefined, debugImages);
     }
 
     Log.info(
@@ -83,11 +91,14 @@ export class PatientSnapshotProducer implements ISnapshotProducer {
         photoRectangle.height,
       );
 
-    const historyItemRectangle = this.editor.findActiveHistoryItemRectangle(screenshot);
+    const historyItemRectangleResult = this.editor.findActiveHistoryItemRectangle(screenshot);
+    const historyItemRectangle = historyItemRectangleResult.value;
+    debugImages.push(...historyItemRectangleResult.debugImages);
 
     if (!historyItemRectangle) {
       Log.error('Failed to find active history item.');
-      return undefined;
+      console.log(`Found ${debugImages.length} debug images.`);
+      return new WithDebugImages<ISnapshot | undefined>(undefined, debugImages);
     }
 
     Log.info(`Found history at ${historyItemRectangle.left},${historyItemRectangle.top}`
@@ -102,11 +113,13 @@ export class PatientSnapshotProducer implements ISnapshotProducer {
         historyItemRectangle.height,
       );
 
-    return new CachedSnapshot(
-      screenshot,
-      photoRectangle,
-      photo,
-      historyItemRectangle,
-      historyItem);
+    return new WithDebugImages<ISnapshot | undefined>(
+      new CachedSnapshot(
+        screenshot,
+        photoRectangle,
+        photo,
+        historyItemRectangle,
+        historyItem),
+      debugImages);
   }
 }

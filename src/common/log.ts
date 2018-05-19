@@ -28,4 +28,8 @@ export class Log {
       console.error(colors.red('' + error));
     }
   }
+
+  public static get isVerbose(): boolean {
+    return Log.logLevel === LogLevel.verbose;
+  }
 }

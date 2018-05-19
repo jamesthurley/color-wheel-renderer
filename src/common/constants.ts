@@ -11,4 +11,8 @@ export class Constants {
 
   public static readonly SnapshotFolderPrefix =  'snapshot-';
   public static readonly FrameFolderPrefix =  'frame-';
+
+  public static readonly ColorRed: number = 0xFF0000FF;
+  public static readonly ColorOrange: number = 0xFFa500FF;
+  public static readonly ColorGreen: number = 0x00FF00FF;
 }

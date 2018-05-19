@@ -7,6 +7,7 @@ import { join } from 'path';
 import { Constants } from '../../../common/constants';
 import { SessionSnapshotFolderReaderBase } from '../../pipeline-common/session-snapshot-folder-reader-base';
 import { IRectangle } from '../../../common/rectangle';
+import { WithDebugImages } from '../../pipeline/with-debug-images';
 
 export class FilesystemSnapshotProducer extends SessionSnapshotFolderReaderBase implements ISnapshotProducer {
 
@@ -16,10 +17,10 @@ export class FilesystemSnapshotProducer extends SessionSnapshotFolderReaderBase 
     super(sourceFolder, snapshotFolderUtilities);
   }
 
-  public async getNextSnapshot(snapshot: ISnapshot | undefined): Promise<ISnapshot | undefined> {
+  public async getNextSnapshot(snapshot: ISnapshot | undefined): Promise<WithDebugImages<ISnapshot | undefined>> {
     const folder = this.getNextFolder();
     if (!folder) {
-      return undefined;
+      return new WithDebugImages<ISnapshot | undefined>(undefined, []);
     }
 
     const screenshot: () => Promise<Jimp> = () => Jimp.read(join(folder, Constants.ScreenshotFileName));
@@ -30,6 +31,8 @@ export class FilesystemSnapshotProducer extends SessionSnapshotFolderReaderBase 
     const photoMetadata: IRectangle = fse.readJsonSync(join(folder, Constants.PhotoMetadataFileName));
     const historyItemMetadata: IRectangle = fse.readJsonSync(join(folder, Constants.HistoryItemMetadataFileName));
 
-    return new LazySnapshot(screenshot, photoMetadata, photo, historyItemMetadata, historyItem);
+    return new WithDebugImages<ISnapshot | undefined>(
+      new LazySnapshot(screenshot, photoMetadata, photo, historyItemMetadata, historyItem),
+      []);
   }
 }

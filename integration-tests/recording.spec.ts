@@ -11,9 +11,10 @@ import { ISnapshotConsumer } from '../src/sessions/pipeline/snapshot-consumer';
 import { evaluateComparisons } from './evaluate-comparisons';
 import { Log } from '../src/common/log';
 import { LogLevel } from '../src/common/log-level';
+import { setTestLogLevel } from './set-test-log-level';
 
 const macro: Macro = async (t, inputFolder: string, editorType: string) => {
-  Log.logLevel = LogLevel.verbose;
+  setTestLogLevel();
 
   const editorFactory = EditorFactoryMap.get(editorType);
   if (!editorFactory) {
@@ -48,3 +49,4 @@ const macro: Macro = async (t, inputFolder: string, editorType: string) => {
 macro.title = (providedTitle: string, inputFolder: string, editorType: string) => `Test Recording: ${inputFolder} / ${editorType}`.trim();
 
 test(macro, 'lightroom-classic-windows-10-smart-collection-icon-in-center-y', 'lightroom-windows');
+test(macro, 'lightroom-classic-osx-retina', 'lightroom-mac');

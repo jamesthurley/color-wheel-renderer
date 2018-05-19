@@ -50,3 +50,6 @@ Thumbs.db
 *.gif
 *.mov
 *.mp4
+*.debug.png
+*.debug.jpg
+*.debug.jpeg

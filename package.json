@@ -21,6 +21,7 @@
     "postversion": "git push && git push --tags",
     "start": "ts-node src/index.ts",
     "test": "ava --verbose",
+    "test-verbose": "ava --verbose -- --verbose",
     "clean": "rimraf dist dist-tests",
     "lint": "tslint --project tsconfig.json && tslint --project tsconfig.tests.json",
     "build": "tsc",

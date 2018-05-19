@@ -7,6 +7,7 @@ import { Frame } from '../../pipeline/frame';
 import { FitFrameSizeToTarget } from '../fit-frame-size-to-target';
 import { Size, ISize } from '../../../common/size';
 import { FrameMetadata } from '../../pipeline/frame-metadata';
+import { DebugImage } from '../../pipeline/debug-image';
 
 export const LONG_FRAME_DELAY_CENTISECS = 200;
 export const SHORT_FRAME_DELAY_CENTISECS = 50;
@@ -18,6 +19,10 @@ export class RenderingSnapshotConsumer implements ISnapshotConsumer {
 
   constructor(
     private readonly frameConsumer: IFrameConsumer) {
+  }
+
+  public consumeDebugImages(debugImages: ReadonlyArray<DebugImage>): Promise<void> {
+    return Promise.resolve();
   }
 
   public consume(snapshot: ISnapshot): Promise<void> {
