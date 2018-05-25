@@ -4,6 +4,8 @@ import { populateSessionCommands } from './populate-session-commands';
 import { populateColorWheelCommands } from './populate-color-wheel-commands';
 import {version} from '../package.json';
 
+process.on('warning', e => console.warn(e.stack));
+
 program.version(version || '0.0.0', '--version');
 
 populateSessionCommands(program);

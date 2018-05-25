@@ -22,7 +22,29 @@
         "lightroom-windows",
         "--verbose",
         "-i",
-        "..\\opendarkroomtests\\lightroom-windows-smart-collection-icon-in-center-y"
+        ".\\integration-tests\\input-data\\recorded-sessions\\lightroom-classic-windows-10-smart-collection-icon-in-center-y"
+      ]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Render Session",
+      "sourceMaps": true,
+      "cwd": "${workspaceRoot}",
+      "runtimeArgs": [
+        "--nolazy",
+        "-r",
+        "ts-node/register"
+      ],
+      "args": [
+        "${workspaceFolder}/src/index.ts",
+        "--",
+        "render-session",
+        "--verbose",
+        "-i",
+        ".\\integration-tests\\input-data\\recorded-sessions\\lightroom-classic-windows-10-smart-collection-icon-in-center-y",
+        "-o",
+        "..\\Temp\\mp4",
       ]
     },
     {

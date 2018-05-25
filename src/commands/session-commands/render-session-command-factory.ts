@@ -13,6 +13,7 @@ import { GifFrameConsumer } from '../../sessions/rendering/frame-consumers/gif-f
 import { FilesystemFrameConsumer } from '../../sessions/rendering/frame-consumers/filesystem-frame-consumer';
 import { FrameFolderUtilities } from '../../sessions/pipeline-common/frame-folder-utilities';
 import { AggregateFrameConsumer } from '../../sessions/rendering/frame-consumers/aggregate-frame-consumer';
+import { Mp4FrameConsumer } from '../../sessions/rendering/frame-consumers/mp4-frame-consumer';
 
 export class RenderCommandFactory implements ICommandFactory<SessionOptions> {
   public create(options: SessionOptions): ICommand {
@@ -32,6 +33,7 @@ export class RenderCommandFactory implements ICommandFactory<SessionOptions> {
             options.outputFolder || options.inputFolder,
             new FrameFolderUtilities()),
           new GifFrameConsumer(options.outputFolder || options.inputFolder),
+          new Mp4FrameConsumer(options.outputFolder || options.inputFolder),
         ]));
 
     const sessionRunner = new SessionRunner(
