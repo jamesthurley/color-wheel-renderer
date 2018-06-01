@@ -3,6 +3,10 @@ import { normalizeAndCreateFolder } from '../../common/normalize-and-create-fold
 import { isUndefined } from 'util';
 import { DisplayableError } from '../../common/displayable-error';
 import { LogLevel } from '../../common/log-level';
+import { Format } from '../../sessions/rendering/format';
+import { GifQuantizer } from '../../sessions/rendering/gif-quantizer';
+
+export const DEFAULT_TRANSITION_FRAMES = 2;
 
 export class SessionOptions {
   public static default(): SessionOptions {
@@ -11,6 +15,9 @@ export class SessionOptions {
       undefined,
       undefined,
       undefined,
+      undefined,
+      GifQuantizer.wu,
+      DEFAULT_TRANSITION_FRAMES,
       5000,
       30000);
   }
@@ -21,6 +28,9 @@ export class SessionOptions {
       source.inputFolder,
       source.outputFolder,
       source.editor,
+      source.format,
+      source.gifQuantizer,
+      source.transitionFrames,
       source.millisecondsBetweenScreenshots,
       source.maximumMillisecondsBetweenSnapshots);
   }
@@ -30,8 +40,11 @@ export class SessionOptions {
     public readonly inputFolder: string | undefined,
     public readonly outputFolder: string | undefined,
     public readonly editor: IEditor | undefined,
-    public readonly millisecondsBetweenScreenshots: number = 5000,
-    public readonly maximumMillisecondsBetweenSnapshots: number = 30000) {
+    public readonly format: Format | undefined,
+    public readonly gifQuantizer: GifQuantizer,
+    public readonly transitionFrames: number,
+    public readonly millisecondsBetweenScreenshots: number,
+    public readonly maximumMillisecondsBetweenSnapshots: number) {
 
     if (this.inputFolder) {
       this.inputFolder = normalizeAndCreateFolder(this.inputFolder);
@@ -47,5 +60,12 @@ export class SessionOptions {
       throw new DisplayableError('Editor was not defined.');
     }
     return this.editor;
+  }
+
+  public get definedFormat(): Format {
+    if (isUndefined(this.format)) {
+      throw new DisplayableError('Format was not defined.');
+    }
+    return this.format;
   }
 }

@@ -65,7 +65,7 @@ export class RenderingSnapshotConsumer implements ISnapshotConsumer {
       frame.composite(
         overlay,
         Math.floor(frame.bitmap.width / 2) - Math.floor(snapshot.historyItemRectangle.width / 2),
-        frame.bitmap.height - snapshot.historyItemRectangle.height);
+        0 /*frame.bitmap.height - snapshot.historyItemRectangle.height */);
 
       await this.frameConsumer.consume(new Frame(frame, new FrameMetadata(SHORT_FRAME_DELAY_CENTISECS)));
     }

@@ -14,12 +14,26 @@ import { FilesystemFrameConsumer } from '../../sessions/rendering/frame-consumer
 import { FrameFolderUtilities } from '../../sessions/pipeline-common/frame-folder-utilities';
 import { AggregateFrameConsumer } from '../../sessions/rendering/frame-consumers/aggregate-frame-consumer';
 import { Mp4FrameConsumer } from '../../sessions/rendering/frame-consumers/mp4-frame-consumer';
+import { TransitioningFrameConsumer } from '../../sessions/rendering/frame-consumers/transitioning-frame-consumer';
+import { Format } from '../../sessions/rendering/format';
+import { IFrameConsumer } from '../../sessions/pipeline/frame-consumer';
+
+const framesPerSecond = 25;
 
 export class RenderCommandFactory implements ICommandFactory<SessionOptions> {
   public create(options: SessionOptions): ICommand {
 
     if (!options.inputFolder) {
       throw new DisplayableError('Input session folder must be provided.');
+    }
+
+    const format = options.definedFormat;
+    const formatFrameConsumers: IFrameConsumer[] = [];
+    if (format === Format.gif || format === Format.all) {
+      formatFrameConsumers.push(new GifFrameConsumer(options.gifQuantizer, options.outputFolder || options.inputFolder));
+    }
+    if (format === Format.mp4 || format === Format.all) {
+      formatFrameConsumers.push(new Mp4FrameConsumer(framesPerSecond, options.outputFolder || options.inputFolder));
     }
 
     const snapshotProducer: ISnapshotProducer = new FilesystemSnapshotProducer (
@@ -32,8 +46,7 @@ export class RenderCommandFactory implements ICommandFactory<SessionOptions> {
           new FilesystemFrameConsumer(
             options.outputFolder || options.inputFolder,
             new FrameFolderUtilities()),
-          new GifFrameConsumer(options.outputFolder || options.inputFolder),
-          new Mp4FrameConsumer(options.outputFolder || options.inputFolder),
+          new TransitioningFrameConsumer(framesPerSecond, options.transitionFrames, new AggregateFrameConsumer(formatFrameConsumers)),
         ]));
 
     const sessionRunner = new SessionRunner(

@@ -25,7 +25,8 @@ export class Log {
   public static error(text: string, error?: Error) {
     console.error(colors.red('ERROR: ' + text));
     if (error) {
-      console.error(colors.red('' + error));
+      // console.error(colors.red('' + error));
+      console.error(colors.red('' + error.stack));
     }
   }
 

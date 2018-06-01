@@ -7,28 +7,26 @@ import { IFrame } from '../../pipeline/frame';
 import { ffmpeg } from 'ffmpeg-stream';
 import * as stream from 'stream';
 import { DisplayableError } from '../../../common/displayable-error';
-import { sleep } from '../../../common/sleep';
-
-const framesPerSecond: number = 25;
-const transitionFrameCount: number = 5;
 
 export class Mp4FrameConsumer implements IFrameConsumer {
 
   private readonly ffmpeg: any;
   private readonly input: any;
-  private previousFrame: IFrame | undefined;
 
   constructor(
+    private readonly framesPerSecond: number,
     private readonly sessionFolder: string) {
+
+    if (this.framesPerSecond <= 0) {
+      throw new DisplayableError('Frames per second must be greater than zero.');
+    }
 
     this.ffmpeg = ffmpeg();
     this.input = this.ffmpeg.input({f: 'image2pipe', r: framesPerSecond});
   }
 
   public async consume(frame: IFrame): Promise<void> {
-    await this.writeTransitionFrames(frame);
-
-    const frameCount = (frame.metadata.durationCentiseconds / 100) * framesPerSecond;
+    const frameCount = Math.round((frame.metadata.durationCentiseconds / 100) * this.framesPerSecond);
     const buffer = await this.getImageBuffer(frame.image);
 
     for (let i = 0; i < frameCount; ++i) {
@@ -38,8 +36,6 @@ export class Mp4FrameConsumer implements IFrameConsumer {
       bufferStream.pipe(this.input, {end: false});
       await ended;
     }
-
-    this.previousFrame = frame;
   }
 
   public async complete(): Promise<void> {
@@ -51,7 +47,7 @@ export class Mp4FrameConsumer implements IFrameConsumer {
     }
 
     this.input.end();
-    this.ffmpeg.output(outputFilePath, {vcodec: 'libx264', pix_fmt: 'yuv420p'});
+    this.ffmpeg.output(outputFilePath, {vcodec: 'libx264', pix_fmt: 'yuv420p', tune: 'stillimage'});
     try {
       await this.ffmpeg.run();
     }
@@ -66,26 +62,6 @@ export class Mp4FrameConsumer implements IFrameConsumer {
         resolve();
       });
     });
-  }
-
-  private async writeTransitionFrames(frame: IFrame): Promise<void> {
-    if (this.previousFrame) {
-      // Write out transition frames.
-      const previousImage = this.previousFrame.image.clone();
-      for (let i = 0; i < transitionFrameCount; ++i) {
-
-        previousImage.opaque(undefined)
-          .opacity(1 - ((i + 1) / transitionFrameCount));
-
-        const newFrame = frame.image.clone();
-        newFrame.composite(previousImage, 0, 0);
-
-        const buffer = await this.getImageBuffer(newFrame);
-        const bufferStream = new stream.PassThrough();
-        bufferStream.end(buffer);
-        bufferStream.pipe(this.input, {end: false});
-      }
-    }
   }
 
   private async getImageBuffer(image: Jimp): Promise<Buffer> {

@@ -1,9 +1,12 @@
 
 export interface IUnprocessedSessionOptions {
-  input: string | undefined;
-  output: string | undefined;
+  input?: string;
+  output?: string;
   verbose: boolean;
   useDefaultInput?: boolean;
   useDefaultOutput?: boolean;
-  editor: string | undefined;
+  editor?: string;
+  format?: string;
+  quantizer?: string;
+  transitionFrames?: string;
 }
