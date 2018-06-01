@@ -44,7 +44,7 @@ const macro: Macro = async (t, inputFolder: string, editorType: string) => {
   await evaluateComparisons(t, comparisonHelper);
 };
 
-macro.title = (providedTitle: string, inputFolder: string, editorType: string) => `Test Recording: ${inputFolder} / ${editorType}`.trim();
+macro.title = (providedTitle: string, inputFolder: string, editorType: string) => `Integration Test: Recording: ${inputFolder} / ${editorType}`.trim();
 
 test(macro, 'lightroom-classic-windows-10-smart-collection-icon-in-center-y', 'lightroom-windows');
 test(macro, 'lightroom-classic-osx-retina', 'lightroom-mac');

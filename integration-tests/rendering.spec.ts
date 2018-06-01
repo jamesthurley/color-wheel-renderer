@@ -36,6 +36,6 @@ const macro: Macro = async (t, inputFolder: string) => {
   await evaluateComparisons(t, comparisonHelper);
 };
 
-macro.title = (providedTitle: string, inputFolder: string, editorType: string) => `Test Rendering: ${inputFolder}`.trim();
+macro.title = (providedTitle: string, inputFolder: string, editorType: string) => `Integration Test: Rendering: ${inputFolder}`.trim();
 
 test(macro, 'lightroom-classic-windows-10-smart-collection-icon-in-center-y');

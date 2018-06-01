@@ -22,6 +22,8 @@
     "start": "ts-node src/index.ts",
     "test": "ava --verbose",
     "test-verbose": "ava --verbose -- --verbose",
+    "test-unit": "npm run test -- --match=\"!*integration test*\"",
+    "test-unit-watch": "npm run test-unit -- --watch",
     "clean": "rimraf dist dist-tests",
     "lint": "tslint --project tsconfig.json && tslint --project tsconfig.tests.json",
     "build": "tsc",
@@ -36,23 +38,23 @@
   },
   "homepage": "https://opendarkroom.com/",
   "dependencies": {
-    "colors": "^1.2.1",
-    "commander": "^2.15.1",
-    "desktop-screenshot": "^0.1.1",
-    "ffmpeg-stream": "^0.5.0",
-    "fs-extra": "^5.0.0",
-    "gifwrap": "^0.7.5",
-    "jimp": "^0.2.28"
+    "colors": "1.2.1",
+    "commander": "2.15.1",
+    "desktop-screenshot": "0.1.1",
+    "ffmpeg-stream": "0.5.0",
+    "fs-extra": "5.0.0",
+    "gifwrap": "0.7.5",
+    "jimp": "0.2.28"
   },
   "devDependencies": {
-    "@types/commander": "^2.12.2",
-    "@types/fs-extra": "^5.0.1",
-    "@types/node": "^9.4.7",
-    "ava": "^1.0.0-beta.3",
-    "rimraf": "^2.6.2",
-    "ts-node": "^5.0.1",
-    "tslint": "^5.9.1",
-    "typescript": "^2.7.2"
+    "@types/commander": "2.12.2",
+    "@types/fs-extra": "5.0.1",
+    "@types/node": "9.4.7",
+    "ava": "1.0.0-beta.5.1",
+    "rimraf": "2.6.2",
+    "ts-node": "5.0.1",
+    "tslint": "5.9.1",
+    "typescript": "2.7.2"
   },
   "ava": {
     "files": [
@@ -62,6 +64,10 @@
     "sources": [
       "src/**/*.{js,ts}",
       "!dist/**/*"
+    ],
+    "babel": false,
+    "extensions": [
+      "ts"
     ],
     "concurrency": 2,
     "failFast": false,

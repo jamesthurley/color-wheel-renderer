@@ -7,7 +7,7 @@ export class VoteTally<TSolution> {
   private voteRecord: Array<number | null> = [];
   private readonly mutableSolutions: Array<SolutionTally<TSolution>> = [];
 
-  constructor(public  readonly name: string) {
+  constructor(public readonly name: string) {
 
   }
 
