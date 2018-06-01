@@ -1,5 +1,5 @@
 import test from 'ava';
-import { VoteTally, SolutionTally } from './vote-tally';
+import { VoteTally } from './vote-tally';
 
 class Person {
   constructor(public readonly name: string, public readonly age: number) {
