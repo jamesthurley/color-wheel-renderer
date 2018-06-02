@@ -1,3 +1,5 @@
+import { ColorWheelType } from './color-wheel-type';
+
 export interface IUnprocessedColorWheelOptions {
   type: ColorWheelType | undefined;
 
@@ -12,11 +14,4 @@ export interface IUnprocessedColorWheelOptions {
   angularBuckets: string;
   radialBuckets: string;
   fixed: string[];
-}
-
-export enum ColorWheelType {
-  HslFixedSaturation = 'HslFixedSaturation',
-  HslFixedLightness = 'HslFixedLightness',
-  HsvFixedSaturation = 'HsvFixedSaturation',
-  HsvFixedValue = 'HsvFixedValue',
 }

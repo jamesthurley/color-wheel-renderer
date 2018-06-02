@@ -1,6 +1,6 @@
 import { normalizeAndCreateFolderForFile } from '../../common/normalize-and-create-folder';
 import { LogLevel } from '../../common/log-level';
-import { ColorWheelType } from './unprocessed-color-wheel-options';
+import { ColorWheelType } from './color-wheel-type';
 
 export class ColorWheelOptions {
   public static default(type: ColorWheelType): ColorWheelOptions {

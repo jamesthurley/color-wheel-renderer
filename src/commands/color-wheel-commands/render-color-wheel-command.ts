@@ -7,16 +7,18 @@ import { BucketDirection } from '../../color-wheels/bucket';
 import { HslFixedSaturationPixelRenderer } from '../../color-wheels/pixel-renderers/hsl-fixed-saturation-pixel-renderer';
 import { HslFixedLightnessPixelRenderer } from '../../color-wheels/pixel-renderers/hsl-fixed-lightness-pixel-renderer';
 import { ColorWheelOptions } from './color-wheel-options';
-import { ColorWheelType } from './unprocessed-color-wheel-options';
+import { ColorWheelType } from './color-wheel-type';
 import { DisplayableError } from '../../common/displayable-error';
+import { IColorWheelConsumer } from '../../color-wheels/color-wheel-consumers/color-wheel-consumer';
 
 export class RenderColorWheelCommand implements ICommand {
   constructor(
     public readonly options: ColorWheelOptions,
-    public readonly colorWheelSetRenderer: ColorWheelSetRenderer) {
+    public readonly colorWheelSetRenderer: ColorWheelSetRenderer,
+    public readonly colorWheelConsumer: IColorWheelConsumer) {
   }
 
-  public execute(): Promise<void> {
+  public async execute(): Promise<void> {
     let colorWheelDefinitions: ColorWheelDefinition[] = [];
 
     const size = this.options.diameter + this.options.margin * 2;
@@ -44,8 +46,8 @@ export class RenderColorWheelCommand implements ICommand {
     }
 
     const image = this.colorWheelSetRenderer.render(colorWheelDefinitions, 0);
-    image.write(this.options.outputFile);
-    return Promise.resolve();
+
+    await this.colorWheelConsumer.consume(image, this.options.outputFile);
   }
 
   private createPixelRenderer(type: ColorWheelType, fixed: number) {
