@@ -34,7 +34,7 @@ macro.title = (providedTitle: string, options: ColorWheelOptions) => `Integratio
 
 // odr color-wheel hsv-fixed-value -f 1 -f 0.6 -f 0.2 -a 18 -r 12 -d 720 -m 40 -o color-wheel-hsv-fixed-value-three.png
 test(macro, new ColorWheelOptions(
-  ColorWheelType.HsvFixedValue,
+  ColorWheelType.hsvFixedValue,
   getTestLogLevel(),
   'color-wheel-hsv-fixed-value-three.png',
   720,
@@ -48,7 +48,7 @@ test(macro, new ColorWheelOptions(
 
 // odr color-wheel hsl-fixed-lightness -f 0.8 -f 0.5 -f 0.2 -a 18 -r 12 -d 720 -m 40 -o color-wheel-hsl-fixed-lightness-three.png
 test(macro, new ColorWheelOptions(
-  ColorWheelType.HslFixedLightness,
+  ColorWheelType.hslFixedLightness,
   getTestLogLevel(),
   'color-wheel-hsl-fixed-lightness-three.png',
   720,
@@ -62,7 +62,7 @@ test(macro, new ColorWheelOptions(
 
 // odr color-wheel hsv-fixed-saturation -f 1 -f 0.6 -f 0.2 -a 18 -r 12 -d 720 -m 40 -o color-wheel-hsv-fixed-saturation-three.png
 test(macro, new ColorWheelOptions(
-  ColorWheelType.HsvFixedSaturation,
+  ColorWheelType.hsvFixedSaturation,
   getTestLogLevel(),
   'color-wheel-hsv-fixed-saturation-three.png',
   720,
@@ -76,7 +76,7 @@ test(macro, new ColorWheelOptions(
 
 // odr color-wheel hsl-fixed-saturation -f 1 -f 0.6 -f 0.2 -a 18 -r 12 -d 780 -m 10 -o color-wheel-hsl-fixed-saturation-three.png
 test(macro, new ColorWheelOptions(
-  ColorWheelType.HslFixedSaturation,
+  ColorWheelType.hslFixedSaturation,
   getTestLogLevel(),
   'color-wheel-hsl-fixed-saturation-three.png',
   780,
@@ -90,7 +90,7 @@ test(macro, new ColorWheelOptions(
 
 // odr color-wheel hsl-fixed-saturation -d 720 -m 40 -o color-wheel-hsl-fixed-saturation-smooth.png
 test(macro, new ColorWheelOptions(
-  ColorWheelType.HslFixedSaturation,
+  ColorWheelType.hslFixedSaturation,
   getTestLogLevel(),
   'color-wheel-hsl-fixed-saturation-smooth.png',
   720,
@@ -104,7 +104,7 @@ test(macro, new ColorWheelOptions(
 
 // odr color-wheel hsl-fixed-saturation -c -d 720 -m 40 -o color-wheel-hsl-fixed-saturation-smooth-reversed-colors.png
 test(macro, new ColorWheelOptions(
-  ColorWheelType.HslFixedSaturation,
+  ColorWheelType.hslFixedSaturation,
   getTestLogLevel(),
   'color-wheel-hsl-fixed-saturation-smooth-reversed-colors.png',
   720,
@@ -118,7 +118,7 @@ test(macro, new ColorWheelOptions(
 
 // odr color-wheel hsl-fixed-saturation -a 36 -d 720 -m 40 -o color-wheel-hsl-fixed-saturation-angular.png
 test(macro, new ColorWheelOptions(
-  ColorWheelType.HslFixedSaturation,
+  ColorWheelType.hslFixedSaturation,
   getTestLogLevel(),
   'color-wheel-hsl-fixed-saturation-angular.png',
   720,
@@ -132,7 +132,7 @@ test(macro, new ColorWheelOptions(
 
 // odr color-wheel hsl-fixed-saturation -r 12 -d 780 -m 10 -o color-wheel-hsl-fixed-saturation-radial.png
 test(macro, new ColorWheelOptions(
-  ColorWheelType.HslFixedSaturation,
+  ColorWheelType.hslFixedSaturation,
   getTestLogLevel(),
   'color-wheel-hsl-fixed-saturation-radial.png',
   780,
@@ -146,7 +146,7 @@ test(macro, new ColorWheelOptions(
 
 // odr color-wheel hsv-fixed-saturation -f 0.25 -f 0.5 -f 1 -a 18 -r 12 -e -d 720 -m 40 -o color-wheel-hsv-fixed-saturation-expand.png
 test(macro, new ColorWheelOptions(
-  ColorWheelType.HsvFixedSaturation,
+  ColorWheelType.hsvFixedSaturation,
   getTestLogLevel(),
   'color-wheel-hsv-fixed-saturation-expand.png',
   720,
@@ -160,7 +160,7 @@ test(macro, new ColorWheelOptions(
 
 // odr color-wheel hsl-fixed-saturation -f 0.1 -f 0.5 -f 1 -a 18 -r 12 -e -b -d 720 -m 40 -o color-wheel-hsl-fixed-saturation-expand.png
 test(macro, new ColorWheelOptions(
-  ColorWheelType.HslFixedSaturation,
+  ColorWheelType.hslFixedSaturation,
   getTestLogLevel(),
   'color-wheel-hsl-fixed-saturation-expand.png',
   720,
@@ -174,7 +174,7 @@ test(macro, new ColorWheelOptions(
 
 // odr color-wheel hsv-fixed-saturation -a 12 -r 5 -d 720 -m 40 -o color-wheel-hsv-fixed-saturation-coarse.png
 test(macro, new ColorWheelOptions(
-  ColorWheelType.HsvFixedSaturation,
+  ColorWheelType.hsvFixedSaturation,
   getTestLogLevel(),
   'color-wheel-hsv-fixed-saturation-coarse.png',
   720,

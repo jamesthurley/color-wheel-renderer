@@ -15,7 +15,7 @@ export class ColorWheelOptions {
       false,
       0,
       0,
-      type === ColorWheelType.HslFixedLightness ? [0.5] : [1]);
+      type === ColorWheelType.hslFixedLightness ? [0.5] : [1]);
   }
 
   public static create(source: ColorWheelOptions): ColorWheelOptions {

@@ -71,19 +71,19 @@ export class RenderColorWheelCommand implements ICommand {
     }
 
     switch (this.options.type) {
-      case ColorWheelType.HslFixedSaturation:
+      case ColorWheelType.hslFixedSaturation:
         return new HslFixedSaturationPixelRenderer(
          fixed, false, this.options.reverseRadialColors, BucketDirection.down, radialBucketDirection);
 
-      case ColorWheelType.HslFixedLightness:
+      case ColorWheelType.hslFixedLightness:
         return new HslFixedLightnessPixelRenderer(
           fixed, false, this.options.reverseRadialColors, BucketDirection.down, radialBucketDirection);
 
-      case ColorWheelType.HsvFixedSaturation:
+      case ColorWheelType.hsvFixedSaturation:
         return new HsvFixedSaturationPixelRenderer(
           fixed, false, this.options.reverseRadialColors, BucketDirection.down, radialBucketDirection);
 
-      case ColorWheelType.HsvFixedValue:
+      case ColorWheelType.hsvFixedValue:
         return new HsvFixedValuePixelRenderer(
           fixed, false, this.options.reverseRadialColors, BucketDirection.down, radialBucketDirection);
 

@@ -1,7 +1,5 @@
-import { ColorWheelType } from './color-wheel-type';
-
 export interface IUnprocessedColorWheelOptions {
-  type: ColorWheelType | undefined;
+  type: string;
 
   output: string | undefined;
   verbose: boolean;

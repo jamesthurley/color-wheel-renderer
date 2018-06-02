@@ -51,7 +51,7 @@ export class SessionOptionsProcessor implements ICommandOptionsProcessor<IUnproc
         return undefined;
       }
 
-      options.format = Format[format as keyof typeof Format];
+      options.format = format as Format;
     }
 
     const quantizer = unprocessed.quantizer;
@@ -61,7 +61,7 @@ export class SessionOptionsProcessor implements ICommandOptionsProcessor<IUnproc
         return undefined;
       }
 
-      options.gifQuantizer = GifQuantizer[quantizer as keyof typeof GifQuantizer];
+      options.gifQuantizer = quantizer as GifQuantizer;
     }
 
     if (!isUndefined(unprocessed.transitionFrames)) {

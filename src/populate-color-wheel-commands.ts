@@ -6,35 +6,22 @@ import { ColorWheelOptionsProcessor } from './commands/color-wheel-commands/colo
 import { RenderColorWheelCommandFactory } from './commands/color-wheel-commands/render-color-wheel-command-factory';
 import { verboseOption } from './verbose-option';
 import { TestRenderColorWheelCommandFactory } from './commands/color-wheel-commands/test-render-color-wheel-command-factory';
-import { ColorWheelType } from './commands/color-wheel-commands/color-wheel-type';
+import { colorWheelTypes } from './commands/color-wheel-commands/color-wheel-type';
+import { arrayToString } from './common/array-to-string';
 
 function append(value: string, list: string[]) {
   list.push(value);
   return list;
 }
 
-const colorWheelTypeMap: { readonly [type: string]: ColorWheelType } = {
-  'hsl-fixed-saturation': ColorWheelType.HslFixedSaturation,
-  'hsl-fixed-lightness': ColorWheelType.HslFixedLightness,
-  'hsv-fixed-saturation': ColorWheelType.HsvFixedSaturation,
-  'hsv-fixed-value': ColorWheelType.HsvFixedValue,
-};
-
-let typesHelp: string = '';
-for (const key of Object.keys(colorWheelTypeMap)) {
-  if (typesHelp.length) {
-    typesHelp += ', ';
-  }
-  typesHelp += key;
-}
-typesHelp = 'Type can be one of [' + typesHelp + '].';
+const typesHelp: string = `Type can be one of [${arrayToString(colorWheelTypes())}].`;
 
 export function populateColorWheelCommands(program: commander.CommanderStatic) {
   const colorWheel = program
     .command('color-wheel <type>')
     .description(`Renders one or more color wheels. ${typesHelp}`)
     .action((type: string, options: IUnprocessedColorWheelOptions) => {
-      options.type = colorWheelTypeMap[type];
+      options.type = type;
       executeAction<IUnprocessedColorWheelOptions, ColorWheelOptions>(
         options,
         new ColorWheelOptionsProcessor(),
@@ -47,7 +34,7 @@ export function populateColorWheelCommands(program: commander.CommanderStatic) {
   .command('test-color-wheel <type>')
   .description(`Tests rendering one or more color wheels to see if the output has changed. ${typesHelp}`)
   .action((type: string, options: IUnprocessedColorWheelOptions) => {
-    options.type = colorWheelTypeMap[type];
+    options.type = type;
     executeAction<IUnprocessedColorWheelOptions, ColorWheelOptions>(
       options,
       new ColorWheelOptionsProcessor(),

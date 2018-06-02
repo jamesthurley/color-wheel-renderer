@@ -5,6 +5,7 @@ import { LogLevel } from '../../common/log-level';
 import { DisplayableError } from '../../common/displayable-error';
 import { Log } from '../../common/log';
 import { toNumber } from '../../common/to-number';
+import { isValidColorWheelType, ColorWheelType } from './color-wheel-type';
 
 export class ColorWheelOptionsProcessor implements ICommandOptionsProcessor<IUnprocessedColorWheelOptions, ColorWheelOptions> {
   public process(unprocessed: IUnprocessedColorWheelOptions): ColorWheelOptions | undefined {
@@ -13,7 +14,14 @@ export class ColorWheelOptionsProcessor implements ICommandOptionsProcessor<IUnp
       throw new DisplayableError('Unknown color wheel type.');
     }
 
-    const options = {...ColorWheelOptions.default(unprocessed.type)};
+    const type = unprocessed.type;
+    if (!isValidColorWheelType(type)) {
+      Log.error('Unknown color wheel type: ' + type);
+      return undefined;
+    }
+    const processedType: ColorWheelType = type as ColorWheelType;
+
+    const options = {...ColorWheelOptions.default(processedType)};
 
     if (unprocessed.verbose) {
       options.logLevel = LogLevel.verbose;
