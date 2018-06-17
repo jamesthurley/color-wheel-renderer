@@ -22,6 +22,7 @@ export function populateSessionCommands(program: commander.CommanderStatic) {
     .description(`Record a session, and keep intermediate files. ${editorsHelp}`)
     .action((editor: string, options: IUnprocessedSessionOptions) => {
       options.editor = editor;
+      options.useDefaultOutput = true;
       executeAction<IUnprocessedSessionOptions, SessionOptions>(
         options,
         new SessionOptionsProcessor(),

@@ -29,6 +29,15 @@ export class FitFrameSizeToTarget {
         Math.floor(frameMetadata.width / INSTAGRAM_MIN_VIDEO_ASPECT_RATIO));
     }
 
+    // Ensure size is multiple of two (required for FFmpeg).
+    if ((frameMetadata.height % 2) !== 0) {
+      frameMetadata = new Size(frameMetadata.width, frameMetadata.height - 1);
+    }
+
+    if ((frameMetadata.width % 2) !== 0) {
+      frameMetadata = new Size(frameMetadata.width - 1, frameMetadata.height);
+    }
+
     return frameMetadata;
   }
 }

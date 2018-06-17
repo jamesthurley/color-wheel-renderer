@@ -43,7 +43,8 @@ export class PatientSnapshotProducer implements ISnapshotProducer {
         break;
       }
 
-      const activeHistoryItemRectangle = this.editor.findActiveHistoryItemRectangle(screenshot);
+      const activeHistoryItemRectangleResult = this.editor.findActiveHistoryItemRectangle(screenshot);
+      const activeHistoryItemRectangle = activeHistoryItemRectangleResult.value;
 
       ellapsed = getMilliseconds() - start;
       foundNewHistoryItem = !!activeHistoryItemRectangle

@@ -119,7 +119,8 @@ export class RenderingSnapshotConsumer implements ISnapshotConsumer {
     const initialWidth = frame.bitmap.width;
     const initialHeight = frame.bitmap.height;
     frame.scaleToFit(frameSize.width, frameSize.height);
-    Log.verbose(`Resized photo from ${initialWidth}x${initialHeight} to ${frame.bitmap.width}x${frame.bitmap.height}.`);
+    frame.contain(frameSize.width, frameSize.height);
+    Log.info(`Resized photo from ${initialWidth}x${initialHeight} to ${frame.bitmap.width}x${frame.bitmap.height}.`);
 
     return frame;
   }

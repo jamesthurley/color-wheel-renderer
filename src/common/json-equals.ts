@@ -1,3 +1,3 @@
-export function jsonEquals(a: any, b: any) {
+export function jsonEquals<T>(a: T, b: T) {
   return JSON.stringify(a) === JSON.stringify(b);
 }

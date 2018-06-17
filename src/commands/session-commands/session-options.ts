@@ -18,8 +18,8 @@ export class SessionOptions {
       undefined,
       GifQuantizer.wu,
       DEFAULT_TRANSITION_FRAMES,
-      5000,
-      30000);
+      2000,
+      6000);
   }
 
   public static create(source: SessionOptions): SessionOptions {
