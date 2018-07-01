@@ -56,8 +56,9 @@ export class PatientSnapshotProducer implements ISnapshotProducer {
 
     if (foundNewHistoryItem) {
       if (this.millisecondsBetweenScreenshots) {
-        // Pause to ensure the photo has had time to render.
+        // Pause to ensure the photo has had time to render, and take another screenshot.
         await sleep(WAIT_FOR_PHOTO_RENDER_MILLISECONDS);
+        screenshot = await this.screenshotProducer.getScreenshot();
       }
 
       return this.getSnapshot(screenshot);
