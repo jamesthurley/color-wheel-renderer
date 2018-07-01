@@ -10,6 +10,8 @@ import * as Jimp from 'jimp';
 import { WithDebugImages } from '../../pipeline/with-debug-images';
 import { DebugImage } from '../../pipeline/debug-image';
 
+const WAIT_FOR_PHOTO_RENDER_MILLISECONDS = 3000;
+
 export class PatientSnapshotProducer implements ISnapshotProducer {
 
   constructor(
@@ -52,9 +54,16 @@ export class PatientSnapshotProducer implements ISnapshotProducer {
     }
     while (ellapsed < this.maximumMillisecondsBetweenSnapshots && !foundNewHistoryItem);
 
-    return foundNewHistoryItem
-      ? this.getSnapshot(screenshot)
-      : new WithDebugImages<ISnapshot | undefined>(undefined, []);
+    if (foundNewHistoryItem) {
+      if (this.millisecondsBetweenScreenshots) {
+        // Pause to ensure the photo has had time to render.
+        await sleep(WAIT_FOR_PHOTO_RENDER_MILLISECONDS);
+      }
+
+      return this.getSnapshot(screenshot);
+    }
+
+    return new WithDebugImages<ISnapshot | undefined>(undefined, []);
   }
 
   private async getSnapshot(screenshot?: Jimp): Promise<WithDebugImages<ISnapshot | undefined>> {
