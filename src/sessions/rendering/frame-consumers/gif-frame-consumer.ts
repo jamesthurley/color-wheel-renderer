@@ -31,6 +31,11 @@ export class GifFrameConsumer implements IFrameConsumer {
       return;
     }
 
+    // IMGUR seems to truncate the last frame, which is meant to hold on the final image for a few seconds.
+    // To work around that I'm appending an duplicate frame to the end.
+    const finalFrame = this.frames[this.frames.length - 1];
+    this.frames.push(new GifFrame(finalFrame.bitmap, { delayCentisecs: 1 }));
+
     Log.info('Saving GIF...');
     const outputFilePath = join(this.sessionFolder, 'session.gif');
     await GifUtil.write(outputFilePath, this.frames, { colorScope: Gif.LocalColorsOnly });
