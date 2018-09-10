@@ -19,7 +19,7 @@ export class LightroomWindowsEditor extends LightroomEditor {
 
   private isPhotoBorderGrayscale(color: number) {
     const min = 127;
-    const max = 128;
+    const max = 129;
     return color >= min && color <= max;
   }
 
