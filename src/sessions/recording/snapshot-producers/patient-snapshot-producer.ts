@@ -10,7 +10,7 @@ import * as Jimp from 'jimp';
 import { WithDebugImages } from '../../pipeline/with-debug-images';
 import { DebugImage } from '../../pipeline/debug-image';
 
-const WAIT_FOR_PHOTO_RENDER_MILLISECONDS = 3000;
+const WAIT_FOR_PHOTO_RENDER_MILLISECONDS = 2000;
 
 export class PatientSnapshotProducer implements ISnapshotProducer {
 

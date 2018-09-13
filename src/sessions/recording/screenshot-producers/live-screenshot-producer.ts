@@ -2,13 +2,16 @@ import * as Jimp from 'jimp';
 import * as screenshot from 'desktop-screenshot';
 import * as fs from 'fs';
 import { IScreenshotProducer } from '../../pipeline/screenshot-producer';
+import { sleep } from '../../../common/sleep';
+
+const WAIT_FOR_RETRY_DELETE_MILLISECONDS = 1000;
 
 export class LiveScreenshotProducer implements IScreenshotProducer {
   public async getScreenshot(): Promise<Jimp | undefined> {
     const screenshotName = 'temp';
     await this.takeScreenshot(screenshotName);
     const image = await this.readImage(screenshotName);
-    this.deleteScreenshot(screenshotName);
+    await this.deleteScreenshot(screenshotName);
     return image;
   }
 
@@ -30,7 +33,15 @@ export class LiveScreenshotProducer implements IScreenshotProducer {
     });
   }
 
-  private deleteScreenshot(name: string): void {
-    fs.unlinkSync(`${name}.png`);
+  private async deleteScreenshot(name: string): Promise<void> {
+    for (let attempt = 0; attempt < 3; ++attempt) {
+      try {
+        fs.unlinkSync(`${name}.png`);
+        return;
+      }
+      catch (error) {
+        await sleep(WAIT_FOR_RETRY_DELETE_MILLISECONDS);
+      }
+    }
   }
 }
