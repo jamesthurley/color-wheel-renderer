@@ -16,6 +16,7 @@ export class RenderingSnapshotConsumer implements ISnapshotConsumer {
 
   private snapshots: ISnapshot[] = [];
   private maxFrameSize: Size = new Size(0, 0);
+  private targetFrameSize: Size = this.maxFrameSize;
 
   constructor(
     private readonly frameConsumer: IFrameConsumer) {
@@ -49,7 +50,12 @@ export class RenderingSnapshotConsumer implements ISnapshotConsumer {
       return;
     }
 
-    this.maxFrameSize = FitFrameSizeToTarget.execute(this.maxFrameSize);
+    // We are switching to targeting the final frame size rather than the maximum frame size, so the video
+    // aspect ratio matches the image size for instagram.
+    //// this.maxFrameSize = FitFrameSizeToTarget.execute(this.maxFrameSize);
+    const finalFrame = this.snapshots[this.snapshots.length - 1];
+    const finalFrameSize = new Size(finalFrame.photoRectangle.width, finalFrame.photoRectangle.height);
+    this.targetFrameSize = FitFrameSizeToTarget.execute(finalFrameSize);
 
     await this.addTitleFrame();
     await this.addInitialImageFrame();
@@ -58,7 +64,7 @@ export class RenderingSnapshotConsumer implements ISnapshotConsumer {
       const photo = await snapshot.loadPhoto();
       const historyItem = await snapshot.loadHistoryItem();
 
-      const frame = this.createFrameFromPhoto(photo, this.maxFrameSize);
+      const frame = this.createFrameFromPhoto(photo, this.targetFrameSize);
 
       const overlay = historyItem;
       overlay.opacity(0.8);
@@ -80,9 +86,9 @@ export class RenderingSnapshotConsumer implements ISnapshotConsumer {
     const initialPhoto = await this.snapshots[0].loadPhoto();
     const finalPhoto = await this.snapshots[this.snapshots.length - 1].loadPhoto();
 
-    const width = this.maxFrameSize.width;
-    const height = this.maxFrameSize.height;
-    const halfWidth = Math.floor(this.maxFrameSize.width / 2);
+    const width = this.targetFrameSize.width;
+    const height = this.targetFrameSize.height;
+    const halfWidth = Math.floor(this.targetFrameSize.width / 2);
 
     initialPhoto.cover(width, height);
     finalPhoto.cover(width, height);
@@ -102,14 +108,14 @@ export class RenderingSnapshotConsumer implements ISnapshotConsumer {
   private async addInitialImageFrame(): Promise<void> {
     // For the first frame we want to show the initial photo with no history item.
     const photo = await this.snapshots[0].loadPhoto();
-    const frame = this.createFrameFromPhoto(photo, this.maxFrameSize);
+    const frame = this.createFrameFromPhoto(photo, this.targetFrameSize);
     await this.frameConsumer.consume(new Frame(frame, new FrameMetadata(SHORT_FRAME_DELAY_CENTISECS)));
   }
 
   private async addFinalImageFrame(): Promise<void> {
     // For the last frame we want to show the final photo with no history item.
     const photo = await this.snapshots[this.snapshots.length - 1].loadPhoto();
-    const frame = this.createFrameFromPhoto(photo, this.maxFrameSize);
+    const frame = this.createFrameFromPhoto(photo, this.targetFrameSize);
     await this.frameConsumer.consume(new Frame(frame, new FrameMetadata(LONG_FRAME_DELAY_CENTISECS)));
   }
 
