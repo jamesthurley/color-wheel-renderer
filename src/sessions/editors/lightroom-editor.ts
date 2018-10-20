@@ -106,8 +106,8 @@ export abstract class LightroomEditor extends EditorBase {
 
   // This method will search several offsets for the photo borders, and return the most popular guess.
   private findPhotoBorders(image: Jimp, debug: DebugImageWriter, dimensionIndex: number): PhotoBorderPositions | undefined {
-    const maximumSearchOffsets: number = 5;
-    const offsetSizePixels: number = 20;
+    const maximumSearchOffsets: number = 7;
+    const offsetSizePixels: number = 40;
     const halfMaximumSearchOffsets: number = Math.floor(maximumSearchOffsets / 2);
     const offsets = Array(maximumSearchOffsets).fill(0).map((v, i) => (i - halfMaximumSearchOffsets) * offsetSizePixels);
 
