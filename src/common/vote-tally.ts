@@ -3,11 +3,19 @@ import { jsonEquals } from './json-equals';
 import { Log } from './log';
 import { jsonStringify } from './json-stringify';
 
+export enum TallySortMode {
+  votesThenQuantifier,
+  quantifierThenVotes,
+}
+
 export class VoteTally<TSolution> {
   private voteRecord: Array<number | null> = [];
   private readonly mutableSolutions: Array<SolutionTally<TSolution>> = [];
 
-  constructor(public readonly name: string) {
+  constructor(
+    public readonly name: string,
+    private readonly quantifier?: (item: TSolution) => number,
+    private readonly tallySortMode: TallySortMode = TallySortMode.votesThenQuantifier) {
 
   }
 
@@ -24,7 +32,7 @@ export class VoteTally<TSolution> {
     }
 
     const solutionsCopy = [...this.mutableSolutions];
-    solutionsCopy.sort((a, b) => b.voteCount - a.voteCount);
+    solutionsCopy.sort((a, b) => this.sortEvaluator(a, b));
 
     if (solutionsCopy.length === 1) {
       Log.verbose(`${this.name}: 1 solution found with ${solutionsCopy[0].voteCount} vote(s). ${voteRecordString}`);
@@ -62,6 +70,34 @@ export class VoteTally<TSolution> {
     }
 
     return 'Votes: [' + this.voteRecord.reduce((p: string, c: number | null) => p + (isNull(c) ? 'x' : c) + spacer, '') + ']';
+  }
+
+  private sortEvaluator(a: SolutionTally<TSolution>, b: SolutionTally<TSolution>) {
+    if (this.tallySortMode === TallySortMode.votesThenQuantifier) {
+      return this.votesThenQuantifierSortEvaluator(a, b);
+    }
+
+    return this.quantifierThenVotesSortEvaluator(a, b);
+  }
+
+  private votesThenQuantifierSortEvaluator(a: SolutionTally<TSolution>, b: SolutionTally<TSolution>) {
+    let result = b.voteCount - a.voteCount;
+    if (result === 0 && this.quantifier) {
+      result = this.quantifier(b.solution) - this.quantifier(a.solution);
+    }
+    return result;
+  }
+
+  private quantifierThenVotesSortEvaluator(a: SolutionTally<TSolution>, b: SolutionTally<TSolution>) {
+    if (!this.quantifier) {
+      return this.votesThenQuantifierSortEvaluator(a, b);
+    }
+
+    let result = this.quantifier(b.solution) - this.quantifier(a.solution);
+    if (result === 0) {
+      result = b.voteCount - a.voteCount;
+    }
+    return result;
   }
 }
 

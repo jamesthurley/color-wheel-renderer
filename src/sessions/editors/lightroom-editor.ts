@@ -6,7 +6,7 @@ import { isUndefined } from 'util';
 import { Border } from '../../common/border';
 import { getPixelAtIndex } from '../../common/get-pixel-at-index';
 import { Pixel } from '../../common/pixel';
-import { VoteTally } from '../../common/vote-tally';
+import { VoteTally, TallySortMode } from '../../common/vote-tally';
 import { WithDebugImages } from '../pipeline/with-debug-images';
 import { DebugImage } from '../pipeline/debug-image';
 import { Constants } from '../../common/constants';
@@ -106,12 +106,17 @@ export abstract class LightroomEditor extends EditorBase {
 
   // This method will search several offsets for the photo borders, and return the most popular guess.
   private findPhotoBorders(image: Jimp, debug: DebugImageWriter, dimensionIndex: number): PhotoBorderPositions | undefined {
-    const maximumSearchOffsets: number = 7;
-    const offsetSizePixels: number = 40;
+    const maximumSearchOffsets: number = 50;
+    const offsetSizePixels: number = 15;
     const halfMaximumSearchOffsets: number = Math.floor(maximumSearchOffsets / 2);
     const offsets = Array(maximumSearchOffsets).fill(0).map((v, i) => (i - halfMaximumSearchOffsets) * offsetSizePixels);
 
-    const tally = new VoteTally<PhotoBorderPositions>(`Photo Border ${dimensionIndex === DIMENSION_INDEX_X ? 'Left/Right' : 'Top/Bottom'}`);
+    // Largest photo size wins.
+    const tally = new VoteTally<PhotoBorderPositions>(
+      `Photo Border ${dimensionIndex === DIMENSION_INDEX_X ? 'Left/Right' : 'Top/Bottom'}`,
+      border => border.photoEndIndex - border.photoStartIndex,
+      TallySortMode.quantifierThenVotes);
+
     for (const offset of offsets) {
       tally.castVote(this.findPhotoBordersAtOffset(image, debug, dimensionIndex, offset));
     }
