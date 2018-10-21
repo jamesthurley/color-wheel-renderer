@@ -48,3 +48,4 @@ macro.title = (providedTitle: string, inputFolder: string, editorType: string) =
 
 test(macro, 'lightroom-classic-windows-10-smart-collection-icon-in-center-y', 'lightroom-windows');
 test(macro, 'lightroom-classic-osx-retina', 'lightroom-mac');
+test(macro, 'lightroom-classic-windows-10-photo-containing-border-color', 'lightroom-windows');

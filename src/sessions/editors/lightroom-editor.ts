@@ -125,7 +125,7 @@ export abstract class LightroomEditor extends EditorBase {
   }
 
   private findPhotoBordersAtOffset(image: Jimp, debug: DebugImageWriter, dimensionIndex: number, searchOffset: number): PhotoBorderPositions | undefined {
-    const requiredConsecutiveBorderColorCount = 6;
+    const requiredConsecutiveBorderColorCount = 10;
 
     let state = BorderSearchState.noBorderFound;
     let consecutiveBorderColorCount = 0;
