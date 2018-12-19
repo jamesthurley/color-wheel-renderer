@@ -53,9 +53,13 @@ export class RenderingSnapshotConsumer implements ISnapshotConsumer {
     // We are switching to targeting the final frame size rather than the maximum frame size, so the video
     // aspect ratio matches the image size for instagram.
     //// this.maxFrameSize = FitFrameSizeToTarget.execute(this.maxFrameSize);
-    const finalFrame = this.snapshots[this.snapshots.length - 1];
-    const finalFrameSize = new Size(finalFrame.photoRectangle.width, finalFrame.photoRectangle.height);
-    this.targetFrameSize = FitFrameSizeToTarget.execute(finalFrameSize);
+    Log.verbose(`Using ${this.snapshots.length} snapshots.`);
+    const finalSnapshot = this.snapshots[this.snapshots.length - 1];
+    const finalPhoto = await finalSnapshot.loadPhoto();
+    const finalSnapshotSize = new Size(finalPhoto.bitmap.width, finalPhoto.bitmap.height);
+    Log.verbose(`Final photo size is ${finalSnapshotSize.width}x${finalSnapshotSize.height}.`);
+    this.targetFrameSize = FitFrameSizeToTarget.execute(finalSnapshotSize);
+    Log.verbose(`Target frame size is ${this.targetFrameSize.width}x${this.targetFrameSize.height}.`);
 
     await this.addTitleFrame();
     await this.addInitialImageFrame();
