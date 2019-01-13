@@ -12,14 +12,11 @@ npm install -g color-wheel-renderer
 
 ## License
 
-Color Wheel Renderer is released under the MIT License. See [LICENSE][1] file for details.
-
-[1]: https://github.com/jamesthurley/color-wheel-renderer/master/LICENSE
-
+Color Wheel Renderer is released under the MIT License. See [LICENSE][LICENSE] file for details.
 
 # Usage
 
-Each color wheel represents a mapping from the **(3D HSL or HSV cylinder)[https://en.wikipedia.org/wiki/HSL_and_HSV]** to a 2D circle. However this is not limited to a simple slice through the cylinder.
+Each color wheel represents a mapping from the **[3D HSL or HSV cylinder](https://en.wikipedia.org/wiki/HSL_and_HSV)** to a 2D circle. However this is not limited to a simple slice through the cylinder.
 
 There are four base types of color wheel, two for HSL and two for HSV cylinders. For HSL there is either a fixed **lightness** or fixed **saturation**, and for HSV there is either a fixed **value** or fixed **saturation**.
 
