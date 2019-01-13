@@ -1,6 +1,6 @@
 {
   "name": "color-wheel-renderer",
-  "version": "0.1.18",
+  "version": "0.1.19",
   "description": "Color Wheel Renderer is a tool for generating custom color wheels.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
