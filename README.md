@@ -63,7 +63,7 @@ Usage: color-wheel [options] <type>
 ## HSV Fixed Value
 18 Angular Buckets, 12 Radial Buckets, 3 Values
 
-![HSV Fixed Value Color Wheel]integration-tests/input-data/color-wheels/color-wheel-hsv-fixed-value-three.png
+![HSV Fixed Value Color Wheel](integration-tests/input-data/color-wheels/color-wheel-hsv-fixed-value-three.png)
 
 ```
 color-wheel-renderer color-wheel hsv-fixed-value -f 1 -f 0.6 -f 0.2 -a 18 -r 12
@@ -74,7 +74,7 @@ color-wheel-renderer color-wheel hsv-fixed-value -f 1 -f 0.6 -f 0.2 -a 18 -r 12
 ## HSL Fixed Lightness
 18 Angular Buckets, 12 Radial Buckets, 3 Lightness Values
 
-![HSL Fixed Lightness Color Wheel]integration-tests/input-data/color-wheel-hsl-fixed-lightness-three.png
+![HSL Fixed Lightness Color Wheel](integration-tests/input-data/color-wheel-hsl-fixed-lightness-three.png)
 
 ```
 color-wheel-renderer color-wheel hsl-fixed-lightness -f 0.8 -f 0.5 -f 0.2 -a 18 -r 12
@@ -85,7 +85,7 @@ color-wheel-renderer color-wheel hsl-fixed-lightness -f 0.8 -f 0.5 -f 0.2 -a 18 
 ## HSV Fixed Saturation
 18 Angular Buckets, 12 Radial Buckets, 3 Saturation Values
 
-![HSV Fixed Saturation Color Wheel]integration-tests/input-data/color-wheel-hsv-fixed-saturation-three.png
+![HSV Fixed Saturation Color Wheel](integration-tests/input-data/color-wheel-hsv-fixed-saturation-three.png)
 
 ```
 color-wheel-renderer color-wheel hsv-fixed-saturation -f 1 -f 0.6 -f 0.2 -a 18 -r 12
@@ -96,7 +96,7 @@ color-wheel-renderer color-wheel hsv-fixed-saturation -f 1 -f 0.6 -f 0.2 -a 18 -
 ## HSL Fixed Saturation
 18 Angular Buckets, 12 Radial Buckets, 3 Saturation Values
 
-![HSL Fixed Saturation Color Wheel]integration-tests/input-data/color-wheel-hsl-fixed-saturation-three.png
+![HSL Fixed Saturation Color Wheel](integration-tests/input-data/color-wheel-hsl-fixed-saturation-three.png)
 
 Note that for this wheel the outermost band is white and therefore only 11 buckets are visible.
 
@@ -109,7 +109,7 @@ color-wheel-renderer color-wheel hsl-fixed-saturation -f 1 -f 0.6 -f 0.2 -a 18 -
 ## HSL Fixed Saturation Smooth
 No Bucketing
 
-![HSL Fixed Saturation Smooth Color Wheel]integration-tests/input-data/color-wheel-hsl-fixed-saturation-smooth.png
+![HSL Fixed Saturation Smooth Color Wheel](integration-tests/input-data/color-wheel-hsl-fixed-saturation-smooth.png)
 
 ```
 color-wheel-renderer color-wheel hsl-fixed-saturation
@@ -120,7 +120,7 @@ color-wheel-renderer color-wheel hsl-fixed-saturation
 ## HSL Fixed Saturation Smooth Reversed Colors
 No Bucketing, Reversed Colors
 
-![HSL Fixed Saturation Smooth Reversed Color Wheel]integration-tests/input-data/color-wheel-hsl-fixed-saturation-smooth-reversed-colors.png
+![HSL Fixed Saturation Smooth Reversed Color Wheel](integration-tests/input-data/color-wheel-hsl-fixed-saturation-smooth-reversed-colors.png)
 
 ```
 color-wheel-renderer color-wheel hsl-fixed-saturation -c
@@ -131,7 +131,7 @@ color-wheel-renderer color-wheel hsl-fixed-saturation -c
 ## HSL Fixed Saturation Angular Bucketing
 36 Angular Buckets
 
-![HSL Fixed Saturation Angular Bucketing Color Wheel]integration-tests/input-data/color-wheel-hsl-fixed-saturation-angular.png
+![HSL Fixed Saturation Angular Bucketing Color Wheel](integration-tests/input-data/color-wheel-hsl-fixed-saturation-angular.png)
 
 ```
 color-wheel-renderer color-wheel hsl-fixed-saturation -a 36
@@ -142,7 +142,7 @@ color-wheel-renderer color-wheel hsl-fixed-saturation -a 36
 ## HSL Fixed Saturation Radial Bucketing
 12 Radial Buckets
 
-![HSL Fixed Saturation Radial Bucketing Color Wheel]integration-tests/input-data/color-wheel-hsl-fixed-saturation-radial.png
+![HSL Fixed Saturation Radial Bucketing Color Wheel](integration-tests/input-data/color-wheel-hsl-fixed-saturation-radial.png)
 
 Note that for this wheel the outermost band is white and therefore only 11 buckets are visible.
 
@@ -155,7 +155,7 @@ color-wheel-renderer color-wheel hsl-fixed-saturation -r 12
 ## HSV Fixed Saturation Expand
 12 Angular Buckets, 5 Radial Buckets, 3 Saturation Values, Expand Color Wheel
 
-![HSV Fixed Saturation Expand Color Wheel]integration-tests/input-data/color-wheel-hsv-fixed-saturation-expand.png
+![HSV Fixed Saturation Expand Color Wheel](integration-tests/input-data/color-wheel-hsv-fixed-saturation-expand.png)
 
 ```
 color-wheel-renderer color-wheel hsv-fixed-saturation -f 0.25 -f 0.5 -f 1 -a 18 -r 12 -e
@@ -166,7 +166,7 @@ color-wheel-renderer color-wheel hsv-fixed-saturation -f 0.25 -f 0.5 -f 1 -a 18 
 ## HSL Fixed Saturation Expand
 12 Angular Buckets, 5 Radial Buckets, 3 Saturation Values, Expand Color Wheel, Reverse Bucketing Direction
 
-![HSL Fixed Saturation Expand Color Wheel]integration-tests/input-data/color-wheel-hsl-fixed-saturation-expand.png
+![HSL Fixed Saturation Expand Color Wheel](integration-tests/input-data/color-wheel-hsl-fixed-saturation-expand.png)
 
 ```
 color-wheel-renderer color-wheel hsl-fixed-saturation -f 0.1 -f 0.5 -f 1 -a 18 -r 12 -e -b
@@ -177,7 +177,7 @@ color-wheel-renderer color-wheel hsl-fixed-saturation -f 0.1 -f 0.5 -f 1 -a 18 -
 ## HSV Fixed Saturation Coarse Bucketing
 12 Angular Buckets, 5 Radial Buckets
 
-![HSV Fixed Saturation Coarse Color Wheel]integration-tests/input-data/color-wheel-hsv-fixed-saturation-coarse.png
+![HSV Fixed Saturation Coarse Color Wheel](integration-tests/input-data/color-wheel-hsv-fixed-saturation-coarse.png)
 
 ```
 color-wheel-renderer color-wheel hsv-fixed-saturation -a 12 -r 5
