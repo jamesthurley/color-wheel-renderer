@@ -1,19 +1,19 @@
 {
-  "name": "opendarkroom",
+  "name": "color-wheel-renderer",
   "version": "0.1.17",
-  "description": "Open Darkroom is an open source, multi-platform toolkit for assisting with digital photography post-processing.",
+  "description": "Color Wheel Renderer is a tool for generating customizable color wheels.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "preferGlobal": true,
   "bin": {
-    "odr": "dist/index.js"
+    "color-wheel-renderer": "dist/index.js"
   },
   "files": [
     "dist/**/*"
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/opendarkroom/toolkit.git"
+    "url": "https://github.com/jamesthurley/color-wheel-renderer.git"
   },
   "scripts": {
     "prepublishOnly": "npm run clean && npm run build",
@@ -34,16 +34,13 @@
   "author": "James Thurley",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/opendarkroom/toolkit/issues"
+    "url": "https://github.com/jamesthurley/color-wheel-renderer/issues"
   },
   "homepage": "https://opendarkroom.com/",
   "dependencies": {
     "colors": "1.2.1",
     "commander": "2.15.1",
-    "desktop-screenshot": "0.1.1",
-    "ffmpeg-stream": "0.5.0",
     "fs-extra": "5.0.0",
-    "gifwrap": "0.7.5",
     "jimp": "0.2.28"
   },
   "devDependencies": {

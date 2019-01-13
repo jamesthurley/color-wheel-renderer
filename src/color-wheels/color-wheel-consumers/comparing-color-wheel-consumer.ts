@@ -1,6 +1,6 @@
 import * as Jimp from 'jimp';
 import { IColorWheelConsumer } from './color-wheel-consumer';
-import { IComparingConsumerHelper } from '../../sessions/testing/comparing-consumer-helper';
+import { IComparingConsumerHelper } from '../../color-wheels/testing/comparing-consumer-helper';
 
 export class ComparingColorWheelConsumer implements IColorWheelConsumer {
   constructor(

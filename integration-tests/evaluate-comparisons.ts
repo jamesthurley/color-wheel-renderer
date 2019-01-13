@@ -1,5 +1,5 @@
 import { ExecutionContext } from 'ava';
-import { IntegrationTestConsumerHelper } from '../src/sessions/testing/integration-test-consumer-helper';
+import { IntegrationTestConsumerHelper } from '../src/color-wheels/testing/integration-test-consumer-helper';
 import { compareImage } from '../src/common/compare-image';
 
 export async function evaluateComparisons<T>(t: ExecutionContext<T>, comparisonHelper: IntegrationTestConsumerHelper) {

@@ -1,5 +1,5 @@
 import test, { Macro } from 'ava';
-import { IntegrationTestConsumerHelper } from '../src/sessions/testing/integration-test-consumer-helper';
+import { IntegrationTestConsumerHelper } from '../src/color-wheels/testing/integration-test-consumer-helper';
 import { evaluateComparisons } from './evaluate-comparisons';
 import { setTestLogLevel } from './set-test-log-level';
 import { ColorWheelOptions } from '../src/commands/color-wheel-commands/color-wheel-options';
