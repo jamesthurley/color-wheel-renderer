@@ -12,7 +12,7 @@ npm install -g color-wheel-renderer
 
 ## License
 
-Color Wheel Renderer is released under the MIT License. See [LICENSE][LICENSE] file for details.
+Color Wheel Renderer is released under the MIT License. See [LICENSE](LICENSE) file for details.
 
 # Usage
 
