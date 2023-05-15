@@ -2,9 +2,13 @@
 
 [![Build Status](https://travis-ci.com/jamesthurley/color-wheel-renderer.svg?branch=master)](https://travis-ci.com/jamesthurley/color-wheel-renderer)
 
-This tools lets you generate a wide variety of color wheels to your specifications.
+---
 
-If you have any problems or suggestions for new features please let me know in an [issue](https://github.com/jamesthurley/color-wheel-renderer/issues).
+**Note:** See my [Color Wheel Renderer Rust](https://github.com/jamesthurley/color-wheel-renderer-rust) repository for a faster, improved version of this library.
+
+---
+
+This tools lets you generate a wide variety of color wheels to your specifications.
 
 ## Installation
 
